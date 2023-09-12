@@ -5,6 +5,8 @@
  * В целом сделайте так, как вам будет удобно.
  * */
 
+import { StoryId } from "@storybook/types";
+
 /**
  * Нужно создать тип Category, он будет использоваться ниже.
  * Категория содержит
@@ -43,14 +45,84 @@
  * - type ('Profit')
  * */
 
+export type TCategory = {
+    id: StoryId,
+    name: string,
+    photo?: string,
+};
+
+export interface IProduct {
+    id: StoryId,
+    name: string,
+    photo: string,
+    createdAt: string,
+    price: number,
+    category: TCategory,
+    desc?: string,
+    oldPrice?: number,
+};
+
+export type TOperation = ICost | IProfit;
+
+export interface ICost {
+    type: 'Cost',
+    id: StoryId,
+    name: string,
+    createdAt: string,
+    category: TCategory,
+    amount: number,
+    desc?: string,
+};
+
+export interface IProfit {
+    type: 'Profit',
+    id: StoryId,
+    name: string,
+    createdAt: string,
+    category: TCategory,
+    amount: number,
+    desc?: string,
+};
+
 /**
  * Создает случайный продукт (Product).
  * Принимает дату создания (строка)
  * */
-// export const createRandomProduct = (createdAt: string) => {};
+export const createRandomProduct = (createdAt: string): IProduct => {
+    const randomInt: number = Math.round(Math.random() * 100);
+    const id: string = `P_${createdAt}_${randomInt}`;
+    return {
+        createdAt,
+        id,
+        name: `${id}_product`,
+        photo: 'https://www.some_photo',
+        price: Math.random() * 1000,
+        category: {
+            id: `C_${id}`,
+            name: `${id}_category`,
+        },
+        desc: undefined,
+        oldPrice: undefined,
+    };
+};
 
 /**
  * Создает случайную операцию (Operation).
  * Принимает дату создания (строка)
  * */
-// export const createRandomOperation = (createdAt: string) => {};
+export const createRandomOperation = (createdAt: string): TOperation => {
+    const randomInt: number = Math.round(Math.random() * 100);
+    const id: string = `O_${createdAt}_${randomInt}`;
+    return {
+        createdAt,
+        id,
+        type: 'Cost', // || 'Profit'
+        name: `${id}_operation`,
+        category: {
+            id: `C_${id}`,
+            name: `${id}_category`,
+        },
+        amount: randomInt,
+        desc: undefined,
+    };
+};
