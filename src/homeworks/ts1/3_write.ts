@@ -106,6 +106,8 @@ export const createRandomProduct = (createdAt: string): IProduct => {
     };
 };
 
+export type TTypes = 'Cost' | 'Profit';
+
 /**
  * Создает случайную операцию (Operation).
  * Принимает дату создания (строка)
@@ -113,10 +115,12 @@ export const createRandomProduct = (createdAt: string): IProduct => {
 export const createRandomOperation = (createdAt: string): TOperation => {
     const randomInt: number = Math.round(Math.random() * 100);
     const id: string = `O_${createdAt}_${randomInt}`;
+    const types: TTypes[] = ['Cost', 'Profit'];
+    const randomTypesIndex: number = Math.round(Math.random()); //=> 0 || 1
     return {
         createdAt,
         id,
-        type: 'Cost', // || 'Profit'
+        type: types[randomTypesIndex],
         name: `${id}_operation`,
         category: {
             id: `C_${id}`,
