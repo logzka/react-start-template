@@ -1,5 +1,11 @@
-import './cart-item.css';
+import React from 'react';
+
+/** Styles */
+import './cart-item.scss';
+/** Components */
 import Button from '../button/Button';
+/** Interfaces */
+import { IPageProps } from '../page/Page';
 
 const CartItem = ({
     type = 'default',
@@ -9,13 +15,14 @@ const CartItem = ({
     priceOld,
     description,
     imageUrls,
-}) => {
+}: React.PropsWithChildren<IPageProps>) => {
     return (
         <div className={`cart-item cart-item--${type}`}>
             <div className="cart-item--inner">
                 <div className='cart-item--images'>
                     {
                         imageUrls.map((url) => <div
+                            key={url}
                             className='cart-item--image'
                             style={{backgroundImage: 'url('+ url + ')'}}
                         ></div>)
@@ -28,7 +35,7 @@ const CartItem = ({
                             <span>&#32;/&#32;</span>
                             <h2 className='cart-item--name'>{name}</h2>
                         </div>
-                        <Button type='icon'>&#120;</Button>
+                        <Button type='icon'>╳</Button>
                     </div>
                     <p className='cart-item--description'>{description}</p>
                     <div className='cart-item--footer'>

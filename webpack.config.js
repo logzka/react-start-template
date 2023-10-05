@@ -66,19 +66,20 @@ module.exports = (_, args) => {
           type: 'asset/inline',
         },
         {
-          test: /\.s[ac]ss$/i,
+          test: /\.s[ca]ss$/i,
           use: [
             {
               loader: MiniCssExtractPlugin.loader,
             },
-            {
-              loader: 'css-loader',
-              options: {
-                modules: {
-                  localIdentName: '[name]_[local]-[hash:base64:5]',
-                },
-              },
-            },
+            // {
+            //   loader: 'css-loader',
+            //   options: {
+            //     modules: {
+            //       localIdentName: '[name]_[local]-[hash:base64:5]',
+            //     },
+            //   },
+            // },
+            'css-loader',
             'sass-loader',
           ],
         },

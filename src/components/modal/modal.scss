@@ -1,6 +1,8 @@
 .modal {
     font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     position: fixed;
+    top: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -9,18 +11,18 @@
     background-color: rgba(0,0,0,0.4);
     z-index: 9999;
     animation: show .4s forwards;
-}
 
-.modal--body {
-    width: 40%;
-    height: 30%;
-    padding: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 6px 6px 10px rgba(0,0,0,0.2);
+    &--body {
+        width: 40%;
+        height: 30%;
+        padding: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        border-radius: 2px;
+        box-shadow: 6px 6px 10px rgba(0,0,0,0.2);
+    }
 }
 
 @keyframes show {
