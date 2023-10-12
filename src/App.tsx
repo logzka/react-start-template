@@ -5,18 +5,12 @@ import './app.scss';
 import Layout from './components/layout/Layout';
 import Header from './components/header/Header';
 import Logo from './components/logo/Logo';
-import Button from './components/button/Button';
 import Card from './components/card/Card';
 import Page from './components/page/Page';
-import Modal from './components/modal/Modal';
 import CartItem from './components/cart-item/CartItem';
+import ModalWrapper from './components/modal-wrapper/ModalWrapper';
 
 const App = () => {
-  const [showModal, setShowModal] = useState(false);
-
-  const showModalHandler = (): void => setShowModal(true);
-  const hideModalHandler = (): void => setShowModal(false);
-
   return (
     <div className="app">
       <Layout>
@@ -25,7 +19,7 @@ const App = () => {
         </Header>
 
         <main className='main'>
-          <Button onClick={showModalHandler}>open modal</Button>
+          <ModalWrapper />
 
           <Card
             type='default'
@@ -63,11 +57,6 @@ const App = () => {
           />
         </main>
       </Layout>
-
-      <Modal
-        visible={showModal}
-        hide={hideModalHandler}
-      >Hi! I'm a Modal! For now to close me, just click on the background. Thanks :)</Modal>
     </div>
   );
 };
