@@ -1,0 +1,9 @@
+.layout {
+    width: 100%;
+    min-height: 100vh;
+
+    &--inner {
+        position: relative;
+        width: 100%;
+    }
+}

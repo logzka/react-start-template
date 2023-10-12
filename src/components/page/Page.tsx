@@ -1,5 +1,20 @@
-import './page.css';
+import React from 'react';
+/** Styles */
+import './page.scss';
+/** Components */
 import CartButton from '../cart-button/CartButton';
+/** Types */
+import { TCardType } from '../card/Card';
+
+export interface IPageProps {
+    type?: TCardType,
+    categoryName: string,
+    name: string,
+    price: string,
+    priceOld: string,
+    description: string,
+    imageUrls: string[],
+};
 
 const Page = ({
     type = 'default',
@@ -9,13 +24,14 @@ const Page = ({
     priceOld,
     description,
     imageUrls,
-}) => {
+}: React.PropsWithChildren<IPageProps>) => {
     return (
         <div className={`page page--${type}`}>
             <div className="page--inner">
                 <div className='page--images'>
                     {
                         imageUrls.map((url) => <div
+                            key={url}
                             className='page--image'
                             style={{backgroundImage: 'url('+ url + ')'}}
                         ></div>)

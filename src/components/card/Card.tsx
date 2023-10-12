@@ -1,5 +1,20 @@
-import './card.css';
+import React, { PropsWithChildren } from 'react';
+/** Styles */
+import './card.scss';
+/** Components */
 import CartButton from '../cart-button/CartButton';
+
+interface ICardProps {
+    type?: TCardType,
+    categoryName: string,
+    name: string,
+    price: string,
+    priceOld: string,
+    description: string,
+    imageUrl: string,
+};
+
+export type TCardType = 'default' | 'disabled';
 
 const Card = ({
     type = 'default',
@@ -9,7 +24,7 @@ const Card = ({
     priceOld,
     description,
     imageUrl,
-}) => {
+}: PropsWithChildren<ICardProps>) => {
     return (
         <div className={`card card--${type}`}>
             <div className="card--inner">
