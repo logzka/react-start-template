@@ -1,9 +1,9 @@
 .page {
     font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     width: fit-content;
-    background: #3977ad;
+    background: var(--active-color);
     padding: 1em;
-    color: #ffffff;
+    color: var(--main-font-color);
     border-radius: 2px;
 
     &--inner {

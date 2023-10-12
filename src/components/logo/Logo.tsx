@@ -1,7 +1,7 @@
 import React from 'react';
 import './logo.scss';
-import LogoSvg from '../../logo.svg';
-import LogoInvertedSvg from '../../logo-inverted.svg';
+import LogoSvg from '../../assets/logo.svg';
+import LogoInvertedSvg from '../../assets/logo-inverted.svg';
 
 interface ILogoProps {
     size?: TLogoSize,

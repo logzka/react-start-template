@@ -15,7 +15,7 @@
 
     &--primary {
         color: white;
-        background-color: #3977ad;
+        background-color: var(--active-color);
     }
     &--secondary {
         color: #828894;
@@ -46,7 +46,7 @@
         opacity: 0.7;
     }
     &--icon &--primary {
-        color: #3977ad;
+        color: var(--active-color);
     }
     &--icon &--secondary {
         color: #828894;

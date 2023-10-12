@@ -1,6 +1,7 @@
 .layout {
     width: 100%;
     min-height: 100vh;
+    background: var(--main-background-color);
 
     &--inner {
         position: relative;
