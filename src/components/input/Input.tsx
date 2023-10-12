@@ -15,7 +15,7 @@ interface IInput {
 };
 
 const Input = ({
-    type = 'text',
+    type = 'search',
     placeholder = 'type model text',
     size = 'medium',
     disabled = false,
