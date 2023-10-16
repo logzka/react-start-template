@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import { withTranslation } from 'react-i18next';
 /** Styles */
 import './page.scss';
 /** Components */
@@ -14,6 +15,7 @@ export interface IPageProps {
     priceOld: string,
     description: string,
     imageUrls: string[],
+    t?: (v: string) => ReactNode | string,
 };
 
 const Page = ({
@@ -24,6 +26,7 @@ const Page = ({
     priceOld,
     description,
     imageUrls,
+    t,
 }: React.PropsWithChildren<IPageProps>) => {
     return (
         <div className={`page page--${type}`}>
@@ -45,10 +48,10 @@ const Page = ({
                     </div>
                     <div className='page--footer'>
                         <div className='page--price__wrapper'>
-                            <div className='page--price'>{price}&#32;руб.</div>
-                            <div className='page--price__old'>{priceOld}&#32;руб.</div>
+                            <div className='page--price'>{price}&#32;{t('rub')}</div>
+                            <div className='page--price__old'>{priceOld}&#32;{t('rub')}</div>
                         </div>
-                        <CartButton type='disabled' count={0}>В корзину</CartButton>
+                        <CartButton type='disabled' count={0}>{t('add-to-cart')}</CartButton>
                     </div>
                 </div>
             </div>
@@ -56,4 +59,5 @@ const Page = ({
     );
 };
 
-export default Page;
+const PageTranslated = withTranslation('common')(Page)
+export default PageTranslated;

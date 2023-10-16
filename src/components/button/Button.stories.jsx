@@ -29,6 +29,7 @@ export const Default = {
     args: {
         children: 'Button',
         icon: false,
+        active: false,
         type: 'primary',
         size: 'medium',
     },
@@ -38,6 +39,7 @@ export const Icon = {
     args: {
         children: 'Icon',
         icon: true,
+        active: false,
         type: 'primary',
         size: 'medium',
     },

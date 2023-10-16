@@ -6,6 +6,7 @@ interface IButtonProps {
     type?: TButtonType,
     size?: TButtonSize,
     icon?: boolean,
+    active?: boolean,
     onClick?: MouseEventHandler<HTMLButtonElement>,
 };
 
@@ -16,12 +17,13 @@ const Button = ({
     type = 'primary',
     size = 'medium',
     icon = false,
+    active = false,
     children,
     onClick,
 }: React.PropsWithChildren<IButtonProps>) => {
     return (
         <button
-            className={`button ${icon ? 'button--icon' : ''} button--${type} button--${size}`}
+            className={`button ${icon ? 'button--icon' : ''} ${icon && active ? 'button--icon__active' : ''} button--${type} button--${size}`}
             onClick={onClick}
         >
             <span className='button--inner'>{children}</span>

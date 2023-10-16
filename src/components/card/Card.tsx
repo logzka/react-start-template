@@ -1,4 +1,5 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
+import { withTranslation } from 'react-i18next';
 /** Styles */
 import './card.scss';
 /** Components */
@@ -12,6 +13,7 @@ interface ICardProps {
     priceOld: string,
     description: string,
     imageUrl: string,
+    // t?: (v: string) => ReactNode | string,
 };
 
 export type TCardType = 'default' | 'disabled';
@@ -24,7 +26,8 @@ const Card = ({
     priceOld,
     description,
     imageUrl,
-}: PropsWithChildren<ICardProps>) => {
+    t,
+}: PropsWithChildren<ICardProps & { t?: (v: string) => ReactNode | string }>) => {
     return (
         <div className={`card card--${type}`}>
             <div className="card--inner">
@@ -37,10 +40,10 @@ const Card = ({
                     <p className='card--description'>{description}</p>
                     <div className='card--footer'>
                         <div className='card--price__wrapper'>
-                            <div className='card--price'>{price}&#32;руб.</div>
-                            <div className='card--price__old'>{priceOld}&#32;руб.</div>
+                            <div className='card--price'>{price}&#32;{t('rub')}</div>
+                            <div className='card--price__old'>{priceOld}&#32;{t('rub')}</div>
                         </div>
-                        <CartButton type='disabled' count={0}>В корзину</CartButton>
+                        <CartButton type='disabled' count={0}>{t('add-to-cart')}</CartButton>
                     </div>
                 </div>
             </div>
@@ -48,4 +51,5 @@ const Card = ({
     );
 };
 
-export default Card;
+const CardTranslated = withTranslation('common')(Card)
+export default CardTranslated;

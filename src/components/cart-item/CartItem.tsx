@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import { withTranslation } from 'react-i18next';
 
 /** Styles */
 import './cart-item.scss';
@@ -15,7 +16,8 @@ const CartItem = ({
     priceOld,
     description,
     imageUrls,
-}: React.PropsWithChildren<IPageProps>) => {
+    t,
+}: React.PropsWithChildren<IPageProps & { t?: (v: string) => ReactNode | string, }>) => {
     return (
         <div className={`cart-item cart-item--${type}`}>
             <div className="cart-item--inner">
@@ -40,8 +42,8 @@ const CartItem = ({
                     <p className='cart-item--description'>{description}</p>
                     <div className='cart-item--footer'>
                         <div className='cart-item--price__wrapper'>
-                            <div className='cart-item--price'>{price}&#32;руб.</div>
-                            <div className='cart-item--price__old'>{priceOld}&#32;руб.</div>
+                            <div className='cart-item--price'>{price}&#32;{t('rub')}</div>
+                            <div className='cart-item--price__old'>{priceOld}&#32;{t('rub')}</div>
                         </div>
                     </div>
                 </div>
@@ -50,4 +52,5 @@ const CartItem = ({
     );
 };
 
-export default CartItem;
+const CartItemTranslated = withTranslation('common')(CartItem)
+export default CartItemTranslated;

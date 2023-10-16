@@ -1,8 +1,8 @@
 .card {
     font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     width: 320px;
-    background: #3977ad;
-    color: #ffffff;
+    background: var(--active-color);
+    color: var(--main-font-color);
     border-radius: 2px;
     box-shadow: 2px 2px 8px rgba(0,0,0,.2);
     transition: box-shadow .2s ease;

@@ -15,7 +15,7 @@
 
     &--primary {
         color: white;
-        background-color: #3977ad;
+        background-color: var(--active-color);
     }
     &--secondary {
         color: #828894;
@@ -36,17 +36,35 @@
         cursor: default;
     }
 
+    &--small {
+        font-size: 12px;
+        padding: 10px 16px;
+    }
+    &--medium {
+        font-size: 14px;
+        padding: 11px 20px;
+    }
+    &--large {
+        font-size: 16px;
+        padding: 12px 24px;
+    }
+
     /* Button Icon Type */
     &--icon {
-        color: inherit;
         background: none;
         box-shadow: none;
-    }
-    &--icon:hover {
-        opacity: 0.7;
+        padding: 8px;
+
+        &:hover {
+            opacity: 0.7;
+        }
+
+        &__active {
+            text-decoration: underline;
+        }
     }
     &--icon &--primary {
-        color: #3977ad;
+        color: var(--active-color);
     }
     &--icon &--secondary {
         color: #828894;
@@ -59,18 +77,5 @@
     }
     &--icon &--disabled {
         color: #e1e4eb;
-    }
-
-    &--small {
-        font-size: 12px;
-        padding: 10px 16px;
-    }
-    &--medium {
-        font-size: 14px;
-        padding: 11px 20px;
-    }
-    &--large {
-        font-size: 16px;
-        padding: 12px 24px;
     }
 }

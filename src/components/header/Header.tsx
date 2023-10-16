@@ -1,9 +1,10 @@
 import React from 'react';
 import './header.scss';
+import { IHeaderProps } from './header.types';
 
-const Header = ({ children }: React.PropsWithChildren) => {
+const Header = ({ className = '', children }: React.PropsWithChildren<IHeaderProps>) => {
     return (
-        <header className="header">
+        <header className={`header ${className}`}>
             <div className="header--inner">{children}</div>
         </header>
     );
