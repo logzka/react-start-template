@@ -1,6 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './styles/app.scss';
+
+/** Api */
+import { cakes as cakesData } from './api/cakes';
 
 /** Contexts */
 import { ThemeContext } from './contexts/theme.context';
@@ -18,6 +21,7 @@ import Switch from './components/switch/Switch';
 import Button from './components/button/Button';
 
 const App = () => {
+  const [cakes, setCakes] = useState(cakesData);
   const { setTheme } = useContext(ThemeContext);
   const { lang, setLang } = useContext(LangContext);
 
@@ -59,15 +63,26 @@ const App = () => {
             <main className='main'>
               <ModalWrapper />
 
-              <Card
-                type='default'
-                categoryName='Торты'
-                name='Малиновый чизкейк'
-                price='1299'
-                priceOld='1300'
-                description='Популярный десерт с сырной основой и тонким коржом из песочного теста с добавлением малинового пюре. Нежное творожное суфле, дополненное тонкой бисквитной прослойкой, прекрасное сочетание для любителей классики. В составе только натуральные молочные продукты. Без добавления растительных жиров.'
-                imageUrl='https://shop-cdn1-2.vigbo.tech/shops/218522/products/21922955/images/3-9b48c64af285a36ca7de4fbc2d490de1.jpg'
-              />
+              <div className='cakes--wrapper'>
+                {cakes.map(({
+                  categoryName,
+                  name,
+                  price,
+                  priceOld,
+                  description,
+                  imageUrl,
+                  id,
+                }) => <Card
+                  key={id}
+                  type='default'
+                  categoryName={categoryName}
+                  name={name}
+                  price={price}
+                  priceOld={priceOld}
+                  description={description}
+                  imageUrl={imageUrl}
+                />)}
+              </div>
 
               <Page
                 categoryName='Торты'
