@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { ReactNode, useContext } from 'react';
+import { useTranslation, withTranslation } from 'react-i18next';
 import './styles/app.scss';
 
 /** Contexts */
@@ -17,7 +17,7 @@ import Switch from './components/switch/Switch';
 import Button from './components/button/Button';
 import List from './components/List';
 
-const App = () => {
+const App = ({ t }: { t?: (v: string) => ReactNode | string}) => {
   const { setTheme } = useContext(ThemeContext);
   const { lang, setLang } = useContext(LangContext);
 
@@ -49,8 +49,8 @@ const App = () => {
               <Logo />
               <div className='app--header__actions'>
                 <div style={{marginRight: '2em'}}>
-                  <Button icon active={lang === 'ru'} onClick={() => changeLang('ru')}>Ru</Button>
-                  <Button icon active={lang === 'en'} onClick={() => changeLang('en')}>En</Button>
+                  <Button icon active={lang === 'ru'} onClick={() => changeLang('ru')}>{t('ru')}</Button>
+                  <Button icon active={lang === 'en'} onClick={() => changeLang('en')}>{t('en')}</Button>
                 </div>
                 <Switch onChange={(e) => changeTheme(e)}/>
               </div>
@@ -91,4 +91,5 @@ const App = () => {
   );
 };
 
-export default App;
+const AppTranslated = withTranslation('common')(App)
+export default AppTranslated;
