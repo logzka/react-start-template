@@ -1,9 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import './styles/app.scss';
-
-/** Api */
-import { cakes as cakesData } from './api/cakes';
 
 /** Contexts */
 import { ThemeContext } from './contexts/theme.context';
@@ -13,15 +10,14 @@ import { LangContext, TLang } from './contexts/lang.context';
 import Layout from './components/layout/Layout';
 import Header from './components/header/Header';
 import Logo from './components/logo/Logo';
-import Card from './components/card/Card';
-import Page from './components/page/Page';
-import CartItem from './components/cart-item/CartItem';
+// import Page from './components/page/Page';
+// import CartItem from './components/cart-item/CartItem';
 import ModalWrapper from './components/modal-wrapper/ModalWrapper';
 import Switch from './components/switch/Switch';
 import Button from './components/button/Button';
+import List from './components/List';
 
 const App = () => {
-  const [cakes, setCakes] = useState(cakesData);
   const { setTheme } = useContext(ThemeContext);
   const { lang, setLang } = useContext(LangContext);
 
@@ -63,28 +59,9 @@ const App = () => {
             <main className='main'>
               <ModalWrapper />
 
-              <div className='cakes--wrapper'>
-                {cakes.map(({
-                  categoryName,
-                  name,
-                  price,
-                  priceOld,
-                  description,
-                  imageUrl,
-                  id,
-                }) => <Card
-                  key={id}
-                  type='default'
-                  categoryName={categoryName}
-                  name={name}
-                  price={price}
-                  priceOld={priceOld}
-                  description={description}
-                  imageUrl={imageUrl}
-                />)}
-              </div>
+              <List />
 
-              <Page
+              {/* <Page
                 categoryName='Торты'
                 name='Малиновый чизкейк'
                 price='1299'
@@ -107,7 +84,7 @@ const App = () => {
                 imageUrls={[
                     'https://shop-cdn1-2.vigbo.tech/shops/218522/products/21922955/images/3-9b48c64af285a36ca7de4fbc2d490de1.jpg',
                 ]}
-              />
+              /> */}
             </main>
           </Layout>
     </div>
