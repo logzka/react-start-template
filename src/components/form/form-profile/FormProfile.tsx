@@ -2,6 +2,8 @@ import React, { ReactNode } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form"
 import { withTranslation } from "react-i18next";
 import styled from 'styled-components';
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
 
 /** Types */
 import { IFormValues } from './types';
@@ -15,16 +17,44 @@ const FormProfileStyled = styled.form`
     gap: 2em;
 `;
 
+const FormItemStyled = styled.div`
+    position: relative;
+    width: 280px;
+`;
+
+const FormErrorStyled = styled.div`
+    position: absolute;
+    top: 44px;
+    left: 12px;
+    color: red;
+    font-size: x-small;
+`;
+
+const schema = yup
+    .object({
+        firstName: yup.string().required('First Name is required'),
+        lastName: yup.string().required('Last Name is required'),
+        gender: yup.string().required('Gender is required'),
+        age: yup.number().positive().integer().min(18, 'The min age is 18').required('Age is required'),
+        phone: yup.string()
+            .matches(
+                /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                'Phone is not valid').required('Phone is required'),
+        email: yup.string().email('Email is not valid').required('Email is required'),
+    }).required();
+
 const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
-    const { control, handleSubmit } = useForm<IFormValues>({
+    const { control, handleSubmit, formState: { errors } } = useForm<IFormValues>({
         defaultValues: {
             firstName: '',
             lastName: '',
             gender: null,
-            age: null,
+            age: 18,
             phone: '',
             email: '',
         },
+        mode: "onChange",
+        resolver: yupResolver(schema),
     });
 
     const onSubmit: SubmitHandler<IFormValues> = (data) => console.log(data);
@@ -36,36 +66,60 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
             className="form form--profile"
             onSubmit={handleSubmit(onSubmit)}
         >
-            <Controller
-                name="firstName"
-                control={control}
-                render={({ field }) => <Input placeholder={`${t('form.name')}`} required {...field} />}
-            />
-            <Controller
-                name="lastName"
-                control={control}
-                render={({ field }) => <Input placeholder={`${t('form.surname')}`} required {...field} />}
-            />
-            <Controller
-                name="gender"
-                control={control}
-                render={({ field }) => <Select returnObject={false} items={genders} placeholder={`${t('form.gender')}`} required {...field} />}
-            />
-            <Controller
-                name="age"
-                control={control}
-                render={({ field }) => <Input placeholder={`${t('form.age')}`} required {...field} />}
-            />
-            <Controller
-                name="phone"
-                control={control}
-                render={({ field }) => <Input placeholder="+7 (999) 999 99 99" required {...field} />}
-            />
-            <Controller
-                name="email"
-                control={control}
-                render={({ field }) => <Input placeholder="your@mail.com" required {...field} />}
-            />
+            <FormItemStyled className="form--item">
+                <Controller
+                    name="firstName"
+                    control={control}
+                    render={({ field }) => <Input placeholder={`${t('form.name')}`} required {...field} />}
+                />
+                {errors.firstName && <FormErrorStyled className="form--error">{errors.firstName?.message}</FormErrorStyled>}
+            </FormItemStyled>
+
+            <FormItemStyled className="form--item">
+                <Controller
+                    name="lastName"
+                    control={control}
+                    render={({ field }) => <Input placeholder={`${t('form.surname')}`} required {...field} />}
+                />
+                {errors.lastName && <FormErrorStyled className="form--error">{errors.lastName?.message}</FormErrorStyled>}
+            </FormItemStyled>
+
+            <FormItemStyled className="form--item">
+                <Controller
+                    name="gender"
+                    control={control}
+                    render={({ field }) => <Select returnObject={false} items={genders} placeholder={`${t('form.gender')}`} required {...field} />}
+                />
+                {errors.gender && <FormErrorStyled className="form--error">{errors.gender?.message}</FormErrorStyled>}
+            </FormItemStyled>
+
+            <FormItemStyled className="form--item">
+                <Controller
+                    name="age"
+                    control={control}
+                    render={({ field }) => <Input placeholder={`${t('form.age')}`} required {...field} />}
+                />
+                {errors.age && <FormErrorStyled className="form--error">{errors.age?.message}</FormErrorStyled>}
+            </FormItemStyled>
+
+            <FormItemStyled className="form--item">
+                <Controller
+                    name="phone"
+                    control={control}
+                    render={({ field }) => <Input placeholder={`${t('form.phone')}`} required {...field} />}
+                />
+                {errors.phone && <FormErrorStyled className="form--error">{errors.phone?.message}</FormErrorStyled>}
+            </FormItemStyled>
+
+            <FormItemStyled className="form--item">
+                <Controller
+                    name="email"
+                    control={control}
+                    render={({ field }) => <Input placeholder="your@mail.com" required {...field} />}
+                />
+                {errors.email && <FormErrorStyled className="form--error">{errors.email?.message}</FormErrorStyled>}
+            </FormItemStyled>
+
             <input className="button button--primary button--medium" type="submit" />
         </FormProfileStyled>
     )
