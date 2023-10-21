@@ -2,5 +2,13 @@
     "open-modal": "Open modal",
     "type-modal-text": "Type modal text",
     "add-to-cart": "Add to cart",
-    "rub": "rub."
+    "rub": "rub.",
+    "form": {
+        "name": "Name",
+        "surname": "Surname",
+        "age": "Age",
+        "gender": "Gender",
+        "phone": "Phone",
+        "email": "E-mail"
+    }
 }

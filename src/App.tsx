@@ -16,6 +16,7 @@ import CartItem from './components/cart-item/CartItem';
 import ModalWrapper from './components/modal-wrapper/ModalWrapper';
 import Switch from './components/switch/Switch';
 import Button from './components/button/Button';
+import FormProfile from './components/form/form-profile/FormProfile';
 
 const App = () => {
   const { setTheme } = useContext(ThemeContext);
@@ -57,6 +58,10 @@ const App = () => {
             </Header>
 
             <main className='main'>
+              <div className='form--wrapper'>
+                <FormProfile />
+              </div>
+
               <ModalWrapper />
 
               <Card
