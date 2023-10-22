@@ -1,4 +1,5 @@
 import Input from './Input';
+import '../../styles/_variables.scss';
 
 export default {
     title: 'Input',
