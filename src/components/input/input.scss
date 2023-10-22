@@ -22,13 +22,13 @@
         padding: 12px 24px;
     }
 
-    &::-webkit-search-cancel-button {
-        -webkit-appearance: none;
-        height: 1em;
-        width: 1em;
-        cursor: pointer;
-        background: url('/assets/icons/xmark-solid.svg') no-repeat 50% 50%;
-        background-size: contain;
-        transition: all .2s ease;
-    }
+    // &::-webkit-search-cancel-button {
+    //     -webkit-appearance: none;
+    //     height: 1em;
+    //     width: 1em;
+    //     cursor: pointer;
+    //     background: url('/assets/icons/xmark-solid.svg') no-repeat 50% 50%;
+    //     background-size: contain;
+    //     transition: all .2s ease;
+    // }
 }

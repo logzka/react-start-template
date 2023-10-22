@@ -35,7 +35,7 @@ const schema = yup
         firstName: yup.string().required('First Name is required'),
         lastName: yup.string().required('Last Name is required'),
         gender: yup.string().required('Gender is required'),
-        age: yup.number().positive().integer().min(18, 'The min age is 18').required('Age is required'),
+        age: yup.number().positive('Age must be a positive number above 18').integer().min(18, 'The min age is 18').required('Age is required'),
         phone: yup.string()
             .matches(
                 /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
@@ -44,11 +44,11 @@ const schema = yup
     }).required();
 
 const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
-    const { control, handleSubmit, formState: { errors } } = useForm<IFormValues>({
+    const { control, handleSubmit, formState: { errors }, reset } = useForm<IFormValues>({
         defaultValues: {
             firstName: '',
             lastName: '',
-            gender: null,
+            gender: 'Женский',
             age: 18,
             phone: '',
             email: '',
@@ -57,7 +57,10 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         resolver: yupResolver(schema),
     });
 
-    const onSubmit: SubmitHandler<IFormValues> = (data) => console.log(data);
+    const onSubmit: SubmitHandler<IFormValues> = (data) => {
+        console.log(data);
+        reset();
+    };
 
     const genders = [{ id: 'female', name: 'Женский' }, { id: 'male', name: 'Мужской' }];
 
@@ -70,7 +73,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                 <Controller
                     name="firstName"
                     control={control}
-                    render={({ field }) => <Input placeholder={`${t('form.name')}`} required {...field} />}
+                    render={({ field }) => <Input placeholder={t('form.name')  as string} required {...field} />}
                 />
                 {errors.firstName && <FormErrorStyled className="form--error">{errors.firstName?.message}</FormErrorStyled>}
             </FormItemStyled>
@@ -79,7 +82,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                 <Controller
                     name="lastName"
                     control={control}
-                    render={({ field }) => <Input placeholder={`${t('form.surname')}`} required {...field} />}
+                    render={({ field }) => <Input placeholder={t('form.surname') as string} required {...field} />}
                 />
                 {errors.lastName && <FormErrorStyled className="form--error">{errors.lastName?.message}</FormErrorStyled>}
             </FormItemStyled>
@@ -88,7 +91,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                 <Controller
                     name="gender"
                     control={control}
-                    render={({ field }) => <Select returnObject={false} items={genders} placeholder={`${t('form.gender')}`} required {...field} />}
+                    render={({ field }) => <Select returnObject={false} items={genders} placeholder={t('form.gender')  as string} required {...field} />}
                 />
                 {errors.gender && <FormErrorStyled className="form--error">{errors.gender?.message}</FormErrorStyled>}
             </FormItemStyled>
@@ -97,7 +100,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                 <Controller
                     name="age"
                     control={control}
-                    render={({ field }) => <Input placeholder={`${t('form.age')}`} required {...field} />}
+                    render={({ field }) => <Input placeholder={t('form.age')  as string} required {...field} />}
                 />
                 {errors.age && <FormErrorStyled className="form--error">{errors.age?.message}</FormErrorStyled>}
             </FormItemStyled>
@@ -106,7 +109,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                 <Controller
                     name="phone"
                     control={control}
-                    render={({ field }) => <Input placeholder={`${t('form.phone')}`} required {...field} />}
+                    render={({ field }) => <Input placeholder={t('form.phone')  as string} required {...field} />}
                 />
                 {errors.phone && <FormErrorStyled className="form--error">{errors.phone?.message}</FormErrorStyled>}
             </FormItemStyled>
