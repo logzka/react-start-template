@@ -1,5 +1,6 @@
 import React, { useState, ReactNode } from "react";
 import { withTranslation } from 'react-i18next';
+import { createPortal } from "react-dom";
 
 /** Styles */
 import './modal-wrapper.scss';
@@ -20,10 +21,10 @@ const ModalWrapper = ({ t }: { t: (v: string) => ReactNode | string }) => {
         <div className="modal-wrapper">
             <Input placeholder={t('type-modal-text') as string} onChange={(e) => setTextModal(e.target.value)}/>
             <Button onClick={showModalHandler}>{t('open-modal')}</Button>
-            <Modal
+            {createPortal(<Modal
                 visible={showModal}
                 hide={hideModalHandler}
-            >{textModal || 'Hi! I\'m a Modal! For now to close me, just click on the background. Thanks :)'}</Modal>
+            >{textModal || 'Hi! I\'m a Modal! For now to close me, just click on the background. Thanks :)'}</Modal>, document.body)}
         </div>
     );
 };

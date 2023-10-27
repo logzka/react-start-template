@@ -1,3 +1,5 @@
+// @import './variables';
+
 .app {
     min-height: 100vh;
     display: flex;
@@ -18,4 +20,35 @@
     display: flex;
     flex-direction: column;
     gap: 1em;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    padding: 2em 0;
+
+    &--wrapper {
+        width: 100%;
+        display: grid;
+        justify-content: center;
+        gap: 2em;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 320px));
+    }
+
+    &--load-more {
+        &__spin {
+            font-size: 1.8rem;
+            color: var(--active-color);
+            animation: spin 1s linear infinite;
+        }
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }

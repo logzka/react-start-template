@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { ReactNode, useContext } from 'react';
+import { useTranslation, withTranslation } from 'react-i18next';
 import './styles/app.scss';
 
 /** Contexts */
@@ -10,15 +10,15 @@ import { LangContext, TLang } from './contexts/lang.context';
 import Layout from './components/layout/Layout';
 import Header from './components/header/Header';
 import Logo from './components/logo/Logo';
-import Card from './components/card/Card';
-import Page from './components/page/Page';
-import CartItem from './components/cart-item/CartItem';
+// import Page from './components/page/Page';
+// import CartItem from './components/cart-item/CartItem';
 import ModalWrapper from './components/modal-wrapper/ModalWrapper';
 import Switch from './components/switch/Switch';
 import Button from './components/button/Button';
+import List from './components/List';
 import FormProfile from './components/form/form-profile/FormProfile';
 
-const App = () => {
+const App = ({ t }: { t?: (v: string) => ReactNode | string}) => {
   const { setTheme } = useContext(ThemeContext);
   const { lang, setLang } = useContext(LangContext);
 
@@ -50,8 +50,8 @@ const App = () => {
               <Logo />
               <div className='app--header__actions'>
                 <div style={{marginRight: '2em'}}>
-                  <Button icon active={lang === 'ru'} onClick={() => changeLang('ru')}>Ru</Button>
-                  <Button icon active={lang === 'en'} onClick={() => changeLang('en')}>En</Button>
+                  <Button icon active={lang === 'ru'} onClick={() => changeLang('ru')}>{t('ru')}</Button>
+                  <Button icon active={lang === 'en'} onClick={() => changeLang('en')}>{t('en')}</Button>
                 </div>
                 <Switch onChange={(e) => changeTheme(e)}/>
               </div>
@@ -64,17 +64,9 @@ const App = () => {
 
               <ModalWrapper />
 
-              <Card
-                type='default'
-                categoryName='Торты'
-                name='Малиновый чизкейк'
-                price='1299'
-                priceOld='1300'
-                description='Популярный десерт с сырной основой и тонким коржом из песочного теста с добавлением малинового пюре. Нежное творожное суфле, дополненное тонкой бисквитной прослойкой, прекрасное сочетание для любителей классики. В составе только натуральные молочные продукты. Без добавления растительных жиров.'
-                imageUrl='https://shop-cdn1-2.vigbo.tech/shops/218522/products/21922955/images/3-9b48c64af285a36ca7de4fbc2d490de1.jpg'
-              />
+              <List />
 
-              <Page
+              {/* <Page
                 categoryName='Торты'
                 name='Малиновый чизкейк'
                 price='1299'
@@ -97,11 +89,12 @@ const App = () => {
                 imageUrls={[
                     'https://shop-cdn1-2.vigbo.tech/shops/218522/products/21922955/images/3-9b48c64af285a36ca7de4fbc2d490de1.jpg',
                 ]}
-              />
+              /> */}
             </main>
           </Layout>
     </div>
   );
 };
 
-export default App;
+const AppTranslated = withTranslation('common')(App)
+export default AppTranslated;

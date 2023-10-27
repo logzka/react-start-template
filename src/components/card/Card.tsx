@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { memo, PropsWithChildren, ReactNode } from 'react';
 import { withTranslation } from 'react-i18next';
 /** Styles */
 import './card.scss';
@@ -18,7 +18,7 @@ interface ICardProps {
 
 export type TCardType = 'default' | 'disabled';
 
-const Card = ({
+const Card = memo(({
     type = 'default',
     categoryName,
     name,
@@ -28,6 +28,7 @@ const Card = ({
     imageUrl,
     t,
 }: PropsWithChildren<ICardProps & { t?: (v: string) => ReactNode | string }>) => {
+    console.log('Card render', name);
     return (
         <div className={`card card--${type}`}>
             <div className="card--inner">
@@ -49,7 +50,7 @@ const Card = ({
             </div>
         </div>
     );
-};
+});
 
 const CardTranslated = withTranslation('common')(Card)
 export default CardTranslated;

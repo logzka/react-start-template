@@ -3,6 +3,7 @@ import React, { MouseEventHandler } from 'react';
 import './button.scss';
 
 interface IButtonProps {
+    className?: string,
     type?: TButtonType,
     size?: TButtonSize,
     icon?: boolean,
@@ -14,6 +15,7 @@ export type TButtonSize = 'small' | 'medium' | 'large';
 export type TButtonType = 'primary' | 'secondary' | 'danger' | 'success' | 'disabled' | 'icon';
 
 const Button = ({
+    className = '',
     type = 'primary',
     size = 'medium',
     icon = false,
@@ -23,7 +25,7 @@ const Button = ({
 }: React.PropsWithChildren<IButtonProps>) => {
     return (
         <button
-            className={`button ${icon ? 'button--icon' : ''} ${icon && active ? 'button--icon__active' : ''} button--${type} button--${size}`}
+            className={`button ${className} ${icon ? 'button--icon' : ''} ${icon && active ? 'button--icon__active' : ''} button--${type} button--${size}`}
             onClick={onClick}
         >
             <span className='button--inner'>{children}</span>
