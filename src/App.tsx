@@ -16,6 +16,7 @@ import ModalWrapper from './components/modal-wrapper/ModalWrapper';
 import Switch from './components/switch/Switch';
 import Button from './components/button/Button';
 import List from './components/List';
+import FormProfile from './components/form/form-profile/FormProfile';
 
 const App = ({ t }: { t?: (v: string) => ReactNode | string}) => {
   const { setTheme } = useContext(ThemeContext);
@@ -57,6 +58,10 @@ const App = ({ t }: { t?: (v: string) => ReactNode | string}) => {
             </Header>
 
             <main className='main'>
+              <div className='form--wrapper'>
+                <FormProfile />
+              </div>
+
               <ModalWrapper />
 
               <List />

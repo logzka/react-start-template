@@ -17,7 +17,7 @@ import common_ru from './translations/ru/common.json';
 i18next.init<TOptions>({
   interpolation: { escapeValue: false },  // React already does escaping
   lng: 'ru',                              // language to use
-  // useSuspense: false,
+  react: { useSuspense: false },
   resources: {
     en: {
       common: common_en               // 'common' is our custom namespace
