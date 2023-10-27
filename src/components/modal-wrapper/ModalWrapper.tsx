@@ -19,7 +19,7 @@ const ModalWrapper = ({ t }: { t: (v: string) => ReactNode | string }) => {
 
     return (
         <div className="modal-wrapper">
-            <Input placeholder={t('type-modal-text') as string} onChange={(e) => setTextModal(e.target.value)}/>
+            <Input value={textModal} placeholder={t('type-modal-text') as string} onChange={(e) => setTextModal(e.target.value)}/>
             <Button onClick={showModalHandler}>{t('open-modal')}</Button>
             {createPortal(<Modal
                 visible={showModal}
