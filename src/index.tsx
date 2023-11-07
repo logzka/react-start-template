@@ -10,24 +10,25 @@ import { ThemeContextProvider } from './contexts/theme.context';
 
 /** Translations */
 import { I18nextProvider } from 'react-i18next';
+// TODO: понять, на что ругалось TOptions not found in 'i18next'
+// eslint-disable-next-line import/named
 import i18next, { TOptions } from 'i18next';
 import common_en from './translations/en/common.json';
 import common_ru from './translations/ru/common.json';
 
 i18next.init<TOptions>({
-  interpolation: { escapeValue: false },  // React already does escaping
-  lng: 'ru',                              // language to use
+  interpolation: { escapeValue: false }, // React already does escaping
+  lng: 'ru', // language to use
   react: { useSuspense: false },
   resources: {
     en: {
-      common: common_en               // 'common' is our custom namespace
+      common: common_en, // 'common' is our custom namespace
     },
     ru: {
-      common: common_ru
+      common: common_ru,
     },
   },
 });
-
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

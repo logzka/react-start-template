@@ -7,10 +7,10 @@ export const addPlus = (string: string): string => `+${string}`;
 
 export const removeFirstZeros = (value: string): string => value.replace(/^(-)?[0]+(-?\d+.*)$/, '$1$2');
 
-export const getBeautifulNumber = (value: string, separator: string = ' '): string =>
+export const getBeautifulNumber = (value: string, separator = ' '): string =>
   value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator);
 
-export const round = (value: number, accuracy: number = 2): number => {
+export const round = (value: number, accuracy = 2): number => {
   const d = 10 ** accuracy;
   return Math.round(value * d) / d;
 };
@@ -19,8 +19,8 @@ const transformRegexp =
   /(matrix\(-?\d+(\.\d+)?, -?\d+(\.\d+)?, -?\d+(\.\d+)?, -?\d+(\.\d+)?, )(-?\d+(\.\d+)?), (-?\d+(\.\d+)?)\)/;
 
 export interface ICoords {
-  x: number,
-  y: number,
+  x: number;
+  y: number;
 }
 
 export const getTransformFromCss = (transformCssString: string): ICoords => {
@@ -61,24 +61,28 @@ export const hex2rgb = (color: string): [number, number, number] => {
   return [red, green, blue];
 };
 
-export const getNumberedArray = (arr: unknown[]): {
-  value: unknown,
-  number: number,
+export const getNumberedArray = (
+  arr: unknown[]
+): {
+  value: unknown;
+  number: number;
 }[] => arr.map((value, number: number) => ({ value, number }));
-export const toStringArray = (arr: {
-  value: (string | number),
-  number: (string | number),
-}[]): string[] => arr.map(({ value, number }) => `${value}_${number}`);
+export const toStringArray = (
+  arr: {
+    value: string | number;
+    number: string | number;
+  }[]
+): string[] => arr.map(({ value, number }) => `${value}_${number}`);
 
 export interface ICustomer {
-  id?: number,
-  name: string,
-  age: number,
-  isSubscribed: boolean,
-};
+  id?: number;
+  name: string;
+  age: number;
+  isSubscribed: boolean;
+}
 
-export const transformCustomers = (customers: ICustomer[]): {[key: number]: ICustomer} => {
-  return customers.reduce((acc: {[key: number]: ICustomer}, customer): {[key: number]: ICustomer} => {
+export const transformCustomers = (customers: ICustomer[]): { [key: number]: ICustomer } => {
+  return customers.reduce((acc: { [key: number]: ICustomer }, customer): { [key: number]: ICustomer } => {
     acc[customer.id] = { name: customer.name, age: customer.age, isSubscribed: customer.isSubscribed };
     return acc;
   }, {});
