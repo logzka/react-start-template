@@ -18,7 +18,7 @@ import Button from './components/button/Button';
 import List from './components/List';
 import FormProfile from './components/form/form-profile/FormProfile';
 
-const App = ({ t }: { t?: (v: string) => ReactNode | string}) => {
+const App = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   const { setTheme } = useContext(ThemeContext);
   const { lang, setLang } = useContext(LangContext);
 
@@ -45,28 +45,32 @@ const App = ({ t }: { t?: (v: string) => ReactNode | string}) => {
 
   return (
     <div className="app">
-          <Layout>
-            <Header>
-              <Logo />
-              <div className='app--header__actions'>
-                <div style={{marginRight: '2em'}}>
-                  <Button icon active={lang === 'ru'} onClick={() => changeLang('ru')}>{t('ru')}</Button>
-                  <Button icon active={lang === 'en'} onClick={() => changeLang('en')}>{t('en')}</Button>
-                </div>
-                <Switch onChange={(e) => changeTheme(e)}/>
-              </div>
-            </Header>
+      <Layout>
+        <Header>
+          <Logo />
+          <div className="app--header__actions">
+            <div style={{ marginRight: '2em' }}>
+              <Button icon active={lang === 'ru'} onClick={() => changeLang('ru')}>
+                {t('ru')}
+              </Button>
+              <Button icon active={lang === 'en'} onClick={() => changeLang('en')}>
+                {t('en')}
+              </Button>
+            </div>
+            <Switch onChange={(e) => changeTheme(e)} />
+          </div>
+        </Header>
 
-            <main className='main'>
-              <div className='form--wrapper'>
-                <FormProfile />
-              </div>
+        <main className="main">
+          <div className="form--wrapper">
+            <FormProfile />
+          </div>
 
-              <ModalWrapper />
+          <ModalWrapper />
 
-              <List />
+          <List />
 
-              {/* <Page
+          {/* <Page
                 categoryName='Торты'
                 name='Малиновый чизкейк'
                 price='1299'
@@ -90,11 +94,11 @@ const App = ({ t }: { t?: (v: string) => ReactNode | string}) => {
                     'https://shop-cdn1-2.vigbo.tech/shops/218522/products/21922955/images/3-9b48c64af285a36ca7de4fbc2d490de1.jpg',
                 ]}
               /> */}
-            </main>
-          </Layout>
+        </main>
+      </Layout>
     </div>
   );
 };
 
-const AppTranslated = withTranslation('common')(App)
+const AppTranslated = withTranslation('common')(App);
 export default AppTranslated;

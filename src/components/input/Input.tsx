@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FocusEventHandler, forwardRef } from "react";
+import React, { ChangeEvent, FocusEventHandler, forwardRef } from 'react';
 
 /** Types */
 import { TCustomValue } from '../select/Select';
@@ -19,41 +19,48 @@ import './input.scss';
 export type TInputSize = 'small' | 'medium' | 'large';
 
 interface IInput {
-    type?: string,
-    className?: string,
-    placeholder?: string,
-    value?: TCustomValue,
-    size?: TInputSize,
-    disabled?: boolean,
-    required?: boolean,
-    onChange?: (e: ChangeEvent<HTMLInputElement>) => void,
-    onFocus?: FocusEventHandler<HTMLInputElement>,
-    onBlur?: FocusEventHandler<HTMLInputElement>,
-};
+  type?: string;
+  className?: string;
+  placeholder?: string;
+  value?: TCustomValue;
+  size?: TInputSize;
+  disabled?: boolean;
+  required?: boolean;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
+}
 
-const Input = forwardRef(({
-    type = 'search',
-    className = '',
-    placeholder = 'type model text',
-    value = '',
-    size = 'medium',
-    disabled = false,
-    required = false,
-    onChange,
-    onFocus,
-    onBlur,
-}: IInput, ref) => (
+const Input = forwardRef(
+  (
+    {
+      type = 'search',
+      className = '',
+      placeholder = 'type model text',
+      value = '',
+      size = 'medium',
+      disabled = false,
+      required = false,
+      onChange,
+      onFocus,
+      onBlur,
+    }: IInput,
+    ref
+  ) => (
     <input
-        className={`input ${className} input--${size}`}
-        type={type}
-        value={value}
-        disabled={disabled}
-        required={required}
-        placeholder={placeholder}
-        onChange={(e) => onChange(e)}
-        onFocus={onFocus}
-        onBlur={onBlur}
+      className={`input ${className} input--${size}`}
+      type={type}
+      value={value}
+      disabled={disabled}
+      required={required}
+      placeholder={placeholder}
+      onChange={(e) => onChange(e)}
+      onFocus={onFocus}
+      onBlur={onBlur}
     />
-));
+  )
+);
+
+Input.displayName = 'Input';
 
 export default Input;
