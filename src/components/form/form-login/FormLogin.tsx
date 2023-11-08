@@ -1,14 +1,16 @@
 import React, { ReactNode } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
 import styled from 'styled-components';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Input from '../../input/Input';
+
 type Inputs = {
   email: string;
   password: string;
 };
+
 const FormProfileStyled = styled.form`
   display: grid;
   gap: 2em;
@@ -48,7 +50,7 @@ const FormLogin = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     resolver: yupResolver<Inputs>(schema),
   });
 
-  const customHandleSubmit = (values: Inputs) => {
+  const customHandleSubmit: SubmitHandler<Inputs> = (values) => {
     console.log('values: ', values);
     reset();
   };
@@ -73,7 +75,7 @@ const FormLogin = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         {errors.password && <FormErrorStyled className="form--error">{errors.password?.message}</FormErrorStyled>}
       </FormItemStyled>
 
-      <input className="button button--primary button--medium" type="submit" />
+      <input className="button button--primary button--medium" type="submit" value={t('form.login') as string} />
     </FormProfileStyled>
   );
 };
