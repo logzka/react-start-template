@@ -1,7 +1,7 @@
 import FormLoginTranslated from './FormLogin';
 
 export default {
-  title: 'Login form',
+  title: 'Forms/Login form',
   component: FormLoginTranslated,
 };
 
