@@ -19,7 +19,10 @@
     "validation": {
       "is_required": "is required",
       "is_not_valid": "is not valid",
-      "the_min_age_is_18": "The min age is 18"
+      "the_min_age_is_18": "The min age is 18",
+      "password_missmatch": "Passwords must match",
+      "phone_invalid": "Phone number is not valid",
+      "email_invalid": "Email must be valid"
     }
   }
 }

@@ -29,6 +29,14 @@ const FormErrorStyled = styled.div`
   font-size: x-small;
 `;
 
+yup.setLocale({
+  mixed: {
+    required: 'form.validation.is_required',
+    default: 'form.validation.is_not_valid',
+  },
+  string: { email: 'form.validation.email_invalid' },
+});
+
 const schema: yup.ObjectSchema<Inputs> = yup
   .object({
     email: yup.string().required().email(),
@@ -43,9 +51,9 @@ const FormLogin = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     reset,
     control,
     formState: { errors, isValid, isSubmitted },
-  } = useForm<Partial<Inputs>>({
     // TODO: избавиться от Partial
-    mode: 'onSubmit',
+  } = useForm<Partial<Inputs>>({
+    mode: 'onChange',
     defaultValues: { email: '', password: '' },
     resolver: yupResolver<Inputs>(schema),
   });
@@ -61,18 +69,18 @@ const FormLogin = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         <Controller
           name="email"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.email') as string} required {...field} />}
+          render={({ field }) => <Input placeholder={t('form.email') as string} {...field} />}
         />
-        {errors.email && <FormErrorStyled className="form--error">{errors.email?.message}</FormErrorStyled>}
+        {errors.email && <FormErrorStyled className="form--error">{t(errors.email?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled className="form--item">
         <Controller
           name="password"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.password') as string} required {...field} />}
+          render={({ field }) => <Input placeholder={t('form.password') as string} {...field} />}
         />
-        {errors.password && <FormErrorStyled className="form--error">{errors.password?.message}</FormErrorStyled>}
+        {errors.password && <FormErrorStyled className="form--error">{t(errors.password?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <input className="button button--primary button--medium" type="submit" value={t('form.login') as string} />
