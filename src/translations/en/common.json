@@ -13,7 +13,9 @@
     "phone": "Phone",
     "email": "E-mail",
     "password": "Password",
+    "password2": "Repeat password",
     "login": "Login",
+    "singup": "Sign Up",
     "validation": {
       "is_required": "is required",
       "is_not_valid": "is not valid",

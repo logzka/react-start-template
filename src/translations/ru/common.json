@@ -13,7 +13,9 @@
     "phone": "Телефон",
     "email": "Эл. почта",
     "password": "Пароль",
+    "password2": "Пароль ещё раз",
     "login": "Войти",
+    "singup": "Регистрация",
     "validation": {
       "is_required": "является обязательным",
       "is_not_valid": "не валидно",
