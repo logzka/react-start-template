@@ -1,10 +1,29 @@
 import React, { ChangeEvent, FocusEventHandler, forwardRef } from "react";
+import styled from 'styled-components';
 
 /** Types */
 import { TCustomValue } from '../select/Select';
 
-/** Styles */
-import './input.scss';
+/** Styled components */
+const InputStyled = styled.input<{ $size: string }>`
+    width: 100%;
+    padding: ${({ $size }) => {
+        if ($size === 'small') return '10px 16px';
+        if ($size === 'large') return '12px 24px';
+        return '11px 20px';
+    }};
+    outline: none;
+    background: transparent;
+    border: 1px solid var(--active-color);
+    border-radius: 2px;
+    color: grey;
+    max-width: 280px;
+    font-size: ${({ $size }) => {
+        if ($size === 'small') return '12px';
+        if ($size === 'large') return '16px';
+        return '14px';
+    }};
+`;
 
 // const SearchCancelBtn = css`
 //     -webkit-appearance: none;
@@ -20,6 +39,7 @@ export type TInputSize = 'small' | 'medium' | 'large';
 
 interface IInput {
     type?: string,
+    id?: string,
     className?: string,
     placeholder?: string,
     value?: TCustomValue,
@@ -33,6 +53,7 @@ interface IInput {
 
 const Input = forwardRef(({
     type = 'search',
+    id='',
     className = '',
     placeholder = 'type model text',
     value = '',
@@ -43,14 +64,16 @@ const Input = forwardRef(({
     onFocus,
     onBlur,
 }: IInput, ref) => (
-    <input
+    <InputStyled
+        $size={size}
+        id={id}
         className={`input ${className} input--${size}`}
         type={type}
         value={value}
         disabled={disabled}
         required={required}
         placeholder={placeholder}
-        onChange={(e) => onChange(e)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
         onFocus={onFocus}
         onBlur={onBlur}
     />
