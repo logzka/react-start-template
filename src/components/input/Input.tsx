@@ -77,6 +77,9 @@ const Input = forwardRef(({
         onFocus={onFocus}
         onBlur={onBlur}
     />
-));
+  )
+);
+
+Input.displayName = 'Input';
 
 export default Input;

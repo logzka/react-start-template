@@ -1,3 +1,3 @@
 export interface ISwitchProps {
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-};
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
