@@ -1,21 +1,32 @@
 {
-    "open-modal": "Open modal",
-    "type-modal-text": "Type modal text",
-    "add-to-cart": "Add to cart",
-    "rub": "rub.",
-    "ru": "Ru",
-    "en": "En",
-    "form": {
-        "name": "Name",
-        "surname": "Surname",
-        "age": "Age",
-        "gender": "Gender",
-        "phone": "Phone",
-        "email": "E-mail",
-        "validation": {
-            "is_required": "is required",
-            "is_not_valid": "is not valid",
-            "the_min_age_is_18": "The min age is 18"
-        }
+  "open-modal": "Open modal",
+  "type-modal-text": "Type modal text",
+  "add-to-cart": "Add to cart",
+  "rub": "rub.",
+  "ru": "Ru",
+  "en": "En",
+  "form": {
+    "name": "Name",
+    "surname": "Surname",
+    "age": "Age",
+    "gender": "Gender",
+    "phone": "Phone",
+    "email": "E-mail",
+    "validation": {
+      "is_required": "is required",
+      "is_not_valid": "is not valid",
+      "the_min_age_is_18": "The min age is 18"
     }
+  },
+  "cakeForm": {
+    "category": "Category",
+    "name": "Cake name",
+    "priceOld": "Old price",
+    "price": "New price",
+    "description": "Description",
+    "imageUrl": "Image URL",
+    "validation": {
+      "is_required": "is required"
+    }
+  }
 }

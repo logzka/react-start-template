@@ -17,6 +17,7 @@ import Switch from './components/switch/Switch';
 import Button from './components/button/Button';
 import List from './components/List';
 import FormProfile from './components/form/form-profile/FormProfile';
+import FormCakeTranslated from './components/form/form-cake/FormCake';
 
 const App = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   const { setTheme } = useContext(ThemeContext);
@@ -62,8 +63,11 @@ const App = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         </Header>
 
         <main className="main">
-          <div className="form--wrapper">
+          {/* <div className="form--wrapper">
             <FormProfile />
+          </div> */}
+          <div className="form--wrapper">
+            <FormCakeTranslated />
           </div>
 
           <ModalWrapper />
