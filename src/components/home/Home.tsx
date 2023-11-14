@@ -16,7 +16,6 @@ import Logo from '../logo/Logo';
 import Switch from '../switch/Switch';
 import Button from '../button/Button';
 import Navigation from '../navigation/Navigation';
-// import FormProfile from '../form/form-profile/FormProfile';
 
 /** Icons */
 import {
@@ -67,7 +66,7 @@ const Home = ({ t }: { t?: (v: string) => ReactNode | string }) => {
               <NavLink to={'/cart'}>
                 <ShoppingCartIcon className="app--header__actions-icon" />
               </NavLink>
-              <NavLink to={'/user'}>
+              <NavLink to={'/profile'}>
                 <UserCircleIcon className="app--header__actions-icon" />
               </NavLink>
             </div>
@@ -76,10 +75,6 @@ const Home = ({ t }: { t?: (v: string) => ReactNode | string }) => {
 
         <main className="main">
           <Outlet />
-
-          {/* <div className="form--wrapper">
-            <FormProfile />
-          </div> */}
 
           {/* <ModalWrapper /> */}
 
