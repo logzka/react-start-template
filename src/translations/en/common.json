@@ -17,5 +17,8 @@
             "is_not_valid": "is not valid",
             "the_min_age_is_18": "The min age is 18"
         }
+    },
+    "nav": {
+        "home": "Home"
     }
 }

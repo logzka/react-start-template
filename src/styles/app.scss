@@ -11,6 +11,23 @@
         &__actions {
             display: flex;
             align-items: center;
+            gap: 2em;
+
+            &-icons {
+                display: flex;
+                gap: 1em;
+                align-items: center;
+            }
+
+            &-icon {
+                height: 24px;
+                color: #fff;
+                transition: opacity .2s ease;
+
+                &:hover {
+                    opacity: .6;
+                }
+            }
         }
     }
 }

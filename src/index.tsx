@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import './styles/_reset.scss';
 import './styles/index.scss';
 import './styles/_variables.scss';
 import App from './App';
@@ -7,6 +8,9 @@ import App from './App';
 /** Contexts */
 import { LangContextProvider } from './contexts/lang.context';
 import { ThemeContextProvider } from './contexts/theme.context';
+
+/** Router */
+import { BrowserRouter } from 'react-router-dom';
 
 /** Translations */
 import { I18nextProvider } from 'react-i18next';
@@ -34,11 +38,13 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <I18nextProvider i18n={i18next}>
-      <ThemeContextProvider>
-        <LangContextProvider>
-          <App />
-        </LangContextProvider>
-      </ThemeContextProvider>
+      <BrowserRouter basename={'/'}>
+        <ThemeContextProvider>
+          <LangContextProvider>
+            <App />
+          </LangContextProvider>
+        </ThemeContextProvider>
+      </BrowserRouter>
     </I18nextProvider>
   </React.StrictMode>
 );
