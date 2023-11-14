@@ -7,6 +7,7 @@ const NavigationStyled = styled.nav`
     display: flex;
     gap: 1.6em;
     align-items: center;
+    color: #fff;
 
     .nav--link {
         transition: opacity .2s ease;
@@ -14,7 +15,7 @@ const NavigationStyled = styled.nav`
             opacity: .6;
         }
         &.active {
-            color: #fff;
+            text-decoration: underline;
         }
     }
 `;
