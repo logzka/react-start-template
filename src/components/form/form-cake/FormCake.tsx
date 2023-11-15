@@ -29,16 +29,15 @@ const FormErrorStyled = styled.div`
   font-size: x-small;
 `;
 
-const FormTextareaStyled = styled.textarea``;
-
 const schema = yup
-  .object({
+  .object()
+  .shape({
     categoryName: yup.string().required('Category is required'),
     name: yup.string().required('Cake name is required'),
-    priceOld: yup.string().required('Old price is required'),
-    price: yup.string().required('New price is required'),
+    priceOld: yup.number().positive('Old price must be a positive number').required('Old price is required'),
+    price: yup.number().positive('New price must be a positive number').required('New price is required'),
     description: yup.string().required('Description is required'),
-    imageUrl: yup.string().required('Image URL is required'),
+    imageUrl: yup.string().url('Image URL is not valid').required('Image URL is required'),
   })
   .required();
 
@@ -52,12 +51,12 @@ const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     defaultValues: {
       categoryName: 'Торты',
       name: '',
-      priceOld: '',
-      price: '',
+      priceOld: 0,
+      price: 0,
       description: '',
       imageUrl: '',
     },
-    mode: 'onSubmit',
+    mode: 'onChange',
     resolver: yupResolver(schema),
   });
 
