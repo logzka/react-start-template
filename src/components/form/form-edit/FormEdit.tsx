@@ -1,33 +1,18 @@
 import React, { ReactNode } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 /** Types */
 import { IFormValues } from './types';
 
-import Input from 'src/components/input/Input';
+/** Components */
+import Input from '../../input/Input';
 import Select from '../../select/Select';
 
-const FormCakeStyled = styled.form`
-  display: grid;
-  gap: 2em;
-`;
-
-const FormItemStyled = styled.div`
-  position: relative;
-  width: 280px;
-`;
-
-const FormErrorStyled = styled.div`
-  position: absolute;
-  top: 44px;
-  left: 12px;
-  color: red;
-  font-size: x-small;
-`;
+/** Styled Components */
+import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
 
 const schema = yup
   .object()
@@ -41,7 +26,7 @@ const schema = yup
   })
   .required();
 
-const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
+const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   const {
     control,
     handleSubmit,
@@ -49,7 +34,7 @@ const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     reset,
   } = useForm({
     defaultValues: {
-      categoryName: 'Торты',
+      categoryName: 'cake',
       name: '',
       priceOld: 0,
       price: 0,
@@ -65,14 +50,14 @@ const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     reset();
   };
 
-  const cakes = [
-    { id: 'cake', name: 'Торты' },
-    { id: 'pie', name: 'Пироги' },
-    { id: 'dessert', name: 'Десерты' },
+  const categories = [
+    { value: 'cake', name: 'Торты' },
+    { value: 'pie', name: 'Пироги' },
+    { value: 'dessert', name: 'Десерты' },
   ];
 
   return (
-    <FormCakeStyled onSubmit={handleSubmit(onSubmit)}>
+    <FormStyled onSubmit={handleSubmit(onSubmit)}>
       <FormItemStyled>
         <Controller
           name="categoryName"
@@ -80,8 +65,8 @@ const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
           render={({ field }) => (
             <Select
               returnObject={false}
-              items={cakes}
-              placeholder={t('cakeForm.category') as string}
+              items={categories}
+              placeholder={t('form.category') as string}
               required
               {...field}
             />
@@ -94,7 +79,7 @@ const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         <Controller
           name="name"
           control={control}
-          render={({ field }) => <Input placeholder={t('cakeForm.name') as string} required {...field} />}
+          render={({ field }) => <Input placeholder={t('form.name') as string} required {...field} />}
         />
         {errors.name && <FormErrorStyled>{errors.name?.message}</FormErrorStyled>}
       </FormItemStyled>
@@ -103,42 +88,52 @@ const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         <Controller
           name="priceOld"
           control={control}
-          render={({ field }) => <Input placeholder={t('cakeForm.priceOld') as string} required {...field} />}
+          render={({ field: { value, ...other} }) => <Input
+            placeholder={t('form.priceOld') as string}
+            required
+            {...other}
+            value={value || ''}
+          />}
         />
-        {errors.name && <FormErrorStyled>{errors.priceOld?.message}</FormErrorStyled>}
+        {errors.priceOld && <FormErrorStyled>{errors.priceOld?.message}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
         <Controller
           name="price"
           control={control}
-          render={({ field }) => <Input placeholder={t('cakeForm.price') as string} required {...field} />}
+          render={({ field: { value, ...other} }) => <Input
+            placeholder={t('form.price') as string}
+            required
+            {...other}
+            value={value || ''}
+          />}
         />
-        {errors.name && <FormErrorStyled>{errors.price?.message}</FormErrorStyled>}
+        {errors.price && <FormErrorStyled>{errors.price?.message}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
         <Controller
           name="description"
           control={control}
-          render={({ field }) => <Input placeholder={t('cakeForm.description') as string} required {...field} />}
+          render={({ field }) => <Input placeholder={t('form.description') as string} required {...field} />}
         />
-        {errors.name && <FormErrorStyled>{errors.description?.message}</FormErrorStyled>}
+        {errors.description && <FormErrorStyled>{errors.description?.message}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
         <Controller
           name="imageUrl"
           control={control}
-          render={({ field }) => <Input placeholder={t('cakeForm.imageUrl') as string} required {...field} />}
+          render={({ field }) => <Input placeholder={t('form.imageUrl') as string} required {...field} />}
         />
-        {errors.name && <FormErrorStyled>{errors.imageUrl?.message}</FormErrorStyled>}
+        {errors.imageUrl && <FormErrorStyled>{errors.imageUrl?.message}</FormErrorStyled>}
       </FormItemStyled>
 
-      <input className="button button--primary button--medium" type="submit" />
-    </FormCakeStyled>
+      <input className="button button--primary button--medium" type="submit" value={t('form.save') as string}/>
+    </FormStyled>
   );
 };
 
-const FormCakeTranslated = withTranslation('common')(FormCake);
-export default FormCakeTranslated;
+const FormEditTranslated = withTranslation('common')(FormEdit);
+export default FormEditTranslated;

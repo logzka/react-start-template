@@ -1,34 +1,17 @@
 import React, { ReactNode } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form"
 import { withTranslation } from "react-i18next";
-import styled from 'styled-components';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 
 /** Types */
 import { IFormValues } from './types';
 
+/** Styled Components */
+import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
+
 /** Components */
 import Input from "../../input/Input";
-// import Select from "../../select/Select";
-
-const FormProfileStyled = styled.form`
-    display: grid;
-    gap: 2em;
-`;
-
-const FormItemStyled = styled.div`
-    position: relative;
-    width: 280px;
-`;
-
-const FormErrorStyled = styled.div`
-    position: absolute;
-    top: 44px;
-    left: 12px;
-    color: red;
-    font-size: x-small;
-`;
 
 const schema = yup
     .object({
@@ -65,7 +48,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     const genders = [{ value: 'female', name: 'Женский' }, { value: 'male', name: 'Мужской' }];
 
     return (
-        <FormProfileStyled
+        <FormStyled
             className="form form--profile"
             onSubmit={handleSubmit(onSubmit)}
         >
@@ -86,15 +69,6 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                 />
                 {errors.lastName && <FormErrorStyled className="form--error">{errors.lastName?.message}</FormErrorStyled>}
             </FormItemStyled>
-
-            {/* <FormItemStyled className="form--item">
-                <Controller
-                    name="gender"
-                    control={control}
-                    render={({ field }) => <Select returnObject={false} items={genders} placeholder={t('form.gender')  as string} required {...field} />}
-                />
-                {errors.gender && <FormErrorStyled className="form--error">{errors.gender?.message}</FormErrorStyled>}
-            </FormItemStyled> */}
 
             <FormItemStyled className="form--item">
                 <Controller
@@ -153,8 +127,8 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                 {errors.email && <FormErrorStyled className="form--error">{errors.email?.message}</FormErrorStyled>}
             </FormItemStyled>
 
-            <input className="button button--primary button--medium" type="submit" />
-        </FormProfileStyled>
+            <input className="button button--primary button--medium" type="submit" value={t('form.send') as string} />
+        </FormStyled>
     )
 };
 

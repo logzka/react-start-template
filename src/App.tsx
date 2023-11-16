@@ -17,7 +17,9 @@ import Switch from './components/switch/Switch';
 import Button from './components/button/Button';
 import List from './components/List';
 import FormProfile from './components/form/form-profile/FormProfile';
-import FormCakeTranslated from './components/form/form-cake/FormCake';
+import FormLogin from './components/form/form-login/FormLogin';
+import FormSignup from './components/form/form-signup/FormSignup';
+import FormEdit from './components/form/form-edit/FormEdit';
 
 const App = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   const { setTheme } = useContext(ThemeContext);
@@ -63,11 +65,11 @@ const App = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         </Header>
 
         <main className="main">
-          {/* <div className="form--wrapper">
-            <FormProfile />
-          </div> */}
           <div className="form--wrapper">
-            <FormCakeTranslated />
+            <FormProfile />
+            <FormSignup />
+            <FormLogin />
+            <FormEdit />
           </div>
 
           <ModalWrapper />

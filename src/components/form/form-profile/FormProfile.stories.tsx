@@ -1,7 +1,7 @@
 import FormProfile from './FormProfile';
 
 export default {
-  title: 'Form Profile',
+  title: 'Forms/Profile form',
   component: FormProfile,
 };
 
