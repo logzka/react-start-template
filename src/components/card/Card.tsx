@@ -5,7 +5,7 @@ import './card.scss';
 /** Components */
 import CartButton from '../cart-button/CartButton';
 
-interface ICardProps {
+export interface ICardProps {
   type?: TCardType;
   categoryName: string;
   name: string;
