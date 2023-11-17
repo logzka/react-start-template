@@ -1,0 +1,63 @@
+// @import './variables';
+
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &--header {
+        &__actions {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+.main {
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    padding: 2em 0;
+
+    &--wrapper {
+        width: 100%;
+        display: grid;
+        justify-content: center;
+        gap: 2em;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 320px));
+    }
+
+    &--load-more {
+        &__spin {
+            font-size: 1.8rem;
+            color: var(--active-color);
+            animation: spin 1s linear infinite;
+        }
+    }
+}
+
+.form {
+    &--wrapper {
+        display: grid;
+        column-gap: 2em;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        align-items: flex-start;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
