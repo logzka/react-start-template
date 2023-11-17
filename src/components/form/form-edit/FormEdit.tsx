@@ -14,15 +14,29 @@ import Select from '../../select/Select';
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
 
+yup.setLocale({
+  mixed: {
+    required: 'form.validation.is_required',
+    default: 'form.validation.is_not_valid',
+  },
+  string: {
+    email: 'form.validation.email_invalid',
+    url: 'form.validation.url_invalid',
+  },
+  number: {
+    positive: 'form.validation.positive_invalid',
+  },
+});
+
 const schema = yup
   .object()
   .shape({
-    categoryName: yup.string().required('Category is required'),
-    name: yup.string().required('Cake name is required'),
-    priceOld: yup.number().positive('Old price must be a positive number').required('Old price is required'),
-    price: yup.number().positive('New price must be a positive number').required('New price is required'),
-    description: yup.string().required('Description is required'),
-    imageUrl: yup.string().url('Image URL is not valid').required('Image URL is required'),
+    categoryName: yup.string().required(),
+    name: yup.string().required(),
+    priceOld: yup.number().positive().required(),
+    price: yup.number().positive().required(),
+    description: yup.string().required(),
+    imageUrl: yup.string().url().required(),
   })
   .required();
 
@@ -72,7 +86,7 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
             />
           )}
         />
-        {errors.categoryName && <FormErrorStyled>{errors.categoryName?.message}</FormErrorStyled>}
+        {errors.categoryName && <FormErrorStyled>{t(errors.categoryName?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
@@ -81,7 +95,7 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
           control={control}
           render={({ field }) => <Input placeholder={t('form.name') as string} required {...field} />}
         />
-        {errors.name && <FormErrorStyled>{errors.name?.message}</FormErrorStyled>}
+        {errors.name && <FormErrorStyled>{t(errors.name?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
@@ -95,7 +109,7 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
             value={value || ''}
           />}
         />
-        {errors.priceOld && <FormErrorStyled>{errors.priceOld?.message}</FormErrorStyled>}
+        {errors.priceOld && <FormErrorStyled>{t(errors.priceOld?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
@@ -109,7 +123,7 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
             value={value || ''}
           />}
         />
-        {errors.price && <FormErrorStyled>{errors.price?.message}</FormErrorStyled>}
+        {errors.price && <FormErrorStyled>{t(errors.price?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
@@ -118,7 +132,7 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
           control={control}
           render={({ field }) => <Input placeholder={t('form.description') as string} required {...field} />}
         />
-        {errors.description && <FormErrorStyled>{errors.description?.message}</FormErrorStyled>}
+        {errors.description && <FormErrorStyled>{t(errors.description?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
@@ -127,7 +141,7 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
           control={control}
           render={({ field }) => <Input placeholder={t('form.imageUrl') as string} required {...field} />}
         />
-        {errors.imageUrl && <FormErrorStyled>{errors.imageUrl?.message}</FormErrorStyled>}
+        {errors.imageUrl && <FormErrorStyled>{t(errors.imageUrl?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <input className="button button--primary button--medium" type="submit" value={t('form.save') as string}/>

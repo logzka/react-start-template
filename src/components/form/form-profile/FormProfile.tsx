@@ -13,17 +13,32 @@ import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-comp
 /** Components */
 import Input from "../../input/Input";
 
+yup.setLocale({
+    mixed: {
+      required: 'form.validation.is_required',
+      default: 'form.validation.is_not_valid',
+    },
+    string: {
+        email: 'form.validation.email_invalid',
+        matches: 'form.validation.phone_invalid',
+    },
+    number: {
+        positive: 'form.validation.positive_invalid',
+        integer: 'form.validation.integer_invalid',
+        min: 'form.validation.min_age_invalid',
+    },
+});
+
 const schema = yup
     .object({
-        firstName: yup.string().required('First Name is required'),
-        lastName: yup.string().required('Last Name is required'),
-        gender: yup.string().required('Gender is required'),
-        age: yup.number().positive('Age must be a positive number above 18').integer().min(18, 'The min age is 18').required('Age is required'),
-        phone: yup.string()
+        firstName: yup.string().required(),
+        lastName: yup.string().required(),
+        gender: yup.string().required(),
+        age: yup.number().required().positive().integer().min(18),
+        phone: yup.string().required()
             .matches(
-                /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-                'Phone is not valid').required('Phone is required'),
-        email: yup.string().email('Email is not valid').required('Email is required'),
+                /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/),
+        email: yup.string().required().email(),
     }).required();
 
 const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
@@ -32,7 +47,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
             firstName: '',
             lastName: '',
             gender: 'female',
-            age: 18,
+            age: 0,
             phone: '',
             email: '',
         },
@@ -58,7 +73,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                     control={control}
                     render={({ field }) => <Input placeholder={t('form.name')  as string} required {...field} />}
                 />
-                {errors.firstName && <FormErrorStyled className="form--error">{errors.firstName?.message}</FormErrorStyled>}
+                {errors.firstName && <FormErrorStyled className="form--error">{t(errors.firstName?.message)}</FormErrorStyled>}
             </FormItemStyled>
 
             <FormItemStyled className="form--item">
@@ -67,7 +82,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                     control={control}
                     render={({ field }) => <Input placeholder={t('form.surname') as string} required {...field} />}
                 />
-                {errors.lastName && <FormErrorStyled className="form--error">{errors.lastName?.message}</FormErrorStyled>}
+                {errors.lastName && <FormErrorStyled className="form--error">{t(errors.lastName?.message)}</FormErrorStyled>}
             </FormItemStyled>
 
             <FormItemStyled className="form--item">
@@ -104,9 +119,14 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                 <Controller
                     name="age"
                     control={control}
-                    render={({ field }) => <Input placeholder={t('form.age')  as string} required {...field} />}
+                    render={({ field: { value, ...other } }) => <Input
+                        placeholder={t('form.age')  as string}
+                        required
+                        value={value || ''}
+                        {...other}
+                    />}
                 />
-                {errors.age && <FormErrorStyled className="form--error">{errors.age?.message}</FormErrorStyled>}
+                {errors.age && <FormErrorStyled className="form--error">{t(errors.age?.message)}</FormErrorStyled>}
             </FormItemStyled>
 
             <FormItemStyled className="form--item">
@@ -115,7 +135,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                     control={control}
                     render={({ field }) => <Input placeholder={t('form.phone')  as string} required {...field} />}
                 />
-                {errors.phone && <FormErrorStyled className="form--error">{errors.phone?.message}</FormErrorStyled>}
+                {errors.phone && <FormErrorStyled className="form--error">{t(errors.phone?.message)}</FormErrorStyled>}
             </FormItemStyled>
 
             <FormItemStyled className="form--item">
@@ -124,7 +144,7 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                     control={control}
                     render={({ field }) => <Input placeholder="your@mail.com" required {...field} />}
                 />
-                {errors.email && <FormErrorStyled className="form--error">{errors.email?.message}</FormErrorStyled>}
+                {errors.email && <FormErrorStyled className="form--error">{t(errors.email?.message)}</FormErrorStyled>}
             </FormItemStyled>
 
             <input className="button button--primary button--medium" type="submit" value={t('form.send') as string} />

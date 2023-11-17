@@ -30,7 +30,11 @@
       "the_min_age_is_18": "Минимальный возраст - 18 лет",
       "password_missmatch": "Пароли должны совпадать",
       "phone_invalid": "Номер телефона неверный",
-      "email_invalid": "Неверный адрес почты"
+      "email_invalid": "Неверный адрес почты",
+      "positive_invalid": "Число должно быть больше 0",
+      "integer_invalid": "Число должно быть целым",
+      "min_age_invalid": "Минимальный возраст - 18 лет",
+      "url_invalid": "Неверный URL"
     }
   }
 }

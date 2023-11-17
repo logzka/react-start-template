@@ -33,9 +33,8 @@ const FormLogin = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     handleSubmit,
     reset,
     control,
-    formState: { errors, isValid, isSubmitted },
-    // TODO: избавиться от Partial
-  } = useForm<Partial<Inputs>>({
+    formState: { errors },
+  } = useForm<Inputs>({
     mode: 'onChange',
     defaultValues: { email: '', password: '' },
     resolver: yupResolver<Inputs>(schema),

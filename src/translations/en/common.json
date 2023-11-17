@@ -30,7 +30,11 @@
       "the_min_age_is_18": "The min age is 18",
       "password_missmatch": "Passwords must match",
       "phone_invalid": "Phone number is not valid",
-      "email_invalid": "Email must be valid"
+      "email_invalid": "Email must be valid",
+      "positive_invalid": "Number should be a positive",
+      "integer_invalid": "Number should be an integer",
+      "min_age_invalid": "Min. age should be 18",
+      "url_invalid": "URL must be valid"
     }
   }
 }
