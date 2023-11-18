@@ -39,7 +39,7 @@ const CustomSelectOptionsStyled = styled.div`
 const CustomSelectOptionsListStyled = styled.ul`
   background-color: var(--main-background-color);
   box-shadow: 12px 14px 20px 0px rgba(0, 0, 0, 0.2);
-  padding: 0.6em 0;
+  padding: 0;
   border-radius: 2px;
   margin-top: 0.6em;
   list-style-type: none;
@@ -47,10 +47,20 @@ const CustomSelectOptionsListStyled = styled.ul`
 `;
 
 const CustomSelectOptionsListItemStyled = styled.li`
-  padding: 0.4em 1em;
+  padding: 0.8em 1em;
   cursor: pointer;
   color: var(--active-color);
   transition: background-color 0.2s ease;
+
+  &:first-child {
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+  }
+
+  &:last-child {
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
 
   &:hover:not(.empty) {
     background-color: rgba(89, 46, 111, 0.2);
@@ -92,7 +102,7 @@ const CustomSelect = forwardRef(
       placeholder = 'select',
       className = '',
       items = [],
-      // valueKey = 'id',
+      // valueKey = 'value',
       // name = 'name',
       returnObject = true,
       required = false,
@@ -107,8 +117,14 @@ const CustomSelect = forwardRef(
     const [showOptions, setShowOptions] = useState<boolean>(false);
 
     useEffect(() => {
-      if (value) setSelectValue(value);
-    }, [value]);
+      if (value) {
+        const currentItem = items.find((item) => item.value === value);
+        if (currentItem) {
+          setSelectValue(currentItem.name);
+          setSelectOption(currentItem);
+        }
+      }
+    }, []);
 
     /**
      * On Custom Input Change Handler
@@ -148,17 +164,17 @@ const CustomSelect = forwardRef(
 
     /**
      * Click List Item
-     * @param {number} optionId OptionId
+     * @param {string} optionValue Option Value
      */
-    const clickOption = (optionId: string | number) => {
-      const option: TCustomItem | undefined = items.find((item) => item.id === optionId);
+    const clickOption = (optionValue: string) => {
+      const option: TCustomItem | undefined = items.find((item) => item.value === optionValue);
 
       if (!option) return;
 
       setSelectOption(option);
       setSelectValue(option.name);
 
-      onChange(returnObject ? option : option.name);
+      onChange(returnObject ? option : optionValue);
     };
 
     return (
@@ -182,9 +198,9 @@ const CustomSelect = forwardRef(
               {selectItems.length ? (
                 selectItems.map((item) => (
                   <CustomSelectOptionsListItemStyled
-                    className={`select__options-list_item ${selectOption?.id === item.id ? 'active' : ''}`}
-                    key={item.id}
-                    onClick={() => clickOption(item.id)}
+                    className={`select__options-list_item ${selectOption?.value === item.value ? 'active' : ''}`}
+                    key={item.value}
+                    onClick={() => clickOption(item.value)}
                   >
                     {item.name}
                   </CustomSelectOptionsListItemStyled>

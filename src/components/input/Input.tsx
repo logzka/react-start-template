@@ -5,8 +5,11 @@ import styled from 'styled-components';
 import { TCustomValue } from '../select/Select';
 
 /** Styled components */
-const InputStyled = styled.input<{ $size: string }>`
-    width: 100%;
+const InputStyled = styled.input<{ $type: string, $size: string }>`
+    width: ${({ $type }) => {
+        if ($type === 'radio') return 'auto';
+        return '100%';
+    }};
     padding: ${({ $size }) => {
         if ($size === 'small') return '10px 16px';
         if ($size === 'large') return '12px 24px';
@@ -40,12 +43,14 @@ export type TInputSize = 'small' | 'medium' | 'large';
 interface IInput {
     type?: string,
     id?: string,
+    name?: string,
     className?: string,
     placeholder?: string,
     value?: TCustomValue,
     size?: TInputSize,
     disabled?: boolean,
     required?: boolean,
+    checked?: boolean,
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void,
     onFocus?: FocusEventHandler<HTMLInputElement>,
     onBlur?: FocusEventHandler<HTMLInputElement>,
@@ -53,25 +58,30 @@ interface IInput {
 
 const Input = forwardRef(({
     type = 'search',
-    id='',
+    id = '',
+    name = '',
     className = '',
     placeholder = 'type model text',
     value = '',
     size = 'medium',
     disabled = false,
     required = false,
+    checked = false,
     onChange,
     onFocus,
     onBlur,
 }: IInput, ref) => (
     <InputStyled
+        $type={type}
         $size={size}
         id={id}
         className={`input ${className} input--${size}`}
+        name={name}
         type={type}
         value={value}
         disabled={disabled}
         required={required}
+        checked={checked}
         placeholder={placeholder}
         onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
         onFocus={onFocus}

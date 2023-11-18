@@ -67,7 +67,7 @@ const Home = ({ t }: { t?: (v: string) => ReactNode | string }) => {
               <NavLink to={'/cart'}>
                 <ShoppingCartIcon className="app--header__actions-icon" />
               </NavLink>
-              <NavLink to={'/user'}>
+              <NavLink to={'/profile'}>
                 <UserCircleIcon className="app--header__actions-icon" />
               </NavLink>
             </div>

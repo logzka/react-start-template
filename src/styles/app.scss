@@ -64,6 +64,15 @@
     }
 }
 
+.form {
+    &--wrapper {
+        display: grid;
+        column-gap: 2em;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        align-items: flex-start;
+    }
+}
+
 @keyframes spin {
     to {
         transform: rotate(360deg);
