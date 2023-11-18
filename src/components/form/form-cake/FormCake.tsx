@@ -51,8 +51,6 @@ const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     defaultValues: {
       categoryName: 'Торты',
       name: '',
-      priceOld: 0,
-      price: 0,
       description: '',
       imageUrl: '',
     },
@@ -103,18 +101,22 @@ const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         <Controller
           name="priceOld"
           control={control}
-          render={({ field }) => <Input placeholder={t('cakeForm.priceOld') as string} required {...field} />}
+          render={({ field: { value, ...other } }) => (
+            <Input placeholder={t('cakeForm.priceOld') as string} required {...other} value={value || ''} />
+          )}
         />
-        {errors.name && <FormErrorStyled>{errors.priceOld?.message}</FormErrorStyled>}
+        {errors.priceOld && <FormErrorStyled>{errors.priceOld?.message}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
         <Controller
           name="price"
           control={control}
-          render={({ field }) => <Input placeholder={t('cakeForm.price') as string} required {...field} />}
+          render={({ field: { value, ...other } }) => (
+            <Input placeholder={t('cakeForm.price') as string} required {...other} value={value || ''} />
+          )}
         />
-        {errors.name && <FormErrorStyled>{errors.price?.message}</FormErrorStyled>}
+        {errors.price && <FormErrorStyled>{errors.price?.message}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
@@ -123,7 +125,7 @@ const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
           control={control}
           render={({ field }) => <Input placeholder={t('cakeForm.description') as string} required {...field} />}
         />
-        {errors.name && <FormErrorStyled>{errors.description?.message}</FormErrorStyled>}
+        {errors.description && <FormErrorStyled>{errors.description?.message}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
@@ -132,7 +134,7 @@ const FormCake = ({ t }: { t?: (v: string) => ReactNode | string }) => {
           control={control}
           render={({ field }) => <Input placeholder={t('cakeForm.imageUrl') as string} required {...field} />}
         />
-        {errors.name && <FormErrorStyled>{errors.imageUrl?.message}</FormErrorStyled>}
+        {errors.imageUrl && <FormErrorStyled>{errors.imageUrl?.message}</FormErrorStyled>}
       </FormItemStyled>
 
       <input className="button button--primary button--medium" type="submit" />
