@@ -102,12 +102,9 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         <Controller
           name="priceOld"
           control={control}
-          render={({ field: { value, ...other} }) => <Input
-            placeholder={t('form.priceOld') as string}
-            required
-            {...other}
-            value={value || ''}
-          />}
+          render={({ field: { value, ...other } }) => (
+            <Input placeholder={t('form.priceOld') as string} required {...other} value={value || ''} />
+          )}
         />
         {errors.priceOld && <FormErrorStyled>{t(errors.priceOld?.message)}</FormErrorStyled>}
       </FormItemStyled>
@@ -116,12 +113,9 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         <Controller
           name="price"
           control={control}
-          render={({ field: { value, ...other} }) => <Input
-            placeholder={t('form.price') as string}
-            required
-            {...other}
-            value={value || ''}
-          />}
+          render={({ field: { value, ...other } }) => (
+            <Input placeholder={t('form.price') as string} required {...other} value={value || ''} />
+          )}
         />
         {errors.price && <FormErrorStyled>{t(errors.price?.message)}</FormErrorStyled>}
       </FormItemStyled>
@@ -144,7 +138,7 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         {errors.imageUrl && <FormErrorStyled>{t(errors.imageUrl?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
-      <input className="button button--primary button--medium" type="submit" value={t('form.save') as string}/>
+      <input className="button button--primary button--medium" type="submit" value={t('form.save') as string} />
     </FormStyled>
   );
 };
