@@ -1,6 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export const cakes = [
+export type TCake = {
+  categoryName: string;
+  name: string;
+  price: string;
+  priceOld: string;
+  description: string;
+  imageUrl: string;
+  id: string;
+};
+
+export const cakes: TCake[] = [
   {
     categoryName: 'Торты',
     name: 'Малиновый чизкейк',
