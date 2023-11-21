@@ -1,54 +1,75 @@
 import React, { FC, ReactNode } from 'react';
 import { withTranslation } from 'react-i18next';
 import { styled } from 'styled-components';
-import Button from '../button/Button';
+
+/** Types */
+import { TCake } from '../../api/cakes';
 
 /** Components */
+import Button from '../button/Button';
 import CartItem from '../cart-item/CartItem';
 
 interface tr {
-  t?: (v: string) => ReactNode | string;
-  cakes: [];
+  t?: (v: string, params?: any) => ReactNode | string;
+  cartCakes: TCake[];
 }
 
-const ItemList = styled.div`
+const Cart = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
-  gap: 2em;
+  gap: 1em;
   padding: 2em 0;
 `;
 
-const ItemWrapper = styled.div`
+const ItemListWrapper = styled.div`
   width: 100%;
-  /* display: grid; */
   justify-content: center;
   gap: 2em;
-  /* grid-template-columns: repeat(auto-fill, minmax(320px, 320px)); */
+  :nth-child(n) {
+    margin-bottom: 2px;
+  }
 `;
 
-const CartPage: FC<tr> = ({ cakes, t }) => {
+const CartFooter = styled.div`
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2em;
+  padding: 0;
+  margin-top: 0;
+`;
+
+const CartText = styled.div``;
+
+const CartPage: FC<tr> = ({ cartCakes, t }) => {
+  const orderSumm = cartCakes.reduce((summ, cake) => {
+    return summ + parseFloat(cake.price);
+  }, 0);
+
   return (
-    <>
-      <ItemList>
-        <ItemWrapper>
-          {cakes.map(({ categoryName, name, price, priceOld, description, imageUrl, id }) => (
-            <CartItem
-              key={id}
-              type="default"
-              categoryName={categoryName}
-              name={name}
-              price={price}
-              priceOld={priceOld}
-              description={description}
-              imageUrls={[imageUrl]}
-            />
-          ))}
-        </ItemWrapper>
-      </ItemList>
-      <Button>{t('Оформить заказ')}</Button>
-    </>
+    <Cart>
+      <ItemListWrapper>
+        {cartCakes.map(({ categoryName, name, price, priceOld, description, imageUrl, id }) => (
+          <CartItem
+            key={id}
+            type="default"
+            categoryName={categoryName}
+            name={name}
+            price={price}
+            priceOld={priceOld}
+            description={description}
+            imageUrls={[imageUrl]}
+          />
+        ))}
+      </ItemListWrapper>
+      <CartFooter>
+        <CartText>{t('cart.total', { summ: orderSumm })}</CartText>
+        <Button>{t('cart.create_order')}</Button>
+      </CartFooter>
+    </Cart>
   );
 };
 

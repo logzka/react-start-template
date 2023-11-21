@@ -8,6 +8,6 @@ export default {
 
 export const DefaultCartPage = {
   args: {
-    cakes: cakesData,
+    cartCakes: cakesData,
   },
 };

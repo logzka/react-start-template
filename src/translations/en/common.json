@@ -39,5 +39,9 @@
   },
   "nav": {
     "home": "Home"
+  },
+  "cart": {
+    "total": "Cart total: ${{summ, number(minimumFractionDigits: 2)}}",
+    "create_order": "Create order"
   }
 }
