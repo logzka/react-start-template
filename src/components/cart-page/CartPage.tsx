@@ -1,38 +1,22 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import { withTranslation } from 'react-i18next';
 import { styled } from 'styled-components';
 
 /** Types */
-import { TCake } from '../../api/cakes';
+import { ICartPageProps } from './types';
 
 /** Components */
 import Button from '../button/Button';
 import CartItem from '../cart-item/CartItem';
 
-interface tr {
-  t?: (v: string, params?: any) => ReactNode | string;
-  cartCakes: TCake[];
-}
-
-const Cart = styled.div`
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-  justify-content: center;
-  gap: 1em;
-  padding: 2em 0;
-`;
-
-const ItemListWrapper = styled.div`
+const ItemListWrapperStyled = styled.div`
+  display: grid;
   width: 100%;
-  justify-content: center;
-  gap: 2em;
-  :nth-child(n) {
-    margin-bottom: 2px;
-  }
+  gap: 0.5em;
+  margin-bottom: 0.5em;
 `;
 
-const CartFooter = styled.div`
+const CartFooterStyled = styled.div`
   width: fit-content;
   display: flex;
   flex-direction: row;
@@ -42,16 +26,16 @@ const CartFooter = styled.div`
   margin-top: 0;
 `;
 
-const CartText = styled.div``;
+const CartTextStyled = styled.div``;
 
-const CartPage: FC<tr> = ({ cartCakes, t }) => {
+const CartPage: FC<ICartPageProps> = ({ cartCakes, t }) => {
   const orderSumm = cartCakes.reduce((summ, cake) => {
     return summ + parseFloat(cake.price);
   }, 0);
 
   return (
-    <Cart>
-      <ItemListWrapper>
+    <>
+      <ItemListWrapperStyled>
         {cartCakes.map(({ categoryName, name, price, priceOld, description, imageUrl, id }) => (
           <CartItem
             key={id}
@@ -64,12 +48,12 @@ const CartPage: FC<tr> = ({ cartCakes, t }) => {
             imageUrls={[imageUrl]}
           />
         ))}
-      </ItemListWrapper>
-      <CartFooter>
-        <CartText>{t('cart.total', { summ: orderSumm })}</CartText>
+      </ItemListWrapperStyled>
+      <CartFooterStyled>
+        <CartTextStyled>{t('cart.total', { summ: orderSumm })}</CartTextStyled>
         <Button>{t('cart.create_order')}</Button>
-      </CartFooter>
-    </Cart>
+      </CartFooterStyled>
+    </>
   );
 };
 
