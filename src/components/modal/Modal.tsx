@@ -14,10 +14,10 @@ const Modal = ({ visible = false, hide, children }: React.PropsWithChildren<IMod
     const modalEl: HTMLElement | null = document.querySelector('.modal');
 
     if (modalEl) {
-      modalEl.addEventListener('click', (e: PointerEvent & { target: { className: string } }) => {
-        const { target } = e;
-        if (target.className === 'modal--body') return false;
-        hide(e);
+      modalEl.addEventListener('click', (e: PointerEvent & { target: { className: string; tagName: string } }) => {
+        // const { target } = e;
+        // if (target.className === 'modal--body' || target.tagName === 'INPUT') return false;
+        // hide(e);
       });
     }
   }, [visible]);

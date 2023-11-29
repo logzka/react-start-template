@@ -9,8 +9,8 @@ export interface ICardProps {
   type?: TCardType;
   categoryName: string;
   name: string;
-  price: string;
-  priceOld: string;
+  price: number;
+  priceOld: number;
   description: string;
   imageUrl: string;
   // t?: (v: string) => ReactNode | string,

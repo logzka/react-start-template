@@ -8,13 +8,16 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/home/HomePage';
 import ListPage from './pages/list/ListPage';
 
-const App = () => (<Routes>
-  <Route path='/' element={<HomePage />}>
-    <Route index element={<ListPage />} />
-    {/* <Route path='some' element={<SomeElement />} />
+const App = () => (
+  <Routes>
+    <Route path="/" element={<HomePage />}>
+      <Route index element={<ListPage />} />
+
+      {/* <Route path='some' element={<SomeElement />} />
 
     <Route path='*' element={<NoMatch />} /> */}
-  </Route>
-</Routes>);
+    </Route>
+  </Routes>
+);
 
 export default App;

@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, PropsWithChildren } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { v4 as uuidv4 } from 'uuid';
 
 /** Types */
 import { IFormValues } from './types';
@@ -40,7 +41,12 @@ const schema = yup
   })
   .required();
 
-const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
+type Props = {
+  t?: (v: string) => ReactNode | string;
+  addNewCakeFunc: (data: IFormValues) => void;
+};
+
+const FormEdit = ({ t, addNewCakeFunc }: PropsWithChildren<Props>) => {
   const {
     control,
     handleSubmit,
@@ -60,7 +66,9 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   });
 
   const onSubmit: SubmitHandler<IFormValues> = (data) => {
-    console.log(data);
+    const dataWithId = { ...data, id: uuidv4() };
+    addNewCakeFunc(dataWithId);
+    console.log(dataWithId);
     reset();
   };
 
@@ -102,12 +110,9 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         <Controller
           name="priceOld"
           control={control}
-          render={({ field: { value, ...other} }) => <Input
-            placeholder={t('form.priceOld') as string}
-            required
-            {...other}
-            value={value || ''}
-          />}
+          render={({ field: { value, ...other } }) => (
+            <Input placeholder={t('form.priceOld') as string} required {...other} value={value || ''} />
+          )}
         />
         {errors.priceOld && <FormErrorStyled>{t(errors.priceOld?.message)}</FormErrorStyled>}
       </FormItemStyled>
@@ -116,12 +121,9 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         <Controller
           name="price"
           control={control}
-          render={({ field: { value, ...other} }) => <Input
-            placeholder={t('form.price') as string}
-            required
-            {...other}
-            value={value || ''}
-          />}
+          render={({ field: { value, ...other } }) => (
+            <Input placeholder={t('form.price') as string} required {...other} value={value || ''} />
+          )}
         />
         {errors.price && <FormErrorStyled>{t(errors.price?.message)}</FormErrorStyled>}
       </FormItemStyled>
@@ -144,7 +146,7 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         {errors.imageUrl && <FormErrorStyled>{t(errors.imageUrl?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
-      <input className="button button--primary button--medium" type="submit" value={t('form.save') as string}/>
+      <input className="button button--primary button--medium" type="submit" value={t('form.save') as string} />
     </FormStyled>
   );
 };
