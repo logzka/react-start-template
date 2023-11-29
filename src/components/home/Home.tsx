@@ -16,7 +16,6 @@ import Logo from '../logo/Logo';
 import Switch from '../switch/Switch';
 import Button from '../button/Button';
 import Navigation from '../navigation/Navigation';
-// import FormProfile from '../form/form-profile/FormProfile';
 
 /** Icons */
 import { UserCircleIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
@@ -73,10 +72,6 @@ const Home = ({ t }: { t?: (v: string) => ReactNode | string }) => {
 
       <main className="main">
         <Outlet />
-
-        {/* <div className="form--wrapper">
-            <FormProfile />
-          </div> */}
 
         {/* <ModalWrapper /> */}
 
