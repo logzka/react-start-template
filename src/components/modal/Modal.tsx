@@ -15,9 +15,9 @@ const Modal = ({ visible = false, hide, children }: React.PropsWithChildren<IMod
 
     if (modalEl) {
       modalEl.addEventListener('click', (e: PointerEvent & { target: { className: string; tagName: string } }) => {
-        // const { target } = e;
-        // if (target.className === 'modal--body' || target.tagName === 'INPUT') return false;
-        // hide(e);
+        const { target } = e;
+        if (target.className === 'modal--body' || target.tagName === 'INPUT') return false;
+        hide(e);
       });
     }
   }, [visible]);

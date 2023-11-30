@@ -41,12 +41,7 @@ const schema = yup
   })
   .required();
 
-type Props = {
-  t?: (v: string) => ReactNode | string;
-  addNewCakeFunc: (data: IFormValues) => void;
-};
-
-const FormEdit = ({ t, addNewCakeFunc }: PropsWithChildren<Props>) => {
+const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   const {
     control,
     handleSubmit,
@@ -66,9 +61,7 @@ const FormEdit = ({ t, addNewCakeFunc }: PropsWithChildren<Props>) => {
   });
 
   const onSubmit: SubmitHandler<IFormValues> = (data) => {
-    const dataWithId = { ...data, id: uuidv4() };
-    addNewCakeFunc(dataWithId);
-    console.log(dataWithId);
+    console.log(data);
     reset();
   };
 

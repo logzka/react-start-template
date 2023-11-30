@@ -1,16 +1,18 @@
-import React, { memo, PropsWithChildren, ReactNode } from 'react';
+import React, { memo, PropsWithChildren, ReactNode, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 /** Styles */
 import './card.scss';
 /** Components */
 import CartButton from '../cart-button/CartButton';
+import ModalWrapperTranslated from '../modal-wrapper/ModalWrapper';
+import FormEditTranslated from '../form/form-edit/FormEdit';
 
 export interface ICardProps {
   type?: TCardType;
   categoryName: string;
   name: string;
-  price: number;
-  priceOld: number;
+  price: string;
+  priceOld: string;
   description: string;
   imageUrl: string;
   // t?: (v: string) => ReactNode | string,
@@ -55,6 +57,10 @@ const Card = memo(
             </div>
           </div>
         </div>
+
+        <ModalWrapperTranslated buttonText={t('edit-cake-modal')}>
+          <FormEditTranslated />
+        </ModalWrapperTranslated>
       </div>
     );
   }
