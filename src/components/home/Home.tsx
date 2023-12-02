@@ -19,10 +19,7 @@ import Navigation from '../navigation/Navigation';
 // import FormProfile from '../form/form-profile/FormProfile';
 
 /** Icons */
-import {
-  UserCircleIcon,
-  ShoppingCartIcon,
-} from '@heroicons/react/24/solid';
+import { UserCircleIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 
 const Home = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   const { setTheme } = useContext(ThemeContext);
@@ -48,42 +45,42 @@ const Home = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     i18n.changeLanguage(lng);
     setLang(lng);
   };
-    return (
-      <Layout>
-        <Header>
-          <Logo />
-          <Navigation />
-          <div className="app--header__actions">
-            <div>
-              <Button icon active={lang === 'ru'} onClick={() => changeLang('ru')}>
-                {t('ru')}
-              </Button>
-              <Button icon active={lang === 'en'} onClick={() => changeLang('en')}>
-                {t('en')}
-              </Button>
-            </div>
-            <Switch onChange={(e) => changeTheme(e)} />
-            <div className="app--header__actions-icons">
-              <NavLink to={'/cart'}>
-                <ShoppingCartIcon className="app--header__actions-icon" />
-              </NavLink>
-              <NavLink to={'/profile'}>
-                <UserCircleIcon className="app--header__actions-icon" />
-              </NavLink>
-            </div>
+  return (
+    <Layout>
+      <Header>
+        <Logo />
+        <Navigation />
+        <div className="app--header__actions">
+          <div>
+            <Button icon active={lang === 'ru'} onClick={() => changeLang('ru')}>
+              {t('ru')}
+            </Button>
+            <Button icon active={lang === 'en'} onClick={() => changeLang('en')}>
+              {t('en')}
+            </Button>
           </div>
-        </Header>
+          <Switch onChange={(e) => changeTheme(e)} />
+          <div className="app--header__actions-icons">
+            <NavLink to={'/cart'}>
+              <ShoppingCartIcon className="app--header__actions-icon" />
+            </NavLink>
+            <NavLink to={'/profile'}>
+              <UserCircleIcon className="app--header__actions-icon" />
+            </NavLink>
+          </div>
+        </div>
+      </Header>
 
-        <main className="main">
-          <Outlet />
+      <main className="main">
+        <Outlet />
 
-          {/* <div className="form--wrapper">
+        {/* <div className="form--wrapper">
             <FormProfile />
           </div> */}
 
-          {/* <ModalWrapper /> */}
+        {/* <ModalWrapper /> */}
 
-          {/* <Page
+        {/* <Page
                 categoryName='Торты'
                 name='Малиновый чизкейк'
                 price='1299'
@@ -107,9 +104,9 @@ const Home = ({ t }: { t?: (v: string) => ReactNode | string }) => {
                     'https://shop-cdn1-2.vigbo.tech/shops/218522/products/21922955/images/3-9b48c64af285a36ca7de4fbc2d490de1.jpg',
                 ]}
               /> */}
-        </main>
-      </Layout>
-    );
+      </main>
+    </Layout>
+  );
 };
 
 const HomeTranslated = withTranslation('common')(Home);

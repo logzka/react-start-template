@@ -22,7 +22,7 @@ const ModalWrapper = ({ buttonText, children }: PropsWithChildren<IModalWrapperP
 
   return (
     <div className="modal-wrapper">
-      <Button className={'button--modal'} onClick={showModalHandler}>
+      <Button className={'button--modal'} type="primary" onClick={showModalHandler}>
         {buttonText}
       </Button>
       {createPortal(
