@@ -21,8 +21,8 @@ const ModalWrapper = ({ buttonText, children }: PropsWithChildren<IModalWrapperP
   const hideModalHandler = (): void => setShowModal(false);
 
   return (
-    <div className="modal-wrapper">
-      <Button className={'button--modal'} type="primary" onClick={showModalHandler}>
+    <div className='modal-wrapper'>
+      <Button className='button--modal' type='primary' onClick={showModalHandler}>
         {buttonText}
       </Button>
       {createPortal(

@@ -78,12 +78,4 @@
   &--icon &--disabled {
     color: #e1e4eb;
   }
-
-  &--modal {
-    background-color: #fff;
-    color: #222;
-    &:hover {
-      box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.15);
-    }
-  }
 }
