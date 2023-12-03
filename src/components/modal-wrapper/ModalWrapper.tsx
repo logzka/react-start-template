@@ -9,22 +9,31 @@ import './modal-wrapper.scss';
 import Button from '../button/Button';
 import Modal from '../modal/Modal';
 
+import { PencilSquareIcon } from '@heroicons/react/24/solid';
+
 interface IModalWrapperProps {
   // t?: (t: string) => ReactNode | string;
-  buttonText: ReactNode;
+  buttonText?: ReactNode;
+  isEdit: boolean;
 }
 
-const ModalWrapper = ({ buttonText, children }: PropsWithChildren<IModalWrapperProps>) => {
+const ModalWrapper = ({ buttonText, children, isEdit }: PropsWithChildren<IModalWrapperProps>) => {
   const [showModal, setShowModal] = useState(false);
 
   const showModalHandler = (): void => setShowModal(true);
   const hideModalHandler = (): void => setShowModal(false);
 
   return (
-    <div className='modal-wrapper'>
-      <Button className='button--modal' type='primary' onClick={showModalHandler}>
-        {buttonText}
-      </Button>
+    <div className="modal-wrapper">
+      {isEdit ? (
+        <Button icon onClick={showModalHandler}>
+          <PencilSquareIcon className="card--edit-icon" />
+        </Button>
+      ) : (
+        <Button type="primary" onClick={showModalHandler}>
+          {buttonText}
+        </Button>
+      )}
       {createPortal(
         <Modal visible={showModal} hide={hideModalHandler}>
           {children}

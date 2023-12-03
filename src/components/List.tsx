@@ -48,7 +48,7 @@ const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
 
   return (
     <div className="list">
-      <ModalWrapperTranslated buttonText={t('add-cake-modal')}>
+      <ModalWrapperTranslated buttonText={t('add-cake-modal')} isEdit={false}>
         <FormEditTranslated />
       </ModalWrapperTranslated>
       <div className="list--wrapper">

@@ -1,4 +1,4 @@
-import React, { ReactNode, PropsWithChildren } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,6 +14,7 @@ import Select from '../../select/Select';
 
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
+import { ICardProps } from 'src/components/card/Card';
 
 yup.setLocale({
   mixed: {
@@ -41,12 +42,18 @@ const schema = yup
   })
   .required();
 
-const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
+interface IFormEdit {
+  t: (v: string) => ReactNode | string;
+  cardData?: ICardProps;
+}
+
+const FormEdit = ({ t, cardData }: IFormEdit) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm({
     defaultValues: {
       categoryName: 'cake',
@@ -59,6 +66,30 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    if (cardData) {
+      console.log(cardData);
+      switch (cardData.categoryName) {
+        case 'Торты':
+          setValue('categoryName', 'cake');
+          break;
+        case 'Пироги':
+          setValue('categoryName', 'pie');
+          break;
+        case 'Десерты':
+          setValue('categoryName', 'dessert');
+          break;
+      }
+
+      // setValue('categoryName', cardData.categoryName);
+      setValue('name', cardData.name);
+      setValue('priceOld', cardData.priceOld);
+      setValue('price', cardData.price);
+      setValue('description', cardData.description);
+      setValue('imageUrl', cardData.imageUrl);
+    }
+  }, [cardData]);
 
   const onSubmit: SubmitHandler<IFormValues> = (data) => {
     console.log(data);

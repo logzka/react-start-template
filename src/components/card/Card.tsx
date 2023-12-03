@@ -11,8 +11,8 @@ export interface ICardProps {
   type?: TCardType;
   categoryName: string;
   name: string;
-  price: string;
-  priceOld: string;
+  price: number;
+  priceOld: number;
   description: string;
   imageUrl: string;
   // t?: (v: string) => ReactNode | string,
@@ -31,6 +31,15 @@ const Card = memo(
     imageUrl,
     t,
   }: PropsWithChildren<ICardProps & { t?: (v: string) => ReactNode | string }>) => {
+    const [cardData, setCardData] = useState({
+      categoryName,
+      name,
+      price,
+      priceOld,
+      description,
+      imageUrl,
+    });
+
     console.log('Card render', name);
     return (
       <div className={`card card--${type}`}>
@@ -51,16 +60,17 @@ const Card = memo(
                   {priceOld}&#32;{t('rub')}
                 </div>
               </div>
-              <CartButton type="disabled" count={0}>
-                {t('add-to-cart')}
-              </CartButton>
+              <div className="card--buttons">
+                <CartButton type="disabled" count={0}>
+                  {t('add-to-cart')}
+                </CartButton>
+                <ModalWrapperTranslated buttonText={t('edit-cake-modal')} isEdit={true}>
+                  <FormEditTranslated cardData={cardData} />
+                </ModalWrapperTranslated>
+              </div>
             </div>
           </div>
         </div>
-
-        <ModalWrapperTranslated buttonText={t('edit-cake-modal')}>
-          <FormEditTranslated />
-        </ModalWrapperTranslated>
       </div>
     );
   }
