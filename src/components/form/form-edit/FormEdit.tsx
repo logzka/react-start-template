@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,6 +6,7 @@ import * as yup from 'yup';
 
 /** Types */
 import { IFormValues } from './types';
+import { ICardProps } from '../../card/types';
 
 /** Components */
 import Input from '../../input/Input';
@@ -31,7 +32,7 @@ yup.setLocale({
 const schema = yup
   .object()
   .shape({
-    categoryName: yup.string().required(),
+    category: yup.string().required(),
     name: yup.string().required(),
     priceOld: yup.number().positive().required(),
     price: yup.number().positive().required(),
@@ -40,15 +41,21 @@ const schema = yup
   })
   .required();
 
-const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
+interface IFormEdit {
+  t: (v: string) => ReactNode | string;
+  cardData?: ICardProps;
+}
+
+const FormEdit = ({ t, cardData }: IFormEdit) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm({
     defaultValues: {
-      categoryName: 'cake',
+      category: 'cake',
       name: '',
       priceOld: 0,
       price: 0,
@@ -58,6 +65,18 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    if (!cardData) return;
+
+    type TKeys = 'category' | 'name' | 'priceOld' | 'price' | 'description' | 'imageUrl';
+    let key = 'category' as string;
+
+    for (key in cardData) {
+      const uKey = cardData[key as TKeys];
+      setValue(key as TKeys, typeof uKey === 'object' ? uKey?.value : uKey);
+    }
+  }, [cardData]);
 
   const onSubmit: SubmitHandler<IFormValues> = (data) => {
     console.log(data);
@@ -74,19 +93,20 @@ const FormEdit = ({ t }: { t?: (v: string) => ReactNode | string }) => {
     <FormStyled onSubmit={handleSubmit(onSubmit)}>
       <FormItemStyled>
         <Controller
-          name="categoryName"
+          name="category"
           control={control}
-          render={({ field }) => (
+          render={({ field: { value, ...other } }) => (
             <Select
               returnObject={false}
               items={categories}
               placeholder={t('form.category') as string}
               required
-              {...field}
+              value={value}
+              {...other}
             />
           )}
         />
-        {errors.categoryName && <FormErrorStyled>{t(errors.categoryName?.message)}</FormErrorStyled>}
+        {errors.category && <FormErrorStyled>{t(errors.category?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>

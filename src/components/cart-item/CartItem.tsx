@@ -10,7 +10,7 @@ import { IPageProps } from '../page/Page';
 
 const CartItem = ({
   type = 'default',
-  categoryName,
+  category,
   name,
   price,
   priceOld,
@@ -29,7 +29,7 @@ const CartItem = ({
         <div className="cart-item--content">
           <div className="cart-item--header">
             <div>
-              <span className="cart-item--category">{categoryName}</span>
+              <span className="cart-item--category">{category.name}</span>
               <span>&#32;/&#32;</span>
               <h2 className="cart-item--name">{name}</h2>
             </div>

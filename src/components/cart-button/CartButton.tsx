@@ -5,7 +5,7 @@ import Button from '../button/Button';
 /** Styles */
 import './cart-button.css';
 /** Types */
-import { TButtonSize, TButtonType } from '../button/Button';
+import { TButtonSize, TButtonType } from '../button/types';
 
 interface ICartButtonProps {
   type?: TButtonType;

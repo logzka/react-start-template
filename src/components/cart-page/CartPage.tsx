@@ -12,8 +12,8 @@ import CartItem from '../cart-item/CartItem';
 const ItemListWrapperStyled = styled.div`
   display: grid;
   width: 100%;
-  gap: 0.5em;
-  margin-bottom: 0.5em;
+  gap: 1em;
+  margin-bottom: 2em;
 `;
 
 const CartFooterStyled = styled.div`
@@ -36,11 +36,11 @@ const CartPage: FC<ICartPageProps> = ({ cartCakes, t }) => {
   return (
     <>
       <ItemListWrapperStyled>
-        {cartCakes.map(({ categoryName, name, price, priceOld, description, imageUrl, id }) => (
+        {cartCakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
           <CartItem
             key={id}
             type="default"
-            categoryName={categoryName}
+            category={category}
             name={name}
             price={price}
             priceOld={priceOld}
