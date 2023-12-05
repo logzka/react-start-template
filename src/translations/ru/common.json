@@ -1,6 +1,8 @@
 {
   "open-modal": "Открыть модальное окно",
   "type-modal-text": "Текст для модального окна",
+  "add-cake-modal": "Добавить товар",
+  "edit-cake-modal": "Редактировать",
   "add-to-cart": "В корзину",
   "rub": "руб.",
   "ru": "Рус.",
@@ -36,5 +38,12 @@
       "min_age_invalid": "Минимальный возраст - 18 лет",
       "url_invalid": "Неверный URL"
     }
+  },
+  "nav": {
+    "home": "Главная"
+  },
+  "cart": {
+    "total": "Итого: {{summ, number(minimumFractionDigits: 2)}} руб.",
+    "create_order": "Оформить заказ"
   }
 }

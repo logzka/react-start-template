@@ -4,24 +4,18 @@ import { withTranslation } from 'react-i18next';
 import './card.scss';
 /** Components */
 import CartButton from '../cart-button/CartButton';
-
-export interface ICardProps {
-  type?: TCardType;
-  categoryName: string;
-  name: string;
-  price: string;
-  priceOld: string;
-  description: string;
-  imageUrl: string;
-  // t?: (v: string) => ReactNode | string,
-}
-
-export type TCardType = 'default' | 'disabled';
+import ModalWrapper from '../modal-wrapper/ModalWrapper';
+import FormEdit from '../form/form-edit/FormEdit';
+import Button from '../button/Button';
+/** Icons */
+import { PencilSquareIcon } from '@heroicons/react/24/solid';
+/** Types */
+import { ICardProps } from './types';
 
 const Card = memo(
   ({
     type = 'default',
-    categoryName,
+    category,
     name,
     price,
     priceOld,
@@ -29,6 +23,17 @@ const Card = memo(
     imageUrl,
     t,
   }: PropsWithChildren<ICardProps & { t?: (v: string) => ReactNode | string }>) => {
+    const cardData = {
+      category,
+      name,
+      price,
+      priceOld,
+      description,
+      imageUrl,
+    };
+
+    const isEditable = true;
+
     console.log('Card render', name);
     return (
       <div className={`card card--${type}`}>
@@ -37,7 +42,7 @@ const Card = memo(
             <img className="card--image" src={imageUrl} alt={name} />
           </div>
           <div className="card--content">
-            <span className="card--category">{categoryName}</span>
+            <span className="card--category">{category.name}</span>
             <h2 className="card--name">{name}</h2>
             <p className="card--description">{description}</p>
             <div className="card--footer">
@@ -49,9 +54,22 @@ const Card = memo(
                   {priceOld}&#32;{t('rub')}
                 </div>
               </div>
-              <CartButton type="disabled" count={0}>
-                {t('add-to-cart')}
-              </CartButton>
+              <div className="card--buttons">
+                {isEditable && (
+                  <ModalWrapper
+                    actionNode={
+                      <Button icon>
+                        <PencilSquareIcon />
+                      </Button>
+                    }
+                  >
+                    <FormEdit cardData={cardData} />
+                  </ModalWrapper>
+                )}
+                <CartButton type="disabled" count={0}>
+                  {t('add-to-cart')}
+                </CartButton>
+              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,8 @@
 {
   "open-modal": "Open modal",
   "type-modal-text": "Type modal text",
+  "add-cake-modal": "Add cake",
+  "edit-cake-modal": "Edit",
   "add-to-cart": "Add to cart",
   "rub": "rub.",
   "ru": "Ru",
@@ -36,5 +38,12 @@
       "min_age_invalid": "Min. age should be 18",
       "url_invalid": "URL must be valid"
     }
+  },
+  "nav": {
+    "home": "Home"
+  },
+  "cart": {
+    "total": "Cart total: ${{summ, number(minimumFractionDigits: 2)}}",
+    "create_order": "Create order"
   }
 }

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useInView } from 'react-intersection-observer';
+import { withTranslation } from 'react-i18next';
 
 /** Api */
 import { cakes as cakesData } from '../api/cakes';
@@ -8,8 +9,11 @@ import { cakes as cakesData } from '../api/cakes';
 /** Components */
 // import Button from "./button/Button";
 import Card from './card/Card';
+import ModalWrapper from './modal-wrapper/ModalWrapper';
+import FormEdit from './form/form-edit/FormEdit';
+import Button from './button/Button';
 
-const List = () => {
+const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
   console.log('List render');
 
   const { ref, inView } = useInView({
@@ -45,15 +49,18 @@ const List = () => {
 
   return (
     <div className="list">
+      <ModalWrapper actionNode={<Button>{t('add-cake-modal')}</Button>}>
+        <FormEdit />
+      </ModalWrapper>
       <div className="list--wrapper">
-        {cakes.map(({ categoryName, name, price, priceOld, description, imageUrl, id }) => (
+        {cakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
           <Card
             key={id}
             type="default"
-            categoryName={categoryName}
+            category={category}
             name={name}
-            price={price}
-            priceOld={priceOld}
+            price={+price}
+            priceOld={+priceOld}
             description={description}
             imageUrl={imageUrl}
           />
@@ -68,4 +75,5 @@ const List = () => {
   );
 };
 
-export default List;
+const ListTranslated = withTranslation('common')(List);
+export default ListTranslated;

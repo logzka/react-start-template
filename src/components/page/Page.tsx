@@ -5,11 +5,11 @@ import './page.scss';
 /** Components */
 import CartButton from '../cart-button/CartButton';
 /** Types */
-import { TCardType } from '../card/Card';
+import { TCardType, TCategory } from '../card/types';
 
 export interface IPageProps {
   type?: TCardType;
-  categoryName: string;
+  category: TCategory;
   name: string;
   price: string;
   priceOld: string;
@@ -20,7 +20,7 @@ export interface IPageProps {
 
 const Page = ({
   type = 'default',
-  categoryName,
+  category,
   name,
   price,
   priceOld,
@@ -37,7 +37,7 @@ const Page = ({
           ))}
         </div>
         <div className="page--content">
-          <span className="page--category">{categoryName}</span>
+          <span className="page--category">{category.name}</span>
           <div>
             <h2 className="page--name">{name}</h2>
             <p className="page--description">{description}</p>

@@ -1,5 +1,5 @@
 export interface IFormValues {
-  categoryName?: 'Торты' | 'Пироги' | 'Десерты';
+  category?: { value: string; name: string };
   name?: string;
   price?: number;
   priceOld?: number;
