@@ -1,18 +1,9 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 
 import './button.scss';
 
-interface IButtonProps {
-  className?: string;
-  type?: TButtonType;
-  size?: TButtonSize;
-  icon?: boolean;
-  active?: boolean;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-}
-
-export type TButtonSize = 'small' | 'medium' | 'large';
-export type TButtonType = 'primary' | 'secondary' | 'danger' | 'success' | 'disabled' | 'icon';
+/** Types */
+import { IButtonProps } from './types';
 
 const Button = ({
   className = '',

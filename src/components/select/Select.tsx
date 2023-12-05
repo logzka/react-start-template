@@ -109,6 +109,7 @@ const CustomSelect = forwardRef(
       disabled = false,
       onChange,
     }: ICustomSelectProps,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref
   ) => {
     const [selectItems, setSelectItems] = useState<TCustomItem[]>(items);
@@ -124,7 +125,7 @@ const CustomSelect = forwardRef(
           setSelectOption(currentItem);
         }
       }
-    }, []);
+    }, [value]);
 
     /**
      * On Custom Input Change Handler

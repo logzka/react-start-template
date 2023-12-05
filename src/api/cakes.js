@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const cakes = [
   {
-    categoryName: 'Торты',
+    category: { value: 'cake', name: 'Торты' },
     name: 'Малиновый чизкейк',
     price: 1299,
     priceOld: 1300,
@@ -13,7 +13,7 @@ export const cakes = [
     id: uuidv4(),
   },
   {
-    categoryName: 'Десерты',
+    category: { value: 'dessert', name: 'Десерты' },
     name: 'Брауни',
     price: 2399,
     priceOld: 2700,
@@ -24,7 +24,7 @@ export const cakes = [
     id: uuidv4(),
   },
   {
-    categoryName: 'Торты',
+    category: { value: 'cake', name: 'Торты' },
     name: 'Медовик',
     price: 999,
     priceOld: 1000,

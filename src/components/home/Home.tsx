@@ -81,7 +81,7 @@ const Home = ({ t }: { t?: (v: string) => ReactNode | string }) => {
         {/* <ModalWrapper /> */}
 
         {/* <Page
-                categoryName='Торты'
+                category={{ value: 'cake', name: 'Торты' }}
                 name='Малиновый чизкейк'
                 price='1299'
                 priceOld='1300'
@@ -95,7 +95,7 @@ const Home = ({ t }: { t?: (v: string) => ReactNode | string }) => {
               />
 
               <CartItem
-                categoryName='Торты'
+                category={{ value: 'cake', name: 'Торты' }}
                 name='Малиновый чизкейк'
                 price='1299'
                 priceOld='1300'

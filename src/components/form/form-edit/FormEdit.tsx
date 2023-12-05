@@ -3,10 +3,10 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { v4 as uuidv4 } from 'uuid';
 
 /** Types */
 import { IFormValues } from './types';
+import { ICardProps } from '../../card/types';
 
 /** Components */
 import Input from '../../input/Input';
@@ -14,7 +14,6 @@ import Select from '../../select/Select';
 
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
-import { ICardProps } from 'src/components/card/Card';
 
 yup.setLocale({
   mixed: {
@@ -33,7 +32,7 @@ yup.setLocale({
 const schema = yup
   .object()
   .shape({
-    categoryName: yup.string().required(),
+    category: yup.string().required(),
     name: yup.string().required(),
     priceOld: yup.number().positive().required(),
     price: yup.number().positive().required(),
@@ -56,7 +55,7 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
     setValue,
   } = useForm({
     defaultValues: {
-      categoryName: 'cake',
+      category: 'cake',
       name: '',
       priceOld: 0,
       price: 0,
@@ -68,26 +67,14 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
   });
 
   useEffect(() => {
-    if (cardData) {
-      console.log(cardData);
-      switch (cardData.categoryName) {
-        case 'Торты':
-          setValue('categoryName', 'cake');
-          break;
-        case 'Пироги':
-          setValue('categoryName', 'pie');
-          break;
-        case 'Десерты':
-          setValue('categoryName', 'dessert');
-          break;
-      }
+    if (!cardData) return;
 
-      // setValue('categoryName', cardData.categoryName);
-      setValue('name', cardData.name);
-      setValue('priceOld', cardData.priceOld);
-      setValue('price', cardData.price);
-      setValue('description', cardData.description);
-      setValue('imageUrl', cardData.imageUrl);
+    type TKeys = 'category' | 'name' | 'priceOld' | 'price' | 'description' | 'imageUrl';
+    let key = 'category' as string;
+
+    for (key in cardData) {
+      const uKey = cardData[key as TKeys];
+      setValue(key as TKeys, typeof uKey === 'object' ? uKey?.value : uKey);
     }
   }, [cardData]);
 
@@ -106,19 +93,20 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
     <FormStyled onSubmit={handleSubmit(onSubmit)}>
       <FormItemStyled>
         <Controller
-          name="categoryName"
+          name="category"
           control={control}
-          render={({ field }) => (
+          render={({ field: { value, ...other } }) => (
             <Select
               returnObject={false}
               items={categories}
               placeholder={t('form.category') as string}
               required
-              {...field}
+              value={value}
+              {...other}
             />
           )}
         />
-        {errors.categoryName && <FormErrorStyled>{t(errors.categoryName?.message)}</FormErrorStyled>}
+        {errors.category && <FormErrorStyled>{t(errors.category?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>

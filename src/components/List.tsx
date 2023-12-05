@@ -9,8 +9,9 @@ import { cakes as cakesData } from '../api/cakes';
 /** Components */
 // import Button from "./button/Button";
 import Card from './card/Card';
-import ModalWrapperTranslated from './modal-wrapper/ModalWrapper';
-import FormEditTranslated from './form/form-edit/FormEdit';
+import ModalWrapper from './modal-wrapper/ModalWrapper';
+import FormEdit from './form/form-edit/FormEdit';
+import Button from './button/Button';
 
 const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
   console.log('List render');
@@ -48,18 +49,18 @@ const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
 
   return (
     <div className="list">
-      <ModalWrapperTranslated buttonText={t('add-cake-modal')} isEdit={false}>
-        <FormEditTranslated />
-      </ModalWrapperTranslated>
+      <ModalWrapper actionNode={<Button>{t('add-cake-modal')}</Button>}>
+        <FormEdit />
+      </ModalWrapper>
       <div className="list--wrapper">
-        {cakes.map(({ categoryName, name, price, priceOld, description, imageUrl, id }) => (
+        {cakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
           <Card
             key={id}
             type="default"
-            categoryName={categoryName}
+            category={category}
             name={name}
-            price={price}
-            priceOld={priceOld}
+            price={+price}
+            priceOld={+priceOld}
             description={description}
             imageUrl={imageUrl}
           />

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
+// eslint-disable-next-line import/no-named-as-default
 import styled from 'styled-components';
 /** Types */
 import IModalProps from './types';
@@ -49,6 +50,13 @@ const ModalBodyStyled = styled.div`
 `;
 
 const Modal = ({ visible = false, hide, children }: React.PropsWithChildren<IModalProps>) => {
+  const hideModal = useCallback(
+    (e: PointerEvent) => {
+      hide(e);
+    },
+    [hide]
+  );
+
   useEffect(() => {
     if (!visible) return;
 
@@ -57,7 +65,7 @@ const Modal = ({ visible = false, hide, children }: React.PropsWithChildren<IMod
     const modalListenerCb = (e: PointerEvent & { target: { className: string; tagName: string } }) => {
       const { target } = e;
       if (!target.className.includes('modal--overlay')) return false;
-      hide(e);
+      hideModal(e);
     };
 
     if (modalEl) modalEl.addEventListener('click', modalListenerCb);
@@ -65,7 +73,7 @@ const Modal = ({ visible = false, hide, children }: React.PropsWithChildren<IMod
     return () => {
       modalEl.removeEventListener('click', modalListenerCb);
     };
-  }, [visible]);
+  }, [visible, hideModal]);
 
   return (
     visible && (
