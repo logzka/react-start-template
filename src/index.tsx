@@ -40,7 +40,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <I18nextProvider i18n={i18next}>
+      <I18nextProvider i18n={i18next} defaultNS={'common'}>
         <BrowserRouter basename={'/'}>
           <ThemeContextProvider>
             <LangContextProvider>
