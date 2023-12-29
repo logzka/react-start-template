@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react';
+import React, { FC } from 'react';
+
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
-import { withTranslation } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 /** Components */
@@ -11,7 +12,7 @@ import Input from '../../input/Input';
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
 
 /** Types */
-import { Inputs } from './types';
+import { Inputs, IFormLogin } from './types';
 
 yup.setLocale({
   mixed: {
@@ -28,7 +29,8 @@ const schema: yup.ObjectSchema<Inputs> = yup
   })
   .required();
 
-const FormLogin = ({ t }: { t?: (v: string) => ReactNode | string }) => {
+const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler }) => {
+  const { t } = useTranslation();
   const {
     handleSubmit,
     reset,
@@ -41,6 +43,7 @@ const FormLogin = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   });
 
   const customHandleSubmit: SubmitHandler<Inputs> = (values) => {
+    onSubmitHandler(values);
     console.log('values: ', values);
     reset();
   };
@@ -70,5 +73,4 @@ const FormLogin = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   );
 };
 
-const FormLoginTranslated = withTranslation('common')(FormLogin);
-export default FormLoginTranslated;
+export default withTranslation()(FormLoginTranslated);
