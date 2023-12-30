@@ -16,12 +16,7 @@ import Button from '../button/Button';
 import Navigation from '../navigation/Navigation';
 
 /** Icons */
-import {
-  UserCircleIcon,
-  ShoppingCartIcon,
-  ArrowRightStartOnRectangleIcon,
-  ArrowRightEndOnRectangleIcon,
-} from '@heroicons/react/24/solid';
+import { UserCircleIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 import { Login } from '../login/Login';
 
 const HomeTranslated = () => {
