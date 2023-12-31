@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
 import { styled } from 'styled-components';
 
 /** Types */
@@ -28,10 +28,14 @@ const CartFooterStyled = styled.div`
 
 const CartTextStyled = styled.div``;
 
-const CartPage: FC<ICartPageProps> = ({ cartCakes, t }) => {
+const CartPage: FC<ICartPageProps> = ({ cartCakes }) => {
+  const { t } = useTranslation();
+
   const orderSumm = cartCakes.reduce((summ, cake) => {
     return summ + parseFloat(cake.price);
   }, 0);
+
+  const itemOnClickHandler = (id: string) => console.log('close clicked', id);
 
   return (
     <>
@@ -39,6 +43,7 @@ const CartPage: FC<ICartPageProps> = ({ cartCakes, t }) => {
         {cartCakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
           <CartItem
             key={id}
+            id={id}
             type="default"
             category={category}
             name={name}
@@ -46,6 +51,7 @@ const CartPage: FC<ICartPageProps> = ({ cartCakes, t }) => {
             priceOld={priceOld}
             description={description}
             imageUrls={[imageUrl]}
+            handleOnClick={itemOnClickHandler}
           />
         ))}
       </ItemListWrapperStyled>
@@ -57,5 +63,4 @@ const CartPage: FC<ICartPageProps> = ({ cartCakes, t }) => {
   );
 };
 
-const CartPageTranslated = withTranslation('common')(CartPage);
-export default CartPageTranslated;
+export default withTranslation()(CartPage);
