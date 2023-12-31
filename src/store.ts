@@ -1,15 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
 import type { ThunkAction, UnknownAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 
 /** Reducers */
 import profileReducer from './redux/profileReducer';
 import tokenReducer from 'src/redux/tokenReducer';
-import { useDispatch } from 'react-redux';
+import cartReducer from './redux/cartReducer';
 
 export const store = configureStore({
   reducer: {
     profile: profileReducer,
     token: tokenReducer,
+    cart: cartReducer,
   },
 });
 
