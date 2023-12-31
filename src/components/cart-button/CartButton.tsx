@@ -12,6 +12,7 @@ interface ICartButtonProps {
   size?: TButtonSize;
   icon?: boolean;
   count?: number;
+  onClickHandle?: () => void;
 }
 
 const CartButton = ({
@@ -20,6 +21,7 @@ const CartButton = ({
   icon = false,
   count = 0,
   children = 'В корзину',
+  onClickHandle,
 }: React.PropsWithChildren<ICartButtonProps>) => {
   return count ? (
     <div className="cart--button__counter">
@@ -28,7 +30,7 @@ const CartButton = ({
       <Button icon={true}>&#62;</Button>
     </div>
   ) : (
-    <Button type={type} size={size} icon={icon}>
+    <Button onClick={onClickHandle} type={type} size={size} icon={icon}>
       {children}
     </Button>
   );

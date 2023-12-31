@@ -1,5 +1,5 @@
-import React, { memo, PropsWithChildren, ReactNode } from 'react';
-import { withTranslation } from 'react-i18next';
+import React, { memo, PropsWithChildren } from 'react';
+import { useTranslation, withTranslation } from 'react-i18next';
 /** Styles */
 import './card.scss';
 /** Components */
@@ -21,8 +21,11 @@ const Card = memo(
     priceOld,
     description,
     imageUrl,
-    t,
-  }: PropsWithChildren<ICardProps & { t?: (v: string) => ReactNode | string }>) => {
+    addToCartHandler,
+    id,
+  }: PropsWithChildren<ICardProps & { id?: string; addToCartHandler?: (id: string) => void }>) => {
+    const { t } = useTranslation();
+
     const cardData = {
       category,
       name,
@@ -30,6 +33,11 @@ const Card = memo(
       priceOld,
       description,
       imageUrl,
+    };
+
+    const onClickHandle = () => {
+      console.log('Add to cart', id);
+      addToCartHandler(id);
     };
 
     const isEditable = true;
@@ -66,7 +74,7 @@ const Card = memo(
                     <FormEdit cardData={cardData} />
                   </ModalWrapper>
                 )}
-                <CartButton type="disabled" count={0}>
+                <CartButton onClickHandle={onClickHandle} type="success" count={0}>
                   {t('add-to-cart')}
                 </CartButton>
               </div>
