@@ -28,14 +28,17 @@ const CartFooterStyled = styled.div`
 
 const CartTextStyled = styled.div``;
 
-const CartPage: FC<ICartPageProps> = ({ cartCakes }) => {
+const CartPage: FC<ICartPageProps> = ({ cartCakes, removeItemHandler }) => {
   const { t } = useTranslation();
 
   const orderSumm = cartCakes.reduce((summ, cake) => {
     return summ + parseFloat(cake.price);
   }, 0);
 
-  const itemOnClickHandler = (id: string) => console.log('close clicked', id);
+  const itemOnClickHandler = (id: string) => {
+    console.log('close clicked', id);
+    removeItemHandler(id);
+  };
 
   return (
     <>
