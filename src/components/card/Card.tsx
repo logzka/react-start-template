@@ -23,7 +23,10 @@ const Card = memo(
     imageUrl,
     addToCartHandler,
     id,
-  }: PropsWithChildren<ICardProps & { id?: string; addToCartHandler?: (id: string) => void }>) => {
+    count = 0,
+  }: PropsWithChildren<
+    ICardProps & { id?: string; addToCartHandler?: (id: string, count: number) => void; count?: number }
+  >) => {
     const { t } = useTranslation();
 
     const cardData = {
@@ -35,9 +38,9 @@ const Card = memo(
       imageUrl,
     };
 
-    const onClickHandle = () => {
-      console.log('Add to cart', id);
-      addToCartHandler(id);
+    const handleSetNewCount = (newVal: number) => {
+      console.log('Add to cart', id, newVal);
+      addToCartHandler(id, newVal);
     };
 
     const isEditable = true;
@@ -74,7 +77,7 @@ const Card = memo(
                     <FormEdit cardData={cardData} />
                   </ModalWrapper>
                 )}
-                <CartButton onClickHandle={onClickHandle} type="success" count={0}>
+                <CartButton setNewCount={handleSetNewCount} type="success" count={count}>
                   {t('add-to-cart')}
                 </CartButton>
               </div>

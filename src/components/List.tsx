@@ -29,8 +29,8 @@ const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
 
   const [cakes, setCakes] = useState(cakesData);
 
-  const addToCartHandler = (id: string) => {
-    dispatch(cartAddItem(cakes.find((cake) => cake.id === id)));
+  const addToCartHandler = (id: string, count: number) => {
+    dispatch(cartAddItem({ ...cakes.find((cake) => cake.id === id), count: count }));
   };
 
   const setCakesHandle = () => {
@@ -39,14 +39,17 @@ const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
       {
         ...prevCakes[Math.floor(Math.random() * prevCakes.length)],
         id: uuidv4(),
+        count: 0,
       },
       {
         ...prevCakes[Math.floor(Math.random() * prevCakes.length)],
         id: uuidv4(),
+        count: 0,
       },
       {
         ...prevCakes[Math.floor(Math.random() * prevCakes.length)],
         id: uuidv4(),
+        count: 0,
       },
     ]);
   };

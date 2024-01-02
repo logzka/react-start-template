@@ -19,7 +19,8 @@ const CartItem = ({
   t,
   handleOnClick,
   id,
-}: React.PropsWithChildren<IPageProps & { handleOnClick?: (id: string) => void; id?: string }>) => {
+  count = 0,
+}: React.PropsWithChildren<IPageProps & { handleOnClick?: (id: string) => void; id?: string; count?: number }>) => {
   return (
     <div className={`cart-item cart-item--${type}`}>
       <div className="cart-item--inner">
@@ -43,6 +44,7 @@ const CartItem = ({
           <div className="cart-item--footer">
             <div className="cart-item--price__wrapper">
               <div className="cart-item--price">
+                {!count ? '' : `${count} x `}
                 {price}&#32;{t('rub')}
               </div>
               <div className="cart-item--price__old">

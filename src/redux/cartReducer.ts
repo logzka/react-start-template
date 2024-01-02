@@ -4,12 +4,18 @@ import { TCake, cakes as cakesData } from 'src/api/cakes';
 import { RootState } from 'src/store';
 
 type TId = TCake['id'];
+type TCartElement = TCake & { count: number };
+
+const initialState = cakesData.map((cake) => ({ ...cake, count: 1 }));
 
 const cartSlice = createSlice({
   name: 'cart',
-  initialState: cakesData,
+  initialState: initialState,
   reducers: {
-    addItem: (state, action: PayloadAction<TCake>) => [...state, action.payload],
+    addItem: (state, action: PayloadAction<TCartElement>) => [
+      ...state.filter(({ id }) => id !== action.payload.id),
+      action.payload,
+    ],
     deleteItem: (state, action: PayloadAction<TId>) => state.filter(({ id }) => id !== action.payload),
   },
 });

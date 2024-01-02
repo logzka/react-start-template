@@ -32,7 +32,7 @@ const CartPage: FC<ICartPageProps> = ({ cartCakes, removeItemHandler }) => {
   const { t } = useTranslation();
 
   const orderSumm = cartCakes.reduce((summ, cake) => {
-    return summ + parseFloat(cake.price);
+    return summ + parseFloat(cake.price) * cake.count;
   }, 0);
 
   const itemOnClickHandler = (id: string) => {
@@ -43,20 +43,24 @@ const CartPage: FC<ICartPageProps> = ({ cartCakes, removeItemHandler }) => {
   return (
     <>
       <ItemListWrapperStyled>
-        {cartCakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
-          <CartItem
-            key={id}
-            id={id}
-            type="default"
-            category={category}
-            name={name}
-            price={price}
-            priceOld={priceOld}
-            description={description}
-            imageUrls={[imageUrl]}
-            handleOnClick={itemOnClickHandler}
-          />
-        ))}
+        {cartCakes.map(
+          ({ category, name, price, priceOld, description, imageUrl, id, count }) =>
+            count > 0 && (
+              <CartItem
+                key={id}
+                id={id}
+                type="default"
+                category={category}
+                name={name}
+                price={price}
+                priceOld={priceOld}
+                description={description}
+                imageUrls={[imageUrl]}
+                count={count}
+                handleOnClick={itemOnClickHandler}
+              />
+            )
+        )}
       </ItemListWrapperStyled>
       <CartFooterStyled>
         <CartTextStyled>{t('cart.total', { summ: orderSumm })}</CartTextStyled>
