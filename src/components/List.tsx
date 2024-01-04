@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useInView } from 'react-intersection-observer';
 import { withTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 /** Api */
 import { cakes as cakesData } from '../api/cakes';
@@ -14,9 +15,11 @@ import FormEdit from './form/form-edit/FormEdit';
 import Button from './button/Button';
 import { cartAddItem } from 'src/redux/cartReducer';
 import { useTypedDispatch } from 'src/store';
+import { profileSelectors } from 'src/redux/profileReducer';
 
 const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
   const dispatch = useTypedDispatch();
+  const { role } = useSelector(profileSelectors.get);
 
   const { ref, inView } = useInView({
     /* Optional options */
@@ -58,9 +61,11 @@ const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
 
   return (
     <div className="list">
-      <ModalWrapper actionNode={<Button>{t('add-cake-modal')}</Button>}>
-        <FormEdit />
-      </ModalWrapper>
+      {role === 'admin' ? (
+        <ModalWrapper actionNode={<Button>{t('add-cake-modal')}</Button>}>
+          <FormEdit />
+        </ModalWrapper>
+      ) : null}
       <div className="list--wrapper">
         {cakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
           <Card

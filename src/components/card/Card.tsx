@@ -1,5 +1,6 @@
 import React, { memo, PropsWithChildren } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 /** Styles */
 import './card.scss';
 /** Components */
@@ -11,6 +12,8 @@ import Button from '../button/Button';
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
 /** Types */
 import { ICardProps } from './types';
+
+import { profileSelectors } from 'src/redux/profileReducer';
 
 const Card = memo(
   ({
@@ -28,6 +31,8 @@ const Card = memo(
     ICardProps & { id?: string; addToCartHandler?: (id: string, count: number) => void; count?: number }
   >) => {
     const { t } = useTranslation();
+
+    const { role } = useSelector(profileSelectors.get);
 
     const cardData = {
       category,
@@ -65,6 +70,17 @@ const Card = memo(
                 </div>
               </div>
               <div className="card--buttons">
+                {role === 'admin' && isEditable ? (
+                  <ModalWrapper
+                    actionNode={
+                      <Button icon>
+                        <PencilSquareIcon />
+                      </Button>
+                    }
+                  >
+                    <FormEdit cardData={cardData} />
+                  </ModalWrapper>
+                ) : null}
                 {isEditable && (
                   <ModalWrapper
                     actionNode={

@@ -32,6 +32,7 @@ const LoginPage = () => {
         age: 30,
         phone: '79609999999',
         email: event.email,
+        role: 'admin',
       })
     );
     goToHome();
