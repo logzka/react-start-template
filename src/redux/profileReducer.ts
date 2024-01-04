@@ -11,12 +11,14 @@ const profileSlice = createSlice({
     email: '',
   },
   reducers: {
-    profileAdded(state, action) {
-      state = action.payload;
+    profileAdd(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+      };
     },
-    profileReset(state) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      state = {
+    profileReset() {
+      return {
         firstName: '',
         lastName: '',
         gender: 'female',
@@ -28,5 +30,5 @@ const profileSlice = createSlice({
   },
 });
 
-export const { profileAdded, profileReset } = profileSlice.actions;
+export const { profileAdd, profileReset } = profileSlice.actions;
 export default profileSlice.reducer;

@@ -6,30 +6,29 @@ const tokenSlice = createSlice({
   name: 'token',
   initialState: localStorage.getItem('token'),
   reducers: {
-    set: (state, action: PayloadAction<string>) => action.payload,
-    reset: () => '',
+    set: (_, action: PayloadAction<string>) => action.payload,
+    reset: () => null,
   },
 });
 
 const tokenActions = tokenSlice.actions;
 
-const resetTokenThunk = (): AppThunk => (dispatch, getState) => {
+const resetTokenThunk = (): AppThunk => (dispatch) => {
   dispatch(tokenActions.reset());
-  const state = getState();
-  localStorage.setItem('token', state.token);
+  localStorage.removeItem('token');
 };
 
 const setTokenThunk =
   (token: string): AppThunk =>
-  (dispatch, getState) => {
+  (dispatch) => {
     dispatch(tokenActions.set(token));
-    const state = getState();
-    localStorage.setItem('token', state.token);
+    // const { token } = getState();
+    localStorage.setItem('token', token);
   };
 
 export const tokenThunks = {
-  resetTokenThunk: resetTokenThunk,
-  setTokenThunk: setTokenThunk,
+  resetTokenThunk,
+  setTokenThunk,
 };
 
 export const tokenSelectors = {

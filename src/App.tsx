@@ -15,13 +15,10 @@ const App = () => (
   <Routes>
     <Route path="/" element={<HomePage />}>
       <Route index element={<ListPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="profile" element={<ProfilePage />} />
       <Route path="cart" element={<CartPage />} />
       <Route path="login" element={<LoginPage />} />
-      <Route path="logout" element={<LoginPage />} />
-      {/* <Route path='some' element={<SomeElement />} />
-
-    <Route path='*' element={<NoMatch />} /> */}
+      {/* <Route path='*' element={<NoMatch />} /> */}
     </Route>
   </Routes>
 );

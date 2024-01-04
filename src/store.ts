@@ -3,7 +3,7 @@ import type { ThunkAction, UnknownAction, ThunkDispatch } from '@reduxjs/toolkit
 
 /** Reducers */
 import profileReducer from './redux/profileReducer';
-import tokenReducer from 'src/redux/tokenReducer';
+import tokenReducer from './redux/tokenReducer';
 import { useDispatch } from 'react-redux';
 
 export const store = configureStore({
