@@ -34,7 +34,6 @@ const Card = memo(
 
     const isEditable = true;
 
-    console.log('Card render', name);
     return (
       <div className={`card card--${type}`}>
         <div className="card--inner">

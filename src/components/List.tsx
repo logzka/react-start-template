@@ -14,8 +14,6 @@ import FormEdit from './form/form-edit/FormEdit';
 import Button from './button/Button';
 
 const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
-  console.log('List render');
-
   const { ref, inView } = useInView({
     /* Optional options */
     threshold: 0,
