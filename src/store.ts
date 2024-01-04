@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 /** Reducers */
 import profileReducer from './redux/profileReducer';
-import tokenReducer from 'src/redux/tokenReducer';
+import tokenReducer from './redux/tokenReducer';
 import cartReducer from './redux/cartReducer';
 
 export const store = configureStore({

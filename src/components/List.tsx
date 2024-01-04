@@ -16,8 +16,6 @@ import { cartAddItem } from 'src/redux/cartReducer';
 import { useTypedDispatch } from 'src/store';
 
 const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
-  console.log('List render');
-
   const dispatch = useTypedDispatch();
 
   const { ref, inView } = useInView({

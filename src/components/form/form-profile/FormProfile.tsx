@@ -158,12 +158,9 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
   );
 };
 
-const mapStateToProps = (state: any) => {
-  console.log(state);
-  return {
-    profile: state.profile,
-  };
-};
+const mapStateToProps = (state: { profile: IProfile }) => ({
+  profile: state.profile,
+});
 
 const FormProfileTranslated = withTranslation('common')(FormProfile);
 export default connect(mapStateToProps, null)(FormProfileTranslated);
