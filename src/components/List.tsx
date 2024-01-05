@@ -61,11 +61,11 @@ const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
 
   return (
     <div className="list">
-      {role === 'admin' ? (
+      {role === 'admin' && (
         <ModalWrapper actionNode={<Button>{t('add-cake-modal')}</Button>}>
           <FormEdit />
         </ModalWrapper>
-      ) : null}
+      )}
       <div className="list--wrapper">
         {cakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
           <Card

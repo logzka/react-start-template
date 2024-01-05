@@ -48,8 +48,6 @@ const Card = memo(
       addToCartHandler(id, newVal);
     };
 
-    const isEditable = true;
-
     return (
       <div className={`card card--${type}`}>
         <div className="card--inner">
@@ -70,18 +68,7 @@ const Card = memo(
                 </div>
               </div>
               <div className="card--buttons">
-                {role === 'admin' && isEditable ? (
-                  <ModalWrapper
-                    actionNode={
-                      <Button icon>
-                        <PencilSquareIcon />
-                      </Button>
-                    }
-                  >
-                    <FormEdit cardData={cardData} />
-                  </ModalWrapper>
-                ) : null}
-                {isEditable && (
+                {role === 'admin' && (
                   <ModalWrapper
                     actionNode={
                       <Button icon>
