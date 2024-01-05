@@ -36,31 +36,33 @@ const CartPage: FC<ICartPageProps> = ({ cartCakes, removeItemHandler }) => {
   }, 0);
 
   const itemOnClickHandler = (id: string) => {
-    console.log('close clicked', id);
+    console.log('Deleted', id);
     removeItemHandler(id);
   };
 
   return (
     <>
       <ItemListWrapperStyled>
-        {cartCakes.map(
-          ({ category, name, price, priceOld, description, imageUrl, id, count }) =>
-            count > 0 && (
-              <CartItem
-                key={id}
-                id={id}
-                type="default"
-                category={category}
-                name={name}
-                price={price}
-                priceOld={priceOld}
-                description={description}
-                imageUrls={[imageUrl]}
-                count={count}
-                handleOnClick={itemOnClickHandler}
-              />
+        {cartCakes?.length
+          ? cartCakes.map(
+              ({ category, name, price, priceOld, description, imageUrl, id, count }) =>
+                count > 0 && (
+                  <CartItem
+                    key={id}
+                    id={id}
+                    type="default"
+                    category={category}
+                    name={name}
+                    price={price}
+                    priceOld={priceOld}
+                    description={description}
+                    imageUrls={[imageUrl]}
+                    count={count}
+                    handleOnClick={itemOnClickHandler}
+                  />
+                )
             )
-        )}
+          : 'Вы еще не добавили тортик'}
       </ItemListWrapperStyled>
       <CartFooterStyled>
         <CartTextStyled>{t('cart.total', { summ: orderSumm })}</CartTextStyled>

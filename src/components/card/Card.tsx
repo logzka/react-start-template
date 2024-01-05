@@ -13,7 +13,7 @@ import { PencilSquareIcon } from '@heroicons/react/24/solid';
 /** Types */
 import { ICardProps } from './types';
 
-import { profileSelectors } from 'src/redux/profileReducer';
+import { profileSelectors } from '../../redux/profileReducer';
 
 const Card = memo(
   ({
