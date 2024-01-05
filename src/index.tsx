@@ -7,6 +7,9 @@ import App from './App';
 import { store } from './store';
 import { Provider } from 'react-redux';
 
+/** Initializer */
+import { Initializer } from './redux/initializer/Initializer';
+
 /** Contexts */
 import { LangContextProvider } from './contexts/lang.context';
 import { ThemeContextProvider } from './contexts/theme.context';
@@ -42,6 +45,7 @@ root.render(
     <Provider store={store}>
       <I18nextProvider i18n={i18next} defaultNS={'common'}>
         <BrowserRouter basename={'/'}>
+          <Initializer />
           <ThemeContextProvider>
             <LangContextProvider>
               <App />

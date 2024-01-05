@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from 'src/store';
 
 const profileSlice = createSlice({
   name: 'profile',
@@ -9,6 +10,7 @@ const profileSlice = createSlice({
     age: 0,
     phone: '',
     email: '',
+    role: '',
   },
   reducers: {
     profileAdd(state, action) {
@@ -25,10 +27,15 @@ const profileSlice = createSlice({
         age: 0,
         phone: '',
         email: '',
+        role: '',
       };
     },
   },
 });
+
+export const profileSelectors = {
+  get: (state: RootState): RootState['profile'] => state.profile,
+};
 
 export const { profileAdd, profileReset } = profileSlice.actions;
 export default profileSlice.reducer;

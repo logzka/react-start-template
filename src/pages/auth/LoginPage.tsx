@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 /** Components */
 import FormLoginTranslated from 'src/components/form/form-login/FormLogin';
 import { Inputs } from 'src/components/form/form-login/types';
-import { profileAdd } from 'src/redux/profileReducer';
+import { profileAdd, profileReset } from 'src/redux/profileReducer';
 import { tokenThunks, tokenSelectors } from 'src/redux/tokenReducer';
 import { RootState, useTypedDispatch } from 'src/store';
 
@@ -15,7 +15,11 @@ const LoginPage = () => {
   const token = useSelector<RootState, RootState['token']>(tokenSelectors.get);
 
   useEffect(() => {
-    if (token) dispatch(resetTokenThunk());
+    if (token) {
+      dispatch(resetTokenThunk());
+      /** Reset user data */
+      dispatch(profileReset());
+    }
   }, []);
 
   const navigate = useNavigate();
@@ -26,12 +30,13 @@ const LoginPage = () => {
     /** Set fake user data */
     dispatch(
       profileAdd({
-        firstName: 'Ivan',
-        lastName: 'Ivanov',
+        firstName: 'Administrator',
+        lastName: '',
         gender: 'male',
         age: 30,
         phone: '79609999999',
         email: event.email,
+        role: 'admin',
       })
     );
     goToHome();

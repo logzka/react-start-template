@@ -6,11 +6,11 @@ import { RootState } from 'src/store';
 type TId = TCake['id'];
 type TCartElement = TCake & { count: number };
 
-const initialState = cakesData.map((cake) => ({ ...cake, count: 1 }));
+// const initialState = cakesData.map((cake) => ({ ...cake, count: 1 }));
 
 const cartSlice = createSlice({
   name: 'cart',
-  initialState: initialState,
+  initialState: [],
   reducers: {
     addItem: (state, action: PayloadAction<TCartElement>) => [
       ...state.filter(({ id }) => id !== action.payload.id),

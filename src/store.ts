@@ -6,12 +6,14 @@ import { useDispatch } from 'react-redux';
 import profileReducer from './redux/profileReducer';
 import tokenReducer from './redux/tokenReducer';
 import cartReducer from './redux/cartReducer';
+import { initialized } from './redux/initializer/initializeReducer';
 
 export const store = configureStore({
   reducer: {
     profile: profileReducer,
     token: tokenReducer,
     cart: cartReducer,
+    initialize: initialized,
   },
 });
 
