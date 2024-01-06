@@ -1,5 +1,6 @@
-import React, { memo, PropsWithChildren, ReactNode } from 'react';
-import { withTranslation } from 'react-i18next';
+import React, { memo, PropsWithChildren } from 'react';
+import { useTranslation, withTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 /** Styles */
 import './card.scss';
 /** Components */
@@ -12,6 +13,8 @@ import { PencilSquareIcon } from '@heroicons/react/24/solid';
 /** Types */
 import { ICardProps } from './types';
 
+import { profileSelectors } from '../../redux/profileReducer';
+
 const Card = memo(
   ({
     type = 'default',
@@ -21,8 +24,16 @@ const Card = memo(
     priceOld,
     description,
     imageUrl,
-    t,
-  }: PropsWithChildren<ICardProps & { t?: (v: string) => ReactNode | string }>) => {
+    addToCartHandler,
+    id,
+    count = 0,
+  }: PropsWithChildren<
+    ICardProps & { id?: string; addToCartHandler?: (id: string, count: number) => void; count?: number }
+  >) => {
+    const { t } = useTranslation();
+
+    const { role } = useSelector(profileSelectors.get);
+
     const cardData = {
       category,
       name,
@@ -32,9 +43,11 @@ const Card = memo(
       imageUrl,
     };
 
-    const isEditable = true;
+    const handleSetNewCount = (newVal: number) => {
+      console.log('Add to cart', id, newVal);
+      addToCartHandler(id, newVal);
+    };
 
-    console.log('Card render', name);
     return (
       <div className={`card card--${type}`}>
         <div className="card--inner">
@@ -55,7 +68,7 @@ const Card = memo(
                 </div>
               </div>
               <div className="card--buttons">
-                {isEditable && (
+                {role === 'admin' && (
                   <ModalWrapper
                     actionNode={
                       <Button icon>
@@ -66,7 +79,7 @@ const Card = memo(
                     <FormEdit cardData={cardData} />
                   </ModalWrapper>
                 )}
-                <CartButton type="disabled" count={0}>
+                <CartButton setNewCount={handleSetNewCount} type="success" count={count}>
                   {t('add-to-cart')}
                 </CartButton>
               </div>

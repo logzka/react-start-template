@@ -2,6 +2,9 @@ import React, { useState, ReactNode, PropsWithChildren } from 'react';
 import { withTranslation } from 'react-i18next';
 import { createPortal } from 'react-dom';
 
+import { useSelector } from 'react-redux';
+
+import { profileSelectors } from 'src/redux/profileReducer';
 /** Components */
 import Modal from '../modal/Modal';
 

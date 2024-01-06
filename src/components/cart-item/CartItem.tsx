@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
 
 /** Styles */
@@ -17,7 +17,10 @@ const CartItem = ({
   description,
   imageUrls,
   t,
-}: React.PropsWithChildren<IPageProps & { t?: (v: string) => ReactNode | string }>) => {
+  handleOnClick,
+  id,
+  count = 0,
+}: React.PropsWithChildren<IPageProps & { handleOnClick?: (id: string) => void; id?: string; count?: number }>) => {
   return (
     <div className={`cart-item cart-item--${type}`}>
       <div className="cart-item--inner">
@@ -33,12 +36,15 @@ const CartItem = ({
               <span>&#32;/&#32;</span>
               <h2 className="cart-item--name">{name}</h2>
             </div>
-            <Button type="icon">╳</Button>
+            <Button onClick={() => handleOnClick(id)} type="icon">
+              ╳
+            </Button>
           </div>
           <p className="cart-item--description">{description}</p>
           <div className="cart-item--footer">
             <div className="cart-item--price__wrapper">
               <div className="cart-item--price">
+                {!count ? '' : `${count} x `}
                 {price}&#32;{t('rub')}
               </div>
               <div className="cart-item--price__old">

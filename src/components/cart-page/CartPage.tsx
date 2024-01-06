@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
 import { styled } from 'styled-components';
 
 /** Types */
@@ -28,26 +28,41 @@ const CartFooterStyled = styled.div`
 
 const CartTextStyled = styled.div``;
 
-const CartPage: FC<ICartPageProps> = ({ cartCakes, t }) => {
+const CartPage: FC<ICartPageProps> = ({ cartCakes, removeItemHandler }) => {
+  const { t } = useTranslation();
+
   const orderSumm = cartCakes.reduce((summ, cake) => {
-    return summ + parseFloat(cake.price);
+    return summ + parseFloat(cake.price) * cake.count;
   }, 0);
+
+  const itemOnClickHandler = (id: string) => {
+    console.log('Deleted', id);
+    removeItemHandler(id);
+  };
 
   return (
     <>
       <ItemListWrapperStyled>
-        {cartCakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
-          <CartItem
-            key={id}
-            type="default"
-            category={category}
-            name={name}
-            price={price}
-            priceOld={priceOld}
-            description={description}
-            imageUrls={[imageUrl]}
-          />
-        ))}
+        {cartCakes?.length
+          ? cartCakes.map(
+              ({ category, name, price, priceOld, description, imageUrl, id, count }) =>
+                count > 0 && (
+                  <CartItem
+                    key={id}
+                    id={id}
+                    type="default"
+                    category={category}
+                    name={name}
+                    price={price}
+                    priceOld={priceOld}
+                    description={description}
+                    imageUrls={[imageUrl]}
+                    count={count}
+                    handleOnClick={itemOnClickHandler}
+                  />
+                )
+            )
+          : 'Вы еще не добавили тортик'}
       </ItemListWrapperStyled>
       <CartFooterStyled>
         <CartTextStyled>{t('cart.total', { summ: orderSumm })}</CartTextStyled>
@@ -57,5 +72,4 @@ const CartPage: FC<ICartPageProps> = ({ cartCakes, t }) => {
   );
 };
 
-const CartPageTranslated = withTranslation('common')(CartPage);
-export default CartPageTranslated;
+export default withTranslation()(CartPage);

@@ -1,11 +1,15 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { connect } from 'react-redux';
+
+/** Api */
+import { genders } from '../../../api/genders';
 
 /** Types */
-import { IFormValues } from './types';
+import { IProfile, IFormProfileProps } from './types';
 
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
@@ -45,34 +49,22 @@ const schema = yup
   })
   .required();
 
-const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
+const FormProfile = ({ t, profile }: IFormProfileProps) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<IFormValues>({
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      gender: 'female',
-      age: 0,
-      phone: '',
-      email: '',
-    },
+  } = useForm<IProfile>({
+    defaultValues: profile,
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<IFormValues> = (data) => {
+  const onSubmit: SubmitHandler<IProfile> = (data) => {
     console.log(data);
     reset();
   };
-
-  const genders = [
-    { value: 'female', name: 'Женский' },
-    { value: 'male', name: 'Мужской' },
-  ];
 
   return (
     <FormStyled className="form form--profile" onSubmit={handleSubmit(onSubmit)}>
@@ -166,5 +158,9 @@ const FormProfile = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   );
 };
 
+const mapStateToProps = (state: { profile: IProfile }) => ({
+  profile: state.profile,
+});
+
 const FormProfileTranslated = withTranslation('common')(FormProfile);
-export default FormProfileTranslated;
+export default connect(mapStateToProps, null)(FormProfileTranslated);
