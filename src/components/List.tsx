@@ -1,25 +1,26 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, { ReactNode, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { withTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
-/** Api */
-import { cakes as cakesData } from '../api/cakes';
+/** Reducers */
+import { getCakes, loadMoreCakes } from 'src/redux/listReducer';
+import { cartAddItem } from 'src/redux/cartReducer';
+import { useTypedDispatch } from 'src/store';
+
+/** Types */
+import { TCake } from 'src/api/cakes';
+import { IProfile } from './form/form-profile/types';
 
 /** Components */
-// import Button from "./button/Button";
 import Card from './card/Card';
 import ModalWrapper from './modal-wrapper/ModalWrapper';
 import FormEdit from './form/form-edit/FormEdit';
 import Button from './button/Button';
-import { cartAddItem } from 'src/redux/cartReducer';
-import { useTypedDispatch } from 'src/store';
-import { profileSelectors } from 'src/redux/profileReducer';
 
-const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
+const List = ({ t, list, profile }: { t: (v: string) => ReactNode | string; list: TCake[]; profile: IProfile }) => {
   const dispatch = useTypedDispatch();
-  const { role } = useSelector(profileSelectors.get);
+  const { role } = profile;
 
   const { ref, inView } = useInView({
     /* Optional options */
@@ -28,36 +29,21 @@ const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
     delay: 700,
   });
 
-  const [cakes, setCakes] = useState(cakesData);
-
-  const addToCartHandler = (id: string, count: number) => {
-    dispatch(cartAddItem({ ...cakes.find((cake) => cake.id === id), count: count }));
-  };
-
-  const setCakesHandle = () => {
-    setCakes((prevCakes) => [
-      ...prevCakes,
-      {
-        ...prevCakes[Math.floor(Math.random() * prevCakes.length)],
-        id: uuidv4(),
-        count: 0,
-      },
-      {
-        ...prevCakes[Math.floor(Math.random() * prevCakes.length)],
-        id: uuidv4(),
-        count: 0,
-      },
-      {
-        ...prevCakes[Math.floor(Math.random() * prevCakes.length)],
-        id: uuidv4(),
-        count: 0,
-      },
-    ]);
-  };
+  useEffect(() => {
+    dispatch(getCakes());
+  }, []);
 
   useEffect(() => {
-    if (inView) setCakesHandle();
+    if (inView) loadMoreCakesHandle();
   }, [inView]);
+
+  const addToCartHandler = (id: string, count: number) => {
+    dispatch(cartAddItem({ ...list.find((cake) => cake.id === id), count: count }));
+  };
+
+  const loadMoreCakesHandle = () => {
+    dispatch(loadMoreCakes());
+  };
 
   return (
     <div className="list">
@@ -67,7 +53,7 @@ const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
         </ModalWrapper>
       )}
       <div className="list--wrapper">
-        {cakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
+        {list.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
           <Card
             key={id}
             id={id}
@@ -91,5 +77,10 @@ const List = ({ t }: { t: (v: string) => ReactNode | string }) => {
   );
 };
 
+const mapStateToProps = (state: { list: [], profile: IProfile }) => ({
+  list: state.list,
+  profile: state.profile,
+});
+
 const ListTranslated = withTranslation('common')(List);
-export default ListTranslated;
+export default connect(mapStateToProps, null)(ListTranslated);

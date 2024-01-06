@@ -9,6 +9,7 @@ export interface IProfile {
   age?: number;
   phone?: string;
   email?: string;
+  role?: string;
 }
 
 export interface IFormProfileProps {
