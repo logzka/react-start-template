@@ -2,9 +2,10 @@ import React, { ReactNode, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { useQuery } from '@apollo/client';
 
 /** Reducers */
-import { getCakes, loadMoreCakes } from 'src/redux/listReducer';
+import { setPagination, getCakes, loadMoreCakes } from 'src/redux/listReducer';
 import { cartAddItem } from 'src/redux/cartReducer';
 import { useTypedDispatch } from 'src/store';
 
@@ -18,7 +19,16 @@ import ModalWrapper from './modal-wrapper/ModalWrapper';
 import FormEdit from './form/form-edit/FormEdit';
 import Button from './button/Button';
 
-const List = ({ t, list, profile }: { t: (v: string) => ReactNode | string; list: TCake[]; profile: IProfile }) => {
+/** GQL schemes */
+import { GET_CAKES } from 'src/graphql/schemes/GET_CAKES';
+
+type TListProps = {
+  list: { cakes: TCake[]; pageSize: number; pageNumber: number };
+  profile: IProfile;
+  t?: (v: string) => ReactNode | string;
+};
+
+const List = ({ t, list: { cakes, pageSize, pageNumber }, profile }: TListProps) => {
   const dispatch = useTypedDispatch();
   const { role } = profile;
 
@@ -29,20 +39,36 @@ const List = ({ t, list, profile }: { t: (v: string) => ReactNode | string; list
     delay: 700,
   });
 
+  const { loading, error, data } = useQuery(GET_CAKES, {
+    variables: { pageSize, pageNumber },
+  });
+
+  const { products } = data || {};
+  const { getMany } = products || {};
+  const { data: cakesData, pagination } = getMany || {};
+  const { pageNumber: resPageNumber, pageSize: resPageSize } = pagination || {};
+
+  console.log(loading, error, data);
+  console.log(cakesData, resPageNumber, resPageSize);
+
   useEffect(() => {
     dispatch(getCakes());
   }, []);
 
   useEffect(() => {
-    if (inView) loadMoreCakesHandle();
+    if (inView) dispatch(loadMoreCakes());
+    // if (inView) {
+    //   dispatch(
+    //     setPagination({
+    //       pageNumber: resPageNumber + 1,
+    //       pageSize: resPageSize + 10,
+    //     })
+    //   );
+    // }
   }, [inView]);
 
   const addToCartHandler = (id: string, count: number) => {
-    dispatch(cartAddItem({ ...list.find((cake) => cake.id === id), count: count }));
-  };
-
-  const loadMoreCakesHandle = () => {
-    dispatch(loadMoreCakes());
+    dispatch(cartAddItem({ ...cakes.find((cake) => cake.id === id), count: count }));
   };
 
   return (
@@ -53,7 +79,7 @@ const List = ({ t, list, profile }: { t: (v: string) => ReactNode | string; list
         </ModalWrapper>
       )}
       <div className="list--wrapper">
-        {list.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
+        {cakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
           <Card
             key={id}
             id={id}
@@ -77,7 +103,7 @@ const List = ({ t, list, profile }: { t: (v: string) => ReactNode | string; list
   );
 };
 
-const mapStateToProps = (state: { list: [], profile: IProfile }) => ({
+const mapStateToProps = (state: TListProps) => ({
   list: state.list,
   profile: state.profile,
 });
