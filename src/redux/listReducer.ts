@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from 'src/store';
 import { v4 as uuidv4 } from 'uuid';
 
 /** Api */
@@ -7,37 +6,51 @@ import { cakes } from '../api/cakes';
 
 const listSlice = createSlice({
   name: 'list',
-  initialState: [],
+  initialState: {
+    cakes: [],
+    pageSize: 10,
+    pageNumber: 1,
+  },
   reducers: {
-    getCakes() {
-      return cakes;
+    setPagination(state, action) {
+      console.log('payload pagination', action.payload);
+      return {
+        ...state,
+        pageNumber: action.payload.pageNumber,
+        pageSize: action.payload.pageSize,
+      };
+    },
+    getCakes(state) {
+      return {
+        ...state,
+        cakes: cakes,
+      };
     },
     loadMoreCakes(state) {
-      return [
+      return {
         ...state,
-        {
-          ...state[Math.floor(Math.random() * state.length)],
-          id: uuidv4(),
-          count: 0,
-        },
-        {
-          ...state[Math.floor(Math.random() * state.length)],
-          id: uuidv4(),
-          count: 0,
-        },
-        {
-          ...state[Math.floor(Math.random() * state.length)],
-          id: uuidv4(),
-          count: 0,
-        },
-      ];
+        cakes: [
+          ...state.cakes,
+          {
+            ...state.cakes[Math.floor(Math.random() * state.cakes.length)],
+            id: uuidv4(),
+            count: 0,
+          },
+          {
+            ...state.cakes[Math.floor(Math.random() * state.cakes.length)],
+            id: uuidv4(),
+            count: 0,
+          },
+          {
+            ...state.cakes[Math.floor(Math.random() * state.cakes.length)],
+            id: uuidv4(),
+            count: 0,
+          },
+        ],
+      };
     },
   },
 });
 
-export const listSelectors = {
-  get: (state: RootState): RootState['list'] => state.list,
-};
-
-export const { getCakes, loadMoreCakes } = listSlice.actions;
+export const { setPagination, getCakes, loadMoreCakes } = listSlice.actions;
 export default listSlice.reducer;

@@ -4,6 +4,8 @@ import { Outlet, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { tokenSelectors } from 'src/redux/tokenReducer';
 import { RootState } from 'src/store';
+/** Initializer */
+import { Initializer } from '../../redux/initializer/Initializer';
 
 /** Contexts */
 import { ThemeContext } from '../../contexts/theme.context';
@@ -49,6 +51,8 @@ const HomeTranslated = () => {
 
   return (
     <Layout>
+      <Initializer />
+
       <Header>
         <NavLink to={'/'}>
           <Logo />
