@@ -1,8 +1,8 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { useQuery } from '@apollo/client';
+import { useQuery, useLazyQuery } from '@apollo/client';
 
 /** Reducers */
 import { setPagination, getCakes, loadMoreCakes } from 'src/redux/listReducer';
@@ -10,23 +10,16 @@ import { cartAddItem } from 'src/redux/cartReducer';
 import { useTypedDispatch } from 'src/store';
 
 /** Types */
-import { TCake } from 'src/api/cakes';
-import { IProfile } from './form/form-profile/types';
+import { TListProps } from './types';
 
 /** Components */
-import Card from './card/Card';
-import ModalWrapper from './modal-wrapper/ModalWrapper';
-import FormEdit from './form/form-edit/FormEdit';
-import Button from './button/Button';
+import Card from '../card/Card';
+import ModalWrapper from '../modal-wrapper/ModalWrapper';
+import FormEdit from '../form/form-edit/FormEdit';
+import Button from '../button/Button';
 
 /** GQL schemes */
 import { GET_CAKES } from 'src/graphql/schemes/GET_CAKES';
-
-type TListProps = {
-  list: { cakes: TCake[]; pageSize: number; pageNumber: number };
-  profile: IProfile;
-  t?: (v: string) => ReactNode | string;
-};
 
 const List = ({ t, list: { cakes, pageSize, pageNumber }, profile }: TListProps) => {
   const dispatch = useTypedDispatch();
@@ -39,7 +32,11 @@ const List = ({ t, list: { cakes, pageSize, pageNumber }, profile }: TListProps)
     delay: 700,
   });
 
-  const { loading, error, data } = useQuery(GET_CAKES, {
+  // const { loading, error, data } = useQuery(GET_CAKES, {
+  //   variables: { pageSize, pageNumber },
+  // });
+
+  const [getCakesLazy, { data }] = useLazyQuery(GET_CAKES, {
     variables: { pageSize, pageNumber },
   });
 
@@ -48,23 +45,24 @@ const List = ({ t, list: { cakes, pageSize, pageNumber }, profile }: TListProps)
   const { data: cakesData, pagination } = getMany || {};
   const { pageNumber: resPageNumber, pageSize: resPageSize } = pagination || {};
 
-  console.log(loading, error, data);
   console.log(cakesData, resPageNumber, resPageSize);
 
   useEffect(() => {
     dispatch(getCakes());
+    getCakesLazy().then(console.log).catch(console.error);
   }, []);
 
   useEffect(() => {
-    if (inView) dispatch(loadMoreCakes());
-    // if (inView) {
-    //   dispatch(
-    //     setPagination({
-    //       pageNumber: resPageNumber + 1,
-    //       pageSize: resPageSize + 10,
-    //     })
-    //   );
-    // }
+    if (inView) {
+      dispatch(loadMoreCakes());
+      dispatch(
+        setPagination({
+          pageNumber: resPageNumber + 1,
+          pageSize: resPageSize + 10,
+        })
+      );
+      getCakesLazy().then(console.log).catch(console.error);
+    }
   }, [inView]);
 
   const addToCartHandler = (id: string, count: number) => {
@@ -98,7 +96,6 @@ const List = ({ t, list: { cakes, pageSize, pageNumber }, profile }: TListProps)
       <span ref={ref} className="list--load-more__spin">
         &#8635;
       </span>
-      {/* <Button className='list--load-more' onClick={setCakesHandle}>Загрузить еще</Button> */}
     </div>
   );
 };

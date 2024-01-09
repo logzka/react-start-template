@@ -1,7 +1,7 @@
 import React from 'react';
 
 /** Components */
-import List from '../../components/List';
+import List from '../../components/list/List';
 
 const ListPage = () => <List />;
 

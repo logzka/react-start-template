@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { connect } from 'react-redux';
+import { useMutation, useLazyQuery } from '@apollo/client';
 
 /** Api */
 import { genders } from '../../../api/genders';
@@ -16,6 +17,10 @@ import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-comp
 
 /** Components */
 import Input from '../../input/Input';
+
+/** GQL */
+import { GET_PROFILE } from 'src/graphql/schemes/GET_PROFILE';
+import { UPDATE_PROFILE } from 'src/graphql/schemes/UPDATE_PROFILE';
 
 yup.setLocale({
   mixed: {
@@ -61,10 +66,28 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
     resolver: yupResolver(schema),
   });
 
+  const [getProfile] = useLazyQuery(GET_PROFILE);
+  const [updateProfile, { loading: updateProfileLoading }] = useMutation(UPDATE_PROFILE);
+
   const onSubmit: SubmitHandler<IProfile> = (data) => {
     console.log(data);
+    updateProfile({
+      variables: {
+        input: {
+          name: data.firstName,
+          email: data.email,
+          // id: data.id,
+        },
+      },
+    })
+      .then(console.log)
+      .catch(console.log);
     reset();
   };
+
+  useEffect(() => {
+    if (!profile) getProfile().then(console.log).catch(console.error);
+  }, []);
 
   return (
     <FormStyled className="form form--profile" onSubmit={handleSubmit(onSubmit)}>
