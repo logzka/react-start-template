@@ -19,7 +19,7 @@ import FormEdit from '../form/form-edit/FormEdit';
 import Button from '../button/Button';
 
 /** GQL schemes */
-import { GET_CAKES } from 'src/graphql/schemes/GET_CAKES';
+import { GET_CAKES } from '../../graphql/schemes/GET_CAKES';
 
 const List = ({ t, list: { cakes, pageSize, pageNumber }, profile }: TListProps) => {
   const dispatch = useTypedDispatch();

@@ -19,8 +19,8 @@ import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-comp
 import Input from '../../input/Input';
 
 /** GQL */
-import { GET_PROFILE } from 'src/graphql/schemes/GET_PROFILE';
-import { UPDATE_PROFILE } from 'src/graphql/schemes/UPDATE_PROFILE';
+import { GET_PROFILE } from '../../../graphql/schemes/GET_PROFILE';
+import { UPDATE_PROFILE } from '../../../graphql/schemes/UPDATE_PROFILE';
 
 yup.setLocale({
   mixed: {
