@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useLazyQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 /** Components */
 import FormLoginTranslated from 'src/components/form/form-login/FormLogin';
@@ -31,7 +31,7 @@ const LoginPage = () => {
   const goToHome = () => navigate('/');
 
   function onSubmit(event: Inputs) {
-    login({ variables: event, errorPolicy: 'none' })
+    login({ variables: event })
       .then((res) => {
         const {
           data: {
@@ -58,16 +58,11 @@ const LoginPage = () => {
         goToHome();
       })
       .catch((err) => {
-        // TODO: показывать уведомление, например, или вкорачить в ошибки формы
-        console.log(err);
+        console.log({ 'Login error': err });
       });
   }
 
-  // if (loading) return 'Submitting...';
-  // if (error) console.log(error);
-  // if (error) return `Submission error! ${error.message}`;
-
-  return <FormLoginTranslated onSubmitHandler={onSubmit} />;
+  return <FormLoginTranslated onSubmitHandler={onSubmit} errorMessage={error ? error.message : ''} />;
 };
 
 export default LoginPage;

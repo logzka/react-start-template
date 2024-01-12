@@ -7,6 +7,7 @@
   "rub": "руб.",
   "ru": "Рус.",
   "en": "Англ.",
+  "User not found or invalid password": "Пользователь не найден или неверный пароль",
   "form": {
     "name": "Имя",
     "surname": "Фамилия",

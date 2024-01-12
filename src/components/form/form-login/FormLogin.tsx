@@ -29,7 +29,7 @@ const schema: yup.ObjectSchema<Inputs> = yup
   })
   .required();
 
-const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler }) => {
+const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler, errorMessage }) => {
   const { t } = useTranslation();
   const {
     handleSubmit,
@@ -66,6 +66,7 @@ const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler }) => {
           render={({ field }) => <Input placeholder={t('form.password') as string} {...field} />}
         />
         {errors.password && <FormErrorStyled className="form--error">{t(errors.password?.message)}</FormErrorStyled>}
+        {errorMessage && <FormErrorStyled className="form--error">{t(errorMessage)}</FormErrorStyled>}
       </FormItemStyled>
 
       <input className="button button--primary button--medium" type="submit" value={t('form.login') as string} />
