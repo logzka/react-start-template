@@ -63,7 +63,7 @@ const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler, errorMessage }) 
         <Controller
           name="password"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.password') as string} {...field} />}
+          render={({ field }) => <Input type="password" placeholder={t('form.password') as string} {...field} />}
         />
         {errors.password && <FormErrorStyled className="form--error">{t(errors.password?.message)}</FormErrorStyled>}
         {errorMessage && <FormErrorStyled className="form--error">{t(errorMessage)}</FormErrorStyled>}
