@@ -6,7 +6,8 @@ import './styles/_variables.scss';
 import App from './App';
 import { store } from './store';
 import { Provider } from 'react-redux';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, gql } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
 /** Contexts */
 import { LangContextProvider } from './contexts/lang.context';
@@ -37,9 +38,27 @@ i18next.init<TOptions>({
   },
 });
 
+/** https://www.apollographql.com/docs/react/networking/authentication#header */
+
+const httpLink = createHttpLink({
+  uri: 'https://otus-graphql.beelzebub.uk/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('token');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
 /** https://www.apollographql.com/docs/react/data/queries */
 const client = new ApolloClient({
-  uri: 'https://otus-graphql.beelzebub.uk/graphql',
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
