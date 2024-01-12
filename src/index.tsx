@@ -41,7 +41,7 @@ i18next.init<TOptions>({
 /** https://www.apollographql.com/docs/react/networking/authentication#header */
 
 const httpLink = createHttpLink({
-  uri: 'https://otus-graphql.beelzebub.uk/graphql',
+  uri: process.env.GRAPHQL_URI || 'https://otus-graphql.beelzebub.uk/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
