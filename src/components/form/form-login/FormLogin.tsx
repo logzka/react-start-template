@@ -6,7 +6,7 @@ import { useTranslation, withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 /** Components */
-import Input from '../../input/Input';
+import Input from 'src/components/input/Input';
 
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
