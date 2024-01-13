@@ -30,6 +30,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const goToHome = () => navigate('/');
 
+  const onRegisterClickHandler = () => navigate('/register');
+
   function onSubmit(event: Inputs) {
     login({ variables: event })
       .then((res) => {
@@ -62,7 +64,13 @@ const LoginPage = () => {
       });
   }
 
-  return <FormLoginTranslated onSubmitHandler={onSubmit} errorMessage={error ? error.message : ''} />;
+  return (
+    <FormLoginTranslated
+      onSubmitHandler={onSubmit}
+      onClickHandler={onRegisterClickHandler}
+      errorMessage={error ? error.message : ''}
+    />
+  );
 };
 
 export default LoginPage;

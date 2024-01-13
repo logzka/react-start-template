@@ -45,6 +45,7 @@ const App = () => {
         <Route path="profile" element={<ProfilePage />} />
         <Route path="cart" element={<CartPage />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<LoginPage />} />
         {/* <Route path='*' element={<NoMatch />} /> */}
       </Route>
     </Routes>
