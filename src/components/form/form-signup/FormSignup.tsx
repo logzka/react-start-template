@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
+import React, { FC } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import * as yup from 'yup';
-import { withTranslation } from 'react-i18next';
+import { withTranslation, useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 /** Styled Components */
@@ -10,7 +10,7 @@ import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-comp
 import Input from '../../input/Input';
 
 /** Types */
-import { Inputs } from './types';
+import { Inputs, IFormSignup } from './types';
 
 yup.setLocale({
   mixed: {
@@ -34,12 +34,13 @@ const schema: yup.ObjectSchema<Inputs> = yup
   })
   .required();
 
-const FormSignup = ({ t }: { t?: (v: string) => ReactNode | string }) => {
+const FormSignup: FC<IFormSignup> = ({ onSubmitHandler, errorMessage }) => {
+  const { t } = useTranslation();
   const {
     handleSubmit,
     reset,
     control,
-    formState: { errors, isValid, isSubmitted },
+    formState: { errors },
     // TODO: избавиться от Partial
   } = useForm<Partial<Inputs>>({
     mode: 'onChange',
@@ -48,6 +49,7 @@ const FormSignup = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   });
 
   const customHandleSubmit: SubmitHandler<Inputs> = (values) => {
+    onSubmitHandler(values);
     console.log('values: ', values);
     reset();
   };
@@ -88,6 +90,8 @@ const FormSignup = ({ t }: { t?: (v: string) => ReactNode | string }) => {
           render={({ field }) => <Input placeholder={t('form.password2') as string} {...field} />}
         />
         {errors.password2 && <FormErrorStyled className="form--error">{t(errors.password2?.message)}</FormErrorStyled>}
+
+        {errorMessage && <FormErrorStyled className="form--error">{t(errorMessage)}</FormErrorStyled>}
       </FormItemStyled>
 
       <input className="button button--primary button--medium" type="submit" value={t('form.singup') as string} />
@@ -95,5 +99,4 @@ const FormSignup = ({ t }: { t?: (v: string) => ReactNode | string }) => {
   );
 };
 
-const FormSignupTranslated = withTranslation('common')(FormSignup);
-export default FormSignupTranslated;
+export default withTranslation()(FormSignup);
