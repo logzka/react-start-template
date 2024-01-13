@@ -21,9 +21,9 @@ const Card = memo(
     category,
     name,
     price,
-    priceOld,
-    description,
-    imageUrl,
+    oldPrice,
+    desc,
+    photo,
     addToCartHandler,
     id,
     count = 0,
@@ -38,9 +38,9 @@ const Card = memo(
       category,
       name,
       price,
-      priceOld,
-      description,
-      imageUrl,
+      oldPrice,
+      desc,
+      photo,
     };
 
     const handleSetNewCount = (newVal: number) => {
@@ -52,19 +52,19 @@ const Card = memo(
       <div className={`card card--${type}`}>
         <div className="card--inner">
           <div className="card--image__wrapper">
-            <img className="card--image" src={imageUrl} alt={name} />
+            <img className="card--image" src={photo} alt={name} />
           </div>
           <div className="card--content">
             <span className="card--category">{category.name}</span>
             <h2 className="card--name">{name}</h2>
-            <p className="card--description">{description}</p>
+            <p className="card--description">{desc}</p>
             <div className="card--footer">
               <div className="card--price__wrapper">
                 <div className="card--price">
                   {price}&#32;{t('rub')}
                 </div>
                 <div className="card--price__old">
-                  {priceOld}&#32;{t('rub')}
+                  {oldPrice}&#32;{t('rub')}
                 </div>
               </div>
               <div className="card--buttons">

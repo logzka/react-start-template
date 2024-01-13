@@ -1,14 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
-
-/** Api */
-import { cakes } from '../api/cakes';
 
 const listSlice = createSlice({
   name: 'list',
   initialState: {
     cakes: [],
-    pageSize: 10,
+    pageSize: 3,
     pageNumber: 1,
   },
   reducers: {
@@ -20,37 +16,14 @@ const listSlice = createSlice({
         pageSize: action.payload.pageSize,
       };
     },
-    getCakes(state) {
+    setCakes(state, action) {
       return {
         ...state,
-        cakes: cakes,
-      };
-    },
-    loadMoreCakes(state) {
-      return {
-        ...state,
-        cakes: [
-          ...state.cakes,
-          {
-            ...state.cakes[Math.floor(Math.random() * state.cakes.length)],
-            id: uuidv4(),
-            count: 0,
-          },
-          {
-            ...state.cakes[Math.floor(Math.random() * state.cakes.length)],
-            id: uuidv4(),
-            count: 0,
-          },
-          {
-            ...state.cakes[Math.floor(Math.random() * state.cakes.length)],
-            id: uuidv4(),
-            count: 0,
-          },
-        ],
+        cakes: action.payload,
       };
     },
   },
 });
 
-export const { setPagination, getCakes, loadMoreCakes } = listSlice.actions;
+export const { setPagination, setCakes } = listSlice.actions;
 export default listSlice.reducer;

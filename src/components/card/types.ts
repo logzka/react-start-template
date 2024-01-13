@@ -3,9 +3,9 @@ export interface ICardProps {
   category: TCategory;
   name: string;
   price: number;
-  priceOld: number;
-  description: string;
-  imageUrl: string;
+  oldPrice: number;
+  desc: string;
+  photo: string;
   // t?: (v: string) => ReactNode | string,
 }
 

@@ -2,15 +2,17 @@ import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
+import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev';
 
 /** Reducers */
-import { setPagination, getCakes, loadMoreCakes } from 'src/redux/listReducer';
+// import { setPagination, setCakes } from 'src/redux/listReducer';
 import { cartAddItem } from 'src/redux/cartReducer';
 import { useTypedDispatch } from 'src/store';
 
 /** Types */
-import { TListProps } from './types';
+import { TListProps, TPagination } from './types';
+import { TCake } from 'src/api/cakes';
 
 /** Components */
 import Card from '../card/Card';
@@ -21,7 +23,7 @@ import Button from '../button/Button';
 /** GQL schemes */
 import { GET_CAKES } from '../../graphql/schemes/GET_CAKES';
 
-const List = ({ t, list: { cakes, pageSize, pageNumber }, profile }: TListProps) => {
+const List = ({ t, profile }: TListProps) => {
   const dispatch = useTypedDispatch();
   const { role } = profile;
 
@@ -32,38 +34,25 @@ const List = ({ t, list: { cakes, pageSize, pageNumber }, profile }: TListProps)
     delay: 700,
   });
 
-  // const { loading, error, data } = useQuery(GET_CAKES, {
-  //   variables: { pageSize, pageNumber },
-  // });
+  const [getCakesLazy, { data, previousData, loading, fetchMore }] = useLazyQuery(GET_CAKES);
 
-  const [getCakesLazy, { data }] = useLazyQuery(GET_CAKES, {
-    variables: { pageSize, pageNumber },
-  });
+  console.log(data, loading);
 
-  const { products } = data || {};
+  const { products } = data || previousData || {};
   const { getMany } = products || {};
-  const { data: cakesData, pagination } = getMany || {};
-  const { pageNumber: resPageNumber, pageSize: resPageSize } = pagination || {};
-
-  console.log(cakesData, resPageNumber, resPageSize);
+  const { data: cakes, pagination }: { data: TCake[]; pagination: TPagination } = getMany || {};
+  const { pageSize, total } = pagination || {};
 
   useEffect(() => {
-    dispatch(getCakes());
-    getCakesLazy().then(console.log).catch(console.error);
+    getCakesLazy({ variables: { pageNumber: 1, pageSize: 3 } });
   }, []);
 
   useEffect(() => {
-    if (inView) {
-      dispatch(loadMoreCakes());
-      dispatch(
-        setPagination({
-          pageNumber: resPageNumber + 1,
-          pageSize: resPageSize + 10,
-        })
-      );
-      getCakesLazy().then(console.log).catch(console.error);
-    }
+    if (inView && total > pageSize) fetchMore({ variables: { pageNumber: 1, pageSize: pageSize + 3 } });
   }, [inView]);
+
+  // loadDevMessages();
+  // loadErrorMessages();
 
   const addToCartHandler = (id: string, count: number) => {
     dispatch(cartAddItem({ ...cakes.find((cake) => cake.id === id), count: count }));
@@ -77,7 +66,7 @@ const List = ({ t, list: { cakes, pageSize, pageNumber }, profile }: TListProps)
         </ModalWrapper>
       )}
       <div className="list--wrapper">
-        {cakes.map(({ category, name, price, priceOld, description, imageUrl, id }) => (
+        {(cakes || []).map(({ category, name, price, oldPrice, desc, photo, id }) => (
           <Card
             key={id}
             id={id}
@@ -85,17 +74,22 @@ const List = ({ t, list: { cakes, pageSize, pageNumber }, profile }: TListProps)
             category={category}
             name={name}
             price={+price}
-            priceOld={+priceOld}
-            description={description}
-            imageUrl={imageUrl}
+            oldPrice={+oldPrice}
+            desc={desc}
+            photo={photo}
             addToCartHandler={addToCartHandler}
           />
         ))}
       </div>
 
-      <span ref={ref} className="list--load-more__spin">
-        &#8635;
-      </span>
+      {cakes &&
+        (total > pageSize ? (
+          <span ref={ref} className="list--load-more__spin">
+            &#8635;
+          </span>
+        ) : (
+          <span>Это все наши тортики :)</span>
+        ))}
     </div>
   );
 };
