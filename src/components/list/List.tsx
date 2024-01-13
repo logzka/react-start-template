@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useLazyQuery } from '@apollo/client';
-import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev';
+import { loadDevMessages } from '@apollo/client/dev';
 
 /** Reducers */
 // import { setPagination, setCakes } from 'src/redux/listReducer';
@@ -48,11 +48,10 @@ const List = ({ t, profile }: TListProps) => {
   }, []);
 
   useEffect(() => {
-    if (inView && total > pageSize) fetchMore({ variables: { pageNumber: 1, pageSize: pageSize + 3 } });
+    if (inView && total > pageSize) fetchMore({ variables: { pageSize: pageSize + 3 } });
   }, [inView]);
 
-  // loadDevMessages();
-  // loadErrorMessages();
+  loadDevMessages();
 
   const addToCartHandler = (id: string, count: number) => {
     dispatch(cartAddItem({ ...cakes.find((cake) => cake.id === id), count: count }));
