@@ -43,16 +43,45 @@ const client = new ApolloClient({
   cache: new InMemoryCache({
     typePolicies: {
       ProductsResponse: {
+        keyFields: [],
         fields: {
           data: {
-            merge(existing, incoming: any[], { readField, mergeObjects }) {
-              console.log(existing);
-              console.log(incoming);
+            keyArgs: false,
+            merge(existing = [], incoming, { variables }) {
+              // const { pageNumber, pageSize } = variables;
+              // console.log('=== MERGING ===');
+              // console.log('vars', variables);
+              // console.log('inc', incoming);
+              // console.log('exist', existing);
 
-              return [...incoming];
+              // const merged = existing ? existing.slice(0) : [];
+
+              // const offset = (pageNumber - 1) * pageSize;
+              // for (let i = 0; i < incoming.length; ++i) {
+              //   merged[offset + i] = incoming[i];
+              // }
+
+              // console.log('merged', merged);
+              // return merged;
+
+              return [...existing, ...incoming];
             },
+
+            // read(existing, { variables: { pageNumber, pageSize } }) {
+            //   // console.log('=== READING ===');
+            //   const offset = (pageNumber - 1) * pageSize;
+            //   const limit = pageSize;
+
+            //   // console.log('read existing', { offset, limit, existing });
+            //   // console.log('return', existing && existing.slice(offset, offset + limit));
+
+            //   return existing && existing.slice(offset, offset + limit);
+            // },
           },
         },
+      },
+      ProductQueries: {
+        keyFields: [],
       },
     },
   }),

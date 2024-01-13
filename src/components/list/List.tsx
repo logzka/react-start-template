@@ -3,7 +3,6 @@ import { useInView } from 'react-intersection-observer';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useLazyQuery } from '@apollo/client';
-import { loadDevMessages } from '@apollo/client/dev';
 
 /** Reducers */
 // import { setPagination, setCakes } from 'src/redux/listReducer';
@@ -34,24 +33,27 @@ const List = ({ t, profile }: TListProps) => {
     delay: 700,
   });
 
-  const [getCakesLazy, { data, previousData, loading, fetchMore }] = useLazyQuery(GET_CAKES);
-
-  console.log(data, loading);
+  const [getCakesLazy, { data, previousData, fetchMore }] = useLazyQuery(GET_CAKES, {
+    variables: { pageSize: 3 },
+  });
 
   const { products } = data || previousData || {};
   const { getMany } = products || {};
   const { data: cakes, pagination }: { data: TCake[]; pagination: TPagination } = getMany || {};
-  const { pageSize, total } = pagination || {};
+  const { pageNumber, total } = pagination || {};
+
+  console.log('pageNumber', pageNumber);
 
   useEffect(() => {
-    getCakesLazy({ variables: { pageNumber: 1, pageSize: 3 } });
+    getCakesLazy({ variables: { pageNumber: 1 } });
   }, []);
 
   useEffect(() => {
-    if (inView && total > pageSize) fetchMore({ variables: { pageSize: pageSize + 3 } });
+    console.log('fetch more, requested page:', pageNumber + 1);
+    if (inView && pageNumber + 1) {
+      fetchMore({ variables: { pageNumber: pageNumber + 1 } });
+    }
   }, [inView]);
-
-  loadDevMessages();
 
   const addToCartHandler = (id: string, count: number) => {
     dispatch(cartAddItem({ ...cakes.find((cake) => cake.id === id), count: count }));
@@ -82,7 +84,7 @@ const List = ({ t, profile }: TListProps) => {
       </div>
 
       {cakes &&
-        (total > pageSize ? (
+        (total > cakes.length ? (
           <span ref={ref} className="list--load-more__spin">
             &#8635;
           </span>
