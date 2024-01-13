@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { genders } from '../../../api/genders';
 
 /** Types */
-import { IProfile, IFormProfileProps } from './types';
+import { IProfile, IFormProfileProps, TProfileFormKeys } from './types';
 
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
@@ -55,6 +55,7 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<IProfile>({
     defaultValues: profile,
     mode: 'onChange',
@@ -65,6 +66,15 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
     console.log(data);
     reset();
   };
+
+  useEffect(() => {
+    let key = 'firstName';
+
+    for (key in profile) {
+      const uKey = profile[key as TProfileFormKeys];
+      setValue(key as TProfileFormKeys, uKey);
+    }
+  }, [profile]);
 
   return (
     <FormStyled className="form form--profile" onSubmit={handleSubmit(onSubmit)}>
