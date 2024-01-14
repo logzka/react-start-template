@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { store } from './store';
 import { Provider } from 'react-redux';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
+import { client } from './apollo';
 
 import './styles/_reset.scss';
 import './styles/index.scss';
@@ -36,29 +37,6 @@ i18next.init<TOptions>({
       common: common_ru,
     },
   },
-});
-
-/** https://www.apollographql.com/docs/react/data/queries */
-const client = new ApolloClient({
-  uri: 'https://otus-graphql.beelzebub.uk/graphql',
-  cache: new InMemoryCache({
-    typePolicies: {
-      ProductsResponse: {
-        keyFields: [],
-        fields: {
-          data: {
-            // keyArgs: false,
-            merge(existing = [], incoming) {
-              return [...existing, ...incoming];
-            },
-          },
-        },
-      },
-      ProductQueries: {
-        keyFields: [],
-      },
-    },
-  }),
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

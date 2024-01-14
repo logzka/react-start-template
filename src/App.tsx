@@ -27,7 +27,7 @@ const App = () => {
       dispatch(
         profileAdd({
           firstName: 'Administrator',
-          lastName: '',
+          lastName: 'Administrator',
           gender: 'male',
           age: 30,
           phone: '79609999999',
