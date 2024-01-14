@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/_reset.scss';
-import './styles/index.scss';
-import './styles/_variables.scss';
 import App from './App';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, gql } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+
+import './styles/_reset.scss';
+import './styles/index.scss';
+import './styles/_variables.scss';
 
 /** Contexts */
 import { LangContextProvider } from './contexts/lang.context';
@@ -51,7 +52,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      Authorization: token ? `Bearer ${token}` : '',
     },
   };
 });
@@ -59,7 +60,24 @@ const authLink = setContext((_, { headers }) => {
 /** https://www.apollographql.com/docs/react/data/queries */
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      ProductsResponse: {
+        keyFields: [],
+        fields: {
+          data: {
+            // keyArgs: false,
+            merge(existing = [], incoming) {
+              return [...existing, ...incoming];
+            },
+          },
+        },
+      },
+      ProductQueries: {
+        keyFields: [],
+      },
+    },
+  }),
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
