@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/_reset.scss';
-import './styles/index.scss';
-import './styles/_variables.scss';
 import App from './App';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+import './styles/_reset.scss';
+import './styles/index.scss';
+import './styles/_variables.scss';
 
 /** Contexts */
 import { LangContextProvider } from './contexts/lang.context';
@@ -46,37 +47,10 @@ const client = new ApolloClient({
         keyFields: [],
         fields: {
           data: {
-            keyArgs: false,
-            merge(existing = [], incoming, { variables }) {
-              // const { pageNumber, pageSize } = variables;
-              // console.log('=== MERGING ===');
-              // console.log('vars', variables);
-              // console.log('inc', incoming);
-              // console.log('exist', existing);
-
-              // const merged = existing ? existing.slice(0) : [];
-
-              // const offset = (pageNumber - 1) * pageSize;
-              // for (let i = 0; i < incoming.length; ++i) {
-              //   merged[offset + i] = incoming[i];
-              // }
-
-              // console.log('merged', merged);
-              // return merged;
-
+            // keyArgs: false,
+            merge(existing = [], incoming) {
               return [...existing, ...incoming];
             },
-
-            // read(existing, { variables: { pageNumber, pageSize } }) {
-            //   // console.log('=== READING ===');
-            //   const offset = (pageNumber - 1) * pageSize;
-            //   const limit = pageSize;
-
-            //   // console.log('read existing', { offset, limit, existing });
-            //   // console.log('return', existing && existing.slice(offset, offset + limit));
-
-            //   return existing && existing.slice(offset, offset + limit);
-            // },
           },
         },
       },

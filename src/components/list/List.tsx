@@ -33,24 +33,21 @@ const List = ({ t, profile }: TListProps) => {
     delay: 700,
   });
 
-  const [getCakesLazy, { data, previousData, fetchMore }] = useLazyQuery(GET_CAKES, {
-    variables: { pageSize: 3 },
+  const [getCakesLazy, { data, fetchMore }] = useLazyQuery(GET_CAKES, {
+    variables: { pageSize: 3, pageNumber: 1 },
   });
 
-  const { products } = data || previousData || {};
+  const { products } = data || {};
   const { getMany } = products || {};
   const { data: cakes, pagination }: { data: TCake[]; pagination: TPagination } = getMany || {};
   const { pageNumber, total } = pagination || {};
 
-  console.log('pageNumber', pageNumber);
-
   useEffect(() => {
-    getCakesLazy({ variables: { pageNumber: 1 } });
+    getCakesLazy();
   }, []);
 
   useEffect(() => {
-    console.log('fetch more, requested page:', pageNumber + 1);
-    if (inView && pageNumber + 1) {
+    if (inView && total > cakes.length) {
       fetchMore({ variables: { pageNumber: pageNumber + 1 } });
     }
   }, [inView]);
@@ -96,7 +93,6 @@ const List = ({ t, profile }: TListProps) => {
 };
 
 const mapStateToProps = (state: TListProps) => ({
-  list: state.list,
   profile: state.profile,
 });
 
