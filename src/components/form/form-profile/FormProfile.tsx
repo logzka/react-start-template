@@ -92,7 +92,7 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
     let key = 'firstName';
     for (key in profile) {
       const uKey = profile[key as TProfileFormKeys];
-      setValue(key as TProfileFormKeys, uKey || '');
+      setValue(key as TProfileFormKeys, uKey || ' ');
     }
   }, [profile]);
 
