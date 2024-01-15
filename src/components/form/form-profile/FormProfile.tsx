@@ -67,7 +67,7 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
   });
 
   const [getProfile] = useLazyQuery(GET_PROFILE);
-  const [updateProfile, { loading: updateProfileLoading }] = useMutation(UPDATE_PROFILE);
+  const [updateProfile, { loading }] = useMutation(UPDATE_PROFILE);
 
   const onSubmit: SubmitHandler<IProfile> = (data) => {
     console.log(data);
@@ -75,13 +75,11 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
       variables: {
         input: {
           name: data.firstName,
-          email: data.email,
-          // id: data.id,
         },
       },
     })
       .then(console.log)
-      .catch(console.log);
+      .catch(console.error);
     reset();
   };
 

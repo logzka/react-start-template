@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { store } from './store';
 import { Provider } from 'react-redux';
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, gql } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import { ApolloProvider } from '@apollo/client';
+import { client } from './apollo';
 
 import './styles/_reset.scss';
 import './styles/index.scss';
@@ -37,47 +37,6 @@ i18next.init<TOptions>({
       common: common_ru,
     },
   },
-});
-
-/** https://www.apollographql.com/docs/react/networking/authentication#header */
-
-const httpLink = createHttpLink({
-  uri: process.env.GRAPHQL_URI || 'https://otus-graphql.beelzebub.uk/graphql',
-});
-
-const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = localStorage.getItem('token');
-  // return the headers to the context so httpLink can read them
-  return {
-    headers: {
-      ...headers,
-      Authorization: token ? `Bearer ${token}` : '',
-    },
-  };
-});
-
-/** https://www.apollographql.com/docs/react/data/queries */
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache({
-    typePolicies: {
-      ProductsResponse: {
-        keyFields: [],
-        fields: {
-          data: {
-            // keyArgs: false,
-            merge(existing = [], incoming) {
-              return [...existing, ...incoming];
-            },
-          },
-        },
-      },
-      ProductQueries: {
-        keyFields: [],
-      },
-    },
-  }),
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
