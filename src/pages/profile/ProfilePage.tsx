@@ -6,7 +6,7 @@ import { tokenSelectors } from 'src/redux/tokenReducer';
 import { RootState } from 'src/store';
 
 /** Components */
-import Profile from '../../components/Profile';
+import Profile from '../../components/profile/Profile';
 
 const ProfilePage = () => {
   const token = useSelector<RootState, RootState['token']>(tokenSelectors.get);

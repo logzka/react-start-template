@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 
 /** Components */
 import FormLoginTranslated from 'src/components/form/form-login/FormLogin';
@@ -22,6 +22,7 @@ import { LoginPageStyled } from './styled';
 /** GQL */
 import { SIGN_IN } from 'src/graphql/schemes/SIGN_IN';
 import { SIGN_UP } from 'src/graphql/schemes/SIGN_UP';
+import { GET_PROFILE } from 'src/graphql/schemes/GET_PROFILE';
 
 const LoginPage = () => {
   const dispatch = useTypedDispatch();
@@ -29,6 +30,7 @@ const LoginPage = () => {
   const token = useSelector<RootState, RootState['token']>(tokenSelectors.get);
   const [signIn, { error: signInError }] = useMutation(SIGN_IN);
   const [signUp, { error: signUpError }] = useMutation(SIGN_UP);
+  const [getProfile] = useLazyQuery(GET_PROFILE);
 
   useEffect(() => {
     if (token) {
@@ -62,18 +64,22 @@ const LoginPage = () => {
 
     dispatch(tokenThunks.setTokenThunk(token));
 
-    /** Set fake user data */
-    dispatch(
-      profileAdd({
-        firstName: 'Administrator',
-        lastName: 'Administrator',
-        gender: 'male',
-        age: 30,
-        phone: '79609999999',
-        email: event.email,
-        role: 'admin',
+    getProfile()
+      .then((res) => {
+        const { data } = res;
+        const { profile } = data || {};
+
+        /** Set user data */
+        dispatch(
+          profileAdd({
+            ...profile,
+            firstName: profile?.firstName || profile?.role || '',
+            lastName: profile?.lastName || profile?.role || '',
+          })
+        );
       })
-    );
+      .catch(console.error);
+
     goToHome();
   };
 

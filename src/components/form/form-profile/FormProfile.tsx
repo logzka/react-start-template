@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { connect } from 'react-redux';
-import { useMutation, useLazyQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 /** Api */
 import { genders } from '../../../api/genders';
@@ -19,7 +19,6 @@ import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-comp
 import Input from '../../input/Input';
 
 /** GQL */
-import { GET_PROFILE } from '../../../graphql/schemes/GET_PROFILE';
 import { UPDATE_PROFILE } from '../../../graphql/schemes/UPDATE_PROFILE';
 
 yup.setLocale({
@@ -59,7 +58,6 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
     setValue,
   } = useForm<IProfile>({
     defaultValues: profile,
@@ -67,33 +65,34 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
     resolver: yupResolver(schema),
   });
 
-  const [getProfile] = useLazyQuery(GET_PROFILE);
-  const [updateProfile, { loading }] = useMutation(UPDATE_PROFILE);
+  const [updateProfile] = useMutation(UPDATE_PROFILE);
 
   const onSubmit: SubmitHandler<IProfile> = (data) => {
-    console.log(data);
     updateProfile({
       variables: {
         input: {
-          name: data.firstName,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          gender: data.gender,
+          age: data.age,
         },
       },
     })
-      .then(console.log)
-      .catch(console.error);
-    reset();
+      .then((res) => {
+        console.log(res?.data);
+        alert('Данные пользователя успешно обновлены.');
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('При обновлении пользователя возникла ошибка.');
+      });
   };
 
   useEffect(() => {
-    if (!profile) getProfile().then(console.log).catch(console.error);
-  }, []);
-
-  useEffect(() => {
     let key = 'firstName';
-
     for (key in profile) {
       const uKey = profile[key as TProfileFormKeys];
-      setValue(key as TProfileFormKeys, uKey);
+      setValue(key as TProfileFormKeys, uKey || ' ');
     }
   }, [profile]);
 
