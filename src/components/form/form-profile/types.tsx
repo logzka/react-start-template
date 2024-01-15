@@ -16,3 +16,5 @@ export interface IFormProfileProps {
   profile: IProfile;
   t?: (v: string) => ReactNode | string;
 }
+
+export type TProfileFormKeys = 'firstName' | 'lastName' | 'age' | 'gender' | 'phone' | 'email';

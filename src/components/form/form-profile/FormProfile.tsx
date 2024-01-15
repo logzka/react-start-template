@@ -10,7 +10,7 @@ import { useMutation, useLazyQuery } from '@apollo/client';
 import { genders } from '../../../api/genders';
 
 /** Types */
-import { IProfile, IFormProfileProps } from './types';
+import { IProfile, IFormProfileProps, TProfileFormKeys } from './types';
 
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
@@ -60,6 +60,7 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<IProfile>({
     defaultValues: profile,
     mode: 'onChange',
@@ -86,6 +87,15 @@ const FormProfile = ({ t, profile }: IFormProfileProps) => {
   useEffect(() => {
     if (!profile) getProfile().then(console.log).catch(console.error);
   }, []);
+
+  useEffect(() => {
+    let key = 'firstName';
+
+    for (key in profile) {
+      const uKey = profile[key as TProfileFormKeys];
+      setValue(key as TProfileFormKeys, uKey);
+    }
+  }, [profile]);
 
   return (
     <FormStyled className="form form--profile" onSubmit={handleSubmit(onSubmit)}>
