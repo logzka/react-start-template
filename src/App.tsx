@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import './styles/app.scss';
-import { useSelector } from 'react-redux';
-import { RootState, useTypedDispatch } from './store';
-import { tokenSelectors } from './redux/tokenReducer';
 
 /** Router */
 import { Routes, Route } from 'react-router-dom';
@@ -16,25 +14,36 @@ import LoginPage from './pages/auth/LoginPage';
 
 /** Redux */
 import { profileAdd } from './redux/profileReducer';
+import { useSelector } from 'react-redux';
+import { RootState, useTypedDispatch } from './store';
+import { tokenSelectors } from './redux/tokenReducer';
+
+/** GQL */
+import { GET_PROFILE } from './graphql/schemes/GET_PROFILE';
 
 const App = () => {
   const dispatch = useTypedDispatch();
   const token = useSelector<RootState, RootState['token']>(tokenSelectors.get);
+  const [getProfile] = useLazyQuery(GET_PROFILE);
 
   useEffect(() => {
     if (token) {
-      /** Set fake user data */
-      dispatch(
-        profileAdd({
-          firstName: 'Administrator',
-          lastName: 'Administrator',
-          gender: 'male',
-          age: 30,
-          phone: '79609999999',
-          email: token,
-          role: 'admin',
+      getProfile()
+        .then((res) => {
+          const { data } = res;
+          const { profile } = data || {};
+
+          console.log(profile);
+          /** Set user data */
+          dispatch(
+            profileAdd({
+              ...profile,
+              firstName: profile?.firstName || profile?.role || '',
+              lastName: profile?.lastName || profile?.role || '',
+            })
+          );
         })
-      );
+        .catch(console.error);
     }
   }, []);
 

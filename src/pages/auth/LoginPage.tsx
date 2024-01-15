@@ -62,6 +62,8 @@ const LoginPage = () => {
 
     dispatch(tokenThunks.setTokenThunk(token));
 
+    console.log('event', event);
+
     /** Set fake user data */
     dispatch(
       profileAdd({
