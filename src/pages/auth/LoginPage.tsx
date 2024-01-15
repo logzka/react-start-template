@@ -62,15 +62,13 @@ const LoginPage = () => {
 
     dispatch(tokenThunks.setTokenThunk(token));
 
-    console.log('event', event);
-
     /** Set fake user data */
     dispatch(
       profileAdd({
-        firstName: 'Administrator',
-        lastName: 'Administrator',
+        firstName: 'admin',
+        lastName: 'admin',
         gender: 'male',
-        age: 30,
+        age: 18,
         phone: '79609999999',
         email: event.email,
         role: 'admin',

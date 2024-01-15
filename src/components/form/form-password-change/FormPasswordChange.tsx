@@ -10,7 +10,7 @@ import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-comp
 import Input from '../../input/Input';
 
 /** Types */
-import { Inputs, IFormSignup } from './types';
+import { Inputs, IFormPassword } from './types';
 
 yup.setLocale({
   mixed: {
@@ -20,43 +20,36 @@ yup.setLocale({
   string: { email: 'form.validation.email_invalid' },
 });
 
-const phoneRegExp = /^\+?\d{10,13}$/;
-
 const schema: yup.ObjectSchema<Inputs> = yup
   .object({
-    phone: yup.string().required().matches(phoneRegExp, 'form.validation.phone_invalid'),
-    email: yup.string().required().email(),
-    password: yup
+    password: yup.string().required(),
+    newPassword: yup
       .string()
       .required()
+      .notOneOf([yup.ref('password'), ''], 'form.validation.password_must_not_match')
       .matches(/(?=.*[0-9])(?=.*[_!@#$%^&*])(?=.*[a-z])[0-9a-z!_@#$%^&*]{8,}/g, {
         message: 'Пароль должен быть 8 и более символов и содержать один из спецю символов _#$%ˆ&*()=+!˜',
         excludeEmptyString: true,
       }),
-    password2: yup
-      .string()
-      .required()
-      .oneOf([yup.ref('password'), null], 'form.validation.password_missmatch'),
   })
   .required();
 
-const FormSignup: FC<IFormSignup> = ({ onSubmitHandler, errorMessage }) => {
+const FormPassword: FC<IFormPassword> = ({ onSubmitHandler, errorMessage }) => {
   const { t } = useTranslation();
   const {
-    handleSubmit,
-    reset,
     control,
     formState: { errors },
+    reset,
+    handleSubmit,
     // TODO: избавиться от Partial
   } = useForm<Partial<Inputs>>({
     mode: 'onChange',
-    defaultValues: { phone: '', email: '', password: '', password2: '' },
+    defaultValues: { password: '', newPassword: '' },
     resolver: yupResolver<Inputs>(schema),
   });
 
   const customHandleSubmit: SubmitHandler<Inputs> = (values) => {
     onSubmitHandler(values);
-    console.log('values: ', values);
     reset();
   };
 
@@ -64,45 +57,36 @@ const FormSignup: FC<IFormSignup> = ({ onSubmitHandler, errorMessage }) => {
     <FormStyled onSubmit={handleSubmit(customHandleSubmit)}>
       <FormItemStyled className="form--item">
         <Controller
-          name="phone"
-          control={control}
-          render={({ field }) => <Input id="form-signup--phone" placeholder={t('form.phone') as string} {...field} />}
-        />
-        {errors.phone && <FormErrorStyled className="form--error">{t(errors.phone?.message)}</FormErrorStyled>}
-      </FormItemStyled>
-
-      <FormItemStyled className="form--item">
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => <Input id="form-signup--email" placeholder={t('form.email') as string} {...field} />}
-        />
-        {errors.email && <FormErrorStyled className="form--error">{t(errors.email?.message)}</FormErrorStyled>}
-      </FormItemStyled>
-
-      <FormItemStyled className="form--item">
-        <Controller
           name="password"
           control={control}
-          render={({ field }) => <Input id="form-signup--pswr" placeholder={t('form.password') as string} {...field} />}
+          render={({ field }) => (
+            <Input id="form-pswrd--old" placeholder={t('form.oldPassword') as string} {...field} />
+          )}
         />
         {errors.password && <FormErrorStyled className="form--error">{t(errors.password?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled className="form--item">
         <Controller
-          name="password2"
+          name="newPassword"
           control={control}
-          render={({ field }) => <Input id="form-signup--ps2" placeholder={t('form.password2') as string} {...field} />}
+          render={({ field }) => (
+            <Input id="form-pswrd--new" placeholder={t('form.newPassword') as string} {...field} />
+          )}
         />
-        {errors.password2 && <FormErrorStyled className="form--error">{t(errors.password2?.message)}</FormErrorStyled>}
+        {errors.newPassword && (
+          <FormErrorStyled className="form--error">{t(errors.newPassword?.message)}</FormErrorStyled>
+        )}
 
         {errorMessage && <FormErrorStyled className="form--error">{t(errorMessage)}</FormErrorStyled>}
       </FormItemStyled>
-
-      <input className="button button--primary button--medium" type="submit" value={t('form.singup') as string} />
+      <input
+        className="button button--primary button--medium"
+        type="submit"
+        value={t('form.passwordChange') as string}
+      />
     </FormStyled>
   );
 };
 
-export default withTranslation()(FormSignup);
+export default withTranslation()(FormPassword);
