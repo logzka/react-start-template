@@ -6,7 +6,8 @@ import { useTranslation, withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 /** Components */
-import Input from '../../input/Input';
+import Input from 'src/components/input/Input';
+import Button from 'src/components/button/Button';
 
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
@@ -29,7 +30,7 @@ const schema: yup.ObjectSchema<Inputs> = yup
   })
   .required();
 
-const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler }) => {
+const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler, onClickHandler, errorMessage }) => {
   const { t } = useTranslation();
   const {
     handleSubmit,
@@ -63,12 +64,20 @@ const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler }) => {
         <Controller
           name="password"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.password') as string} {...field} />}
+          render={({ field }) => <Input type="password" placeholder={t('form.password') as string} {...field} />}
         />
         {errors.password && <FormErrorStyled className="form--error">{t(errors.password?.message)}</FormErrorStyled>}
+        {errorMessage && <FormErrorStyled className="form--error">{t(errorMessage)}</FormErrorStyled>}
       </FormItemStyled>
 
-      <input className="button button--primary button--medium" type="submit" value={t('form.login') as string} />
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <input className="button button--primary button--medium" type="submit" value={t('form.login') as string} />
+        {onClickHandler && (
+          <Button type="secondary" onClick={onClickHandler}>
+            Регистрация
+          </Button>
+        )}
+      </div>
     </FormStyled>
   );
 };

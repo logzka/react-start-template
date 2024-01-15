@@ -5,4 +5,6 @@ export type Inputs = {
 
 export interface IFormLogin {
   onSubmitHandler: (values: Inputs) => void;
+  onClickHandler?: () => void;
+  errorMessage?: string;
 }

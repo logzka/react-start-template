@@ -16,6 +16,7 @@ import LoginPage from './pages/auth/LoginPage';
 
 /** Redux */
 import { profileAdd } from './redux/profileReducer';
+import SignupPage from './pages/auth/SignupPage';
 
 const App = () => {
   const dispatch = useTypedDispatch();
@@ -45,6 +46,7 @@ const App = () => {
         <Route path="profile" element={<ProfilePage />} />
         <Route path="cart" element={<CartPage />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<SignupPage />} />
         {/* <Route path='*' element={<NoMatch />} /> */}
       </Route>
     </Routes>

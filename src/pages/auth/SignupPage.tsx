@@ -4,20 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
 /** Components */
-import FormLoginTranslated from 'src/components/form/form-login/FormLogin';
-import { Inputs } from 'src/components/form/form-login/types';
+import FormSignupTranslated from 'src/components/form/form-signup/FormSignup';
+import { Inputs } from 'src/components/form/form-signup/types';
 import { profileAdd, profileReset } from 'src/redux/profileReducer';
 import { tokenThunks, tokenSelectors } from 'src/redux/tokenReducer';
 import { RootState, useTypedDispatch } from 'src/store';
 
 /** GQL */
-import { LOGIN } from 'src/graphql/schemes/LOGIN';
+import { REGISTER } from 'src/graphql/schemes/REGISTER';
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const dispatch = useTypedDispatch();
   const { resetTokenThunk } = tokenThunks;
   const token = useSelector<RootState, RootState['token']>(tokenSelectors.get);
-  const [login, { error }] = useMutation(LOGIN);
+  const [login, { error }] = useMutation(REGISTER);
 
   useEffect(() => {
     if (token) {
@@ -30,15 +30,13 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const goToHome = () => navigate('/');
 
-  const onRegisterClickHandler = () => navigate('/register');
-
   function onSubmit(event: Inputs) {
     login({ variables: event })
       .then((res) => {
         const {
           data: {
             profile: {
-              signin: { token },
+              signup: { token },
             },
           },
         } = res;
@@ -52,7 +50,7 @@ const LoginPage = () => {
             lastName: '',
             gender: 'male',
             age: 30,
-            phone: '79609999999',
+            phone: event.phone,
             email: event.email,
             role: 'admin',
           })
@@ -60,17 +58,11 @@ const LoginPage = () => {
         goToHome();
       })
       .catch((err) => {
-        console.log({ 'Login error': err });
+        console.log({ 'Register error': err });
       });
   }
 
-  return (
-    <FormLoginTranslated
-      onSubmitHandler={onSubmit}
-      onClickHandler={onRegisterClickHandler}
-      errorMessage={error ? error.message : ''}
-    />
-  );
+  return <FormSignupTranslated onSubmitHandler={onSubmit} errorMessage={error ? error.message : ''} />;
 };
 
-export default LoginPage;
+export default RegisterPage;

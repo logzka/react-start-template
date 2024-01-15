@@ -1,8 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+require('dotenv').config();
 
 const port = 2233;
 const dist = path.join(__dirname, 'dist');
@@ -99,6 +102,9 @@ module.exports = (_, args) => {
         typescript: {
           configFile: path.join(__dirname, 'tsconfig.json'),
         },
+      }),
+      new webpack.DefinePlugin({
+        'process.env': JSON.stringify(process.env),
       }),
     ],
   };
