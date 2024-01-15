@@ -60,7 +60,7 @@ const FormSignup: FC<IFormSignup> = ({ onSubmitHandler, errorMessage }) => {
         <Controller
           name="phone"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.phone') as string} {...field} />}
+          render={({ field }) => <Input id="form-signup--phone" placeholder={t('form.phone') as string} {...field} />}
         />
         {errors.phone && <FormErrorStyled className="form--error">{t(errors.phone?.message)}</FormErrorStyled>}
       </FormItemStyled>
@@ -69,7 +69,7 @@ const FormSignup: FC<IFormSignup> = ({ onSubmitHandler, errorMessage }) => {
         <Controller
           name="email"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.email') as string} {...field} />}
+          render={({ field }) => <Input id="form-signup--email" placeholder={t('form.email') as string} {...field} />}
         />
         {errors.email && <FormErrorStyled className="form--error">{t(errors.email?.message)}</FormErrorStyled>}
       </FormItemStyled>
@@ -78,7 +78,7 @@ const FormSignup: FC<IFormSignup> = ({ onSubmitHandler, errorMessage }) => {
         <Controller
           name="password"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.password') as string} {...field} />}
+          render={({ field }) => <Input id="form-signup--pswr" placeholder={t('form.password') as string} {...field} />}
         />
         {errors.password && <FormErrorStyled className="form--error">{t(errors.password?.message)}</FormErrorStyled>}
       </FormItemStyled>
@@ -87,7 +87,7 @@ const FormSignup: FC<IFormSignup> = ({ onSubmitHandler, errorMessage }) => {
         <Controller
           name="password2"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.password2') as string} {...field} />}
+          render={({ field }) => <Input id="form-signup--ps2" placeholder={t('form.password2') as string} {...field} />}
         />
         {errors.password2 && <FormErrorStyled className="form--error">{t(errors.password2?.message)}</FormErrorStyled>}
 
