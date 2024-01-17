@@ -35,6 +35,7 @@ const Card = memo(
     const { role } = useSelector(profileSelectors.get);
 
     const cardData = {
+      id,
       category,
       name,
       price,

@@ -1,4 +1,5 @@
 export interface ICardProps {
+  id: string;
   type?: TCardType;
   category: TCategory;
   name: string;

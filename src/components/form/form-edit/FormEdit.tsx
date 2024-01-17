@@ -3,6 +3,7 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useMutation } from '@apollo/client';
 
 /** Types */
 import { IFormValues } from './types';
@@ -14,6 +15,10 @@ import Select from '../../select/Select';
 
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
+
+/** GQL */
+import { UPDATE_CAKE } from 'src/graphql/schemes/UPDATE_CAKE';
+import { CREATE_CAKE } from 'src/graphql/schemes/CREATE_CAKE';
 
 yup.setLocale({
   mixed: {
@@ -51,7 +56,6 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
     setValue,
   } = useForm({
     defaultValues: {
@@ -78,16 +82,44 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
     }
   }, [cardData]);
 
-  const onSubmit: SubmitHandler<IFormValues> = (data) => {
-    console.log(data);
-    reset();
-  };
-
   const categories = [
-    { value: 'cake', name: 'Торты' },
-    { value: 'pie', name: 'Пироги' },
-    { value: 'dessert', name: 'Десерты' },
+    { id: '659e79f1f524e46e2421c9bc', name: 'Торты', value: 'cake' },
+    { id: '659e79f1f524e46e2421c9be', name: 'Пироги', value: 'pie' },
+    { id: '659e79f1f524e46e2421c9c0', name: 'Десерты', value: 'dessert' },
   ];
+
+  const [updateCake] = useMutation(UPDATE_CAKE);
+  const [createCake] = useMutation(CREATE_CAKE);
+
+  const onSubmit: SubmitHandler<IFormValues> = (data) => {
+    console.log(cardData);
+
+    cardData
+      ? updateCake({
+          variables: {
+            patchId: cardData.id,
+            input: {
+              // categoryId: data.category,
+              name: data.name,
+              desc: data.desc,
+              price: data.price,
+              oldPrice: data.oldPrice,
+              photo: data.photo,
+            },
+          },
+        }).then((res) => console.log(res.data))
+      : createCake({
+          variables: {
+            input: {
+              categoryId: '659e79f1f524e46e2421c9be',
+              name: data.name,
+              price: data.price,
+              desc: data.desc,
+              photo: data.photo,
+            },
+          },
+        }).then((res) => console.log(res.data));
+  };
 
   return (
     <FormStyled onSubmit={handleSubmit(onSubmit)}>
