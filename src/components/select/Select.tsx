@@ -112,7 +112,7 @@ const CustomSelect = forwardRef(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref
   ) => {
-    const [selectItems, setSelectItems] = useState<TCustomItem[]>(items);
+    const [selectItems, setSelectItems] = useState<TCustomItem[]>([]);
     const [selectValue, setSelectValue] = useState<TCustomValue>('');
     const [selectOption, setSelectOption] = useState<TCustomItem | null>(null);
     const [showOptions, setShowOptions] = useState<boolean>(false);
@@ -126,6 +126,10 @@ const CustomSelect = forwardRef(
         }
       }
     }, [value]);
+
+    useEffect(() => {
+      if (items?.length) setSelectItems(items);
+    }, [items]);
 
     /**
      * On Custom Input Change Handler

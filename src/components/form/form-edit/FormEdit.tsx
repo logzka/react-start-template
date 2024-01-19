@@ -3,7 +3,7 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 
 /** Types */
 import { IFormValues } from './types';
@@ -17,6 +17,7 @@ import Select from '../../select/Select';
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
 
 /** GQL */
+import { GET_CATEGORIES } from 'src/graphql/schemes/GET_CATEGORIES';
 import { UPDATE_CAKE } from 'src/graphql/schemes/UPDATE_CAKE';
 import { CREATE_CAKE } from 'src/graphql/schemes/CREATE_CAKE';
 
@@ -70,7 +71,19 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
     resolver: yupResolver(schema),
   });
 
+  const [getCategoriesLazy, { data }] = useLazyQuery(GET_CATEGORIES);
+  const [updateCake] = useMutation(UPDATE_CAKE);
+  const [createCake] = useMutation(CREATE_CAKE);
+
+  const { categories } = data || {};
+  const { getMany } = categories || {};
+  const { data: categoriesData } = getMany || {};
+
+  console.log(categoriesData);
+
   useEffect(() => {
+    getCategoriesLazy();
+
     if (!cardData) return;
 
     type TKeys = 'category' | 'name' | 'oldPrice' | 'price' | 'desc' | 'photo';
@@ -80,16 +93,7 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
       const uKey = cardData[key as TKeys];
       setValue(key as TKeys, typeof uKey === 'object' ? uKey?.value : uKey);
     }
-  }, [cardData]);
-
-  const categories = [
-    { id: '659e79f1f524e46e2421c9bc', name: 'Торты', value: 'cake' },
-    { id: '659e79f1f524e46e2421c9be', name: 'Пироги', value: 'pie' },
-    { id: '659e79f1f524e46e2421c9c0', name: 'Десерты', value: 'dessert' },
-  ];
-
-  const [updateCake] = useMutation(UPDATE_CAKE);
-  const [createCake] = useMutation(CREATE_CAKE);
+  }, []);
 
   const onSubmit: SubmitHandler<IFormValues> = (data) => {
     console.log(cardData);
@@ -99,7 +103,7 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
           variables: {
             patchId: cardData.id,
             input: {
-              // categoryId: data.category,
+              categoryId: data.category.id,
               name: data.name,
               desc: data.desc,
               price: data.price,
@@ -130,7 +134,7 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
           render={({ field: { value, ...other } }) => (
             <Select
               returnObject={false}
-              items={categories}
+              items={categoriesData}
               placeholder={t('form.category') as string}
               required
               value={value}
