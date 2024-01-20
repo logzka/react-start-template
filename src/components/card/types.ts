@@ -10,6 +10,6 @@ export interface ICardProps {
   // t?: (v: string) => ReactNode | string,
 }
 
-export type TCategory = { value: string; name: string };
+export type TCategory = { value: string; name: string; id: string };
 
 export type TCardType = 'default' | 'disabled';

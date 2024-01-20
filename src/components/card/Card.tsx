@@ -1,4 +1,4 @@
-import React, { memo, PropsWithChildren } from 'react';
+import React, { memo, PropsWithChildren, useContext, useState } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 /** Styles */
@@ -30,6 +30,8 @@ const Card = memo(
   }: PropsWithChildren<
     ICardProps & { id?: string; addToCartHandler?: (id: string, count: number) => void; count?: number }
   >) => {
+    const [hideModal, setHideModal] = useState(false);
+
     const { t } = useTranslation();
 
     const { role } = useSelector(profileSelectors.get);
@@ -76,8 +78,9 @@ const Card = memo(
                         <PencilSquareIcon />
                       </Button>
                     }
+                    hide={hideModal}
                   >
-                    <FormEdit cardData={cardData} />
+                    <FormEdit cardData={cardData} hideModalHandler={() => setHideModal(true)} />
                   </ModalWrapper>
                 )}
                 <CartButton setNewCount={handleSetNewCount} type="success" count={count}>

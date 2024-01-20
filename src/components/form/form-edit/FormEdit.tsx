@@ -50,17 +50,20 @@ const schema = yup
 interface IFormEdit {
   t: (v: string) => ReactNode | string;
   cardData?: ICardProps;
+  updateList?: () => void;
+  hideModalHandler?: () => void;
 }
 
-const FormEdit = ({ t, cardData }: IFormEdit) => {
+const FormEdit = ({ t, cardData, updateList, hideModalHandler }: IFormEdit) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm({
     defaultValues: {
-      category: 'cake',
+      category: null,
       name: '',
       oldPrice: 0,
       price: 0,
@@ -79,8 +82,6 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
   const { getMany } = categories || {};
   const { data: categoriesData } = getMany || {};
 
-  console.log(categoriesData);
-
   useEffect(() => {
     getCategoriesLazy();
 
@@ -91,19 +92,23 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
 
     for (key in cardData) {
       const uKey = cardData[key as TKeys];
-      setValue(key as TKeys, typeof uKey === 'object' ? uKey?.value : uKey);
+      setValue(key as TKeys, typeof uKey === 'object' ? uKey?.id : uKey);
     }
   }, []);
 
-  const onSubmit: SubmitHandler<IFormValues> = (data) => {
-    console.log(cardData);
+  const submitClb = () => {
+    updateList;
+    reset();
+    hideModalHandler();
+  };
 
+  const onSubmit: SubmitHandler<IFormValues> = (data) => {
     cardData
       ? updateCake({
           variables: {
             patchId: cardData.id,
             input: {
-              categoryId: data.category.id,
+              categoryId: data.category,
               name: data.name,
               desc: data.desc,
               price: data.price,
@@ -111,18 +116,19 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
               photo: data.photo,
             },
           },
-        }).then((res) => console.log(res.data))
+        }).then(() => submitClb())
       : createCake({
           variables: {
             input: {
-              categoryId: '659e79f1f524e46e2421c9be',
+              categoryId: data.category,
               name: data.name,
               price: data.price,
+              // oldPrice: data.oldPrice,
               desc: data.desc,
               photo: data.photo,
             },
           },
-        }).then((res) => console.log(res.data));
+        }).then(() => submitClb());
   };
 
   return (
@@ -134,6 +140,7 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
           render={({ field: { value, ...other } }) => (
             <Select
               returnObject={false}
+              valueKey={'id'}
               items={categoriesData}
               placeholder={t('form.category') as string}
               required

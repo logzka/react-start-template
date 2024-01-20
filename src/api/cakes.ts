@@ -14,7 +14,7 @@ export type TCake = {
 
 export const cakes: TCake[] = [
   {
-    category: { value: 'cake', name: 'Торты' },
+    category: { value: 'cake', name: 'Торты', id: '' },
     name: 'Малиновый чизкейк',
     price: '1299',
     oldPrice: '1300',
@@ -24,7 +24,7 @@ export const cakes: TCake[] = [
     id: uuidv4(),
   },
   {
-    category: { value: 'dessert', name: 'Десерты' },
+    category: { value: 'dessert', name: 'Десерты', id: '' },
     name: 'Брауни',
     price: '2399',
     oldPrice: '2700',
@@ -34,7 +34,7 @@ export const cakes: TCake[] = [
     id: uuidv4(),
   },
   {
-    category: { value: 'cake', name: 'Торты' },
+    category: { value: 'cake', name: 'Торты', id: '' },
     name: 'Медовик',
     price: '999',
     oldPrice: '1000',
