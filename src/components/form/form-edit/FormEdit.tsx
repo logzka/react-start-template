@@ -50,6 +50,7 @@ const schema = yup
 interface IFormEdit {
   t: (v: string) => ReactNode | string;
   cardData?: ICardProps;
+  updateList?: () => void;
   onSuccessSubmit?: () => void;
 }
 
@@ -62,7 +63,7 @@ const FormEdit = ({ t, cardData, onSuccessSubmit }: IFormEdit) => {
     reset,
   } = useForm({
     defaultValues: {
-      category: 'cake',
+      category: null,
       name: '',
       oldPrice: 0,
       price: 0,
@@ -81,8 +82,6 @@ const FormEdit = ({ t, cardData, onSuccessSubmit }: IFormEdit) => {
   const { getMany } = categories || {};
   const { data: categoriesData } = getMany || {};
 
-  console.log(categoriesData);
-
   useEffect(() => {
     getCategoriesLazy();
 
@@ -93,27 +92,23 @@ const FormEdit = ({ t, cardData, onSuccessSubmit }: IFormEdit) => {
 
     for (key in cardData) {
       const uKey = cardData[key as TKeys];
-      setValue(key as TKeys, typeof uKey === 'object' ? uKey?.value : uKey);
+      setValue(key as TKeys, typeof uKey === 'object' ? uKey?.id : uKey);
     }
   }, []);
 
+  const submitClb = () => {
+    updateList;
+    reset();
+    onSuccessSubmit();
+  };
+
   const onSubmit: SubmitHandler<IFormValues> = (data) => {
-    function findCategoryId(name: string) {
-      switch (name) {
-        case 'cake':
-          return '659e79f1f524e46e2421c9bc';
-        case 'pie':
-          return '659e79f1f524e46e2421c9be';
-        case 'dessert':
-          return '659e79f1f524e46e2421c9c0';
-      }
-    }
     cardData
       ? updateCake({
           variables: {
             patchId: cardData.id,
             input: {
-              categoryId: findCategoryId(data.category),
+              categoryId: data.category,
               name: data.name,
               desc: data.desc,
               price: data.price,
@@ -121,24 +116,19 @@ const FormEdit = ({ t, cardData, onSuccessSubmit }: IFormEdit) => {
               photo: data.photo,
             },
           },
-        })
-          .then((res) => console.log(res.data))
-          .then(onSuccessSubmit)
+        }).then(() => submitClb())
       : createCake({
           variables: {
             input: {
-              categoryId: '659e79f1f524e46e2421c9be',
+              categoryId: data.category,
               name: data.name,
               price: data.price,
+              // oldPrice: data.oldPrice,
               desc: data.desc,
               photo: data.photo,
             },
           },
-        })
-          .then((res) => console.log(res.data))
-          .then(onSuccessSubmit);
-
-    reset();
+        }).then(() => submitClb());
   };
 
   return (
@@ -150,6 +140,7 @@ const FormEdit = ({ t, cardData, onSuccessSubmit }: IFormEdit) => {
           render={({ field: { value, ...other } }) => (
             <Select
               returnObject={false}
+              valueKey={'id'}
               items={categoriesData}
               placeholder={t('form.category') as string}
               required

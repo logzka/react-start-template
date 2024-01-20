@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, PropsWithChildren, useEffect } from 'react';
 import { withTranslation } from 'react-i18next';
 import { createPortal } from 'react-dom';
 
@@ -16,6 +16,10 @@ const ModalWrapper = ({ actionNode, children }: IModalWrapperProps) => {
 
   const showModalHandler = () => setShowModal(true);
   const hideModalHandler = () => setShowModal(false);
+
+  useEffect(() => {
+    if (hide && showModal) hideModalHandler();
+  }, [showModal, hide]);
 
   return (
     <div className="modal-wrapper">
