@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { tokenSelectors } from 'src/redux/tokenReducer';
 import { RootState } from 'src/store';
+/** Initializer */
+import { Initializer } from '../../redux/initializer/Initializer';
 
 /** Contexts */
 import { ThemeContext } from '../../contexts/theme.context';
@@ -18,9 +20,13 @@ import Button from '../button/Button';
 import Navigation from '../navigation/Navigation';
 
 /** Icons */
-import { UserCircleIcon, ShoppingCartIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/solid';
+import { ShoppingCartIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/solid';
+import { IProfile } from '../form/form-profile/types';
 
-const HomeTranslated = () => {
+/** Styled */
+import { AvatarStyled } from './styled';
+
+const HomeTranslated = ({ profile }: { profile: IProfile }) => {
   const { setTheme } = useContext(ThemeContext);
   const { lang, setLang } = useContext(LangContext);
 
@@ -49,6 +55,8 @@ const HomeTranslated = () => {
 
   return (
     <Layout>
+      <Initializer />
+
       <Header>
         <NavLink to={'/'}>
           <Logo />
@@ -70,16 +78,20 @@ const HomeTranslated = () => {
             </NavLink>
             {token ? (
               <>
-                <NavLink to={'/profile'}>
-                  <UserCircleIcon className="app--header__actions-icon" />
-                </NavLink>
+                {profile?.firstName && (
+                  <NavLink to={'/profile'}>
+                    <AvatarStyled className="app--header__actions-icon">
+                      {profile.firstName.substr(0, 2).toUpperCase()}
+                    </AvatarStyled>
+                  </NavLink>
+                )}
                 <NavLink to={'/login'}>
                   <ArrowRightEndOnRectangleIcon className="app--header__actions-icon" />
                 </NavLink>
               </>
             ) : (
               <NavLink to={'/login'}>
-                <Button>Вход</Button>
+                <Button icon>Вход</Button>
               </NavLink>
             )}
           </div>
@@ -93,4 +105,8 @@ const HomeTranslated = () => {
   );
 };
 
-export default HomeTranslated;
+const mapStateToProps = (state: { profile: IProfile }) => ({
+  profile: state.profile,
+});
+
+export default connect(mapStateToProps, null)(HomeTranslated);

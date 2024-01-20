@@ -45,7 +45,7 @@ const CartPage: FC<ICartPageProps> = ({ cartCakes, removeItemHandler }) => {
       <ItemListWrapperStyled>
         {cartCakes?.length
           ? cartCakes.map(
-              ({ category, name, price, priceOld, description, imageUrl, id, count }) =>
+              ({ category, name, price, oldPrice, desc, photo, id, count }) =>
                 count > 0 && (
                   <CartItem
                     key={id}
@@ -54,9 +54,9 @@ const CartPage: FC<ICartPageProps> = ({ cartCakes, removeItemHandler }) => {
                     category={category}
                     name={name}
                     price={price}
-                    priceOld={priceOld}
-                    description={description}
-                    imageUrls={[imageUrl]}
+                    oldPrice={oldPrice}
+                    desc={desc}
+                    photos={[photo]}
                     count={count}
                     handleOnClick={itemOnClickHandler}
                   />

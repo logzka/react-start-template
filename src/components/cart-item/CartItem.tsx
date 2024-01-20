@@ -13,9 +13,9 @@ const CartItem = ({
   category,
   name,
   price,
-  priceOld,
-  description,
-  imageUrls,
+  oldPrice,
+  desc,
+  photos,
   t,
   handleOnClick,
   id,
@@ -25,7 +25,7 @@ const CartItem = ({
     <div className={`cart-item cart-item--${type}`}>
       <div className="cart-item--inner">
         <div className="cart-item--images">
-          {imageUrls.map((url) => (
+          {photos.map((url) => (
             <div key={url} className="cart-item--image" style={{ backgroundImage: 'url(' + url + ')' }}></div>
           ))}
         </div>
@@ -40,7 +40,7 @@ const CartItem = ({
               ╳
             </Button>
           </div>
-          <p className="cart-item--description">{description}</p>
+          <p className="cart-item--description">{desc}</p>
           <div className="cart-item--footer">
             <div className="cart-item--price__wrapper">
               <div className="cart-item--price">
@@ -48,7 +48,7 @@ const CartItem = ({
                 {price}&#32;{t('rub')}
               </div>
               <div className="cart-item--price__old">
-                {priceOld}&#32;{t('rub')}
+                {oldPrice}&#32;{t('rub')}
               </div>
             </div>
           </div>

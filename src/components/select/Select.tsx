@@ -86,8 +86,8 @@ interface ICustomSelectProps {
   placeholder?: string;
   className?: string;
   items: TCustomItem[];
-  // valueKey?: string,
-  // name?: string,
+  valueKey?: string;
+  // name?: string;
   returnObject?: boolean;
   required?: boolean;
   disabled?: boolean;
@@ -102,7 +102,7 @@ const CustomSelect = forwardRef(
       placeholder = 'select',
       className = '',
       items = [],
-      // valueKey = 'value',
+      valueKey = 'value',
       // name = 'name',
       returnObject = true,
       required = false,
@@ -112,20 +112,21 @@ const CustomSelect = forwardRef(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref
   ) => {
-    const [selectItems, setSelectItems] = useState<TCustomItem[]>(items);
+    const [selectItems, setSelectItems] = useState<TCustomItem[]>([]);
     const [selectValue, setSelectValue] = useState<TCustomValue>('');
     const [selectOption, setSelectOption] = useState<TCustomItem | null>(null);
     const [showOptions, setShowOptions] = useState<boolean>(false);
 
     useEffect(() => {
-      if (value) {
-        const currentItem = items.find((item) => item.value === value);
-        if (currentItem) {
-          setSelectValue(currentItem.name);
-          setSelectOption(currentItem);
-        }
+      if (items?.length) setSelectItems(items);
+      if (!value || !valueKey) return;
+
+      const currentItem = items.find((item) => item[valueKey] === value);
+      if (currentItem) {
+        setSelectValue(currentItem.name);
+        setSelectOption(currentItem);
       }
-    }, [value]);
+    }, [value, items, valueKey]);
 
     /**
      * On Custom Input Change Handler
@@ -168,7 +169,7 @@ const CustomSelect = forwardRef(
      * @param {string} optionValue Option Value
      */
     const clickOption = (optionValue: string) => {
-      const option: TCustomItem | undefined = items.find((item) => item.value === optionValue);
+      const option: TCustomItem | undefined = items.find((item) => item[valueKey] === optionValue);
 
       if (!option) return;
 
@@ -199,9 +200,11 @@ const CustomSelect = forwardRef(
               {selectItems.length ? (
                 selectItems.map((item) => (
                   <CustomSelectOptionsListItemStyled
-                    className={`select__options-list_item ${selectOption?.value === item.value ? 'active' : ''}`}
-                    key={item.value}
-                    onClick={() => clickOption(item.value)}
+                    className={`select__options-list_item ${
+                      selectOption?.[valueKey] === item[valueKey] ? 'active' : ''
+                    }`}
+                    key={item[valueKey]}
+                    onClick={() => clickOption(item[valueKey])}
                   >
                     {item.name}
                   </CustomSelectOptionsListItemStyled>

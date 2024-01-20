@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { TCake, cakes as cakesData } from 'src/api/cakes';
+import { TCake } from 'src/api/cakes';
 import { RootState } from 'src/store';
 
 type TId = TCake['id'];

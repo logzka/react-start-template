@@ -4,3 +4,8 @@ export type Inputs = {
   password: string;
   password2: string;
 };
+
+export interface IFormSignup {
+  onSubmitHandler?: (values: Inputs) => void;
+  errorMessage?: string;
+}

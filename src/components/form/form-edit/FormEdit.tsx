@@ -3,6 +3,7 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useLazyQuery, useMutation } from '@apollo/client';
 
 /** Types */
 import { IFormValues } from './types';
@@ -14,6 +15,11 @@ import Select from '../../select/Select';
 
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
+
+/** GQL */
+import { GET_CATEGORIES } from 'src/graphql/schemes/GET_CATEGORIES';
+import { UPDATE_CAKE } from 'src/graphql/schemes/UPDATE_CAKE';
+import { CREATE_CAKE } from 'src/graphql/schemes/CREATE_CAKE';
 
 yup.setLocale({
   mixed: {
@@ -34,60 +40,96 @@ const schema = yup
   .shape({
     category: yup.string().required(),
     name: yup.string().required(),
-    priceOld: yup.number().positive().required(),
+    oldPrice: yup.number().positive().required(),
     price: yup.number().positive().required(),
-    description: yup.string().required(),
-    imageUrl: yup.string().url().required(),
+    desc: yup.string().required(),
+    photo: yup.string().url().required(),
   })
   .required();
 
 interface IFormEdit {
   t: (v: string) => ReactNode | string;
   cardData?: ICardProps;
+  updateList?: () => void;
+  onSuccessSubmit?: () => void;
 }
 
-const FormEdit = ({ t, cardData }: IFormEdit) => {
+const FormEdit = ({ t, cardData, updateList, onSuccessSubmit }: IFormEdit) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
     setValue,
+    reset,
   } = useForm({
     defaultValues: {
-      category: 'cake',
+      category: null,
       name: '',
-      priceOld: 0,
+      oldPrice: 0,
       price: 0,
-      description: '',
-      imageUrl: '',
+      desc: '',
+      photo: '',
     },
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
 
+  const [getCategoriesLazy, { data }] = useLazyQuery(GET_CATEGORIES);
+  const [updateCake] = useMutation(UPDATE_CAKE);
+  const [createCake] = useMutation(CREATE_CAKE);
+
+  const { categories } = data || {};
+  const { getMany } = categories || {};
+  const { data: categoriesData } = getMany || {};
+
   useEffect(() => {
+    getCategoriesLazy();
+
     if (!cardData) return;
 
-    type TKeys = 'category' | 'name' | 'priceOld' | 'price' | 'description' | 'imageUrl';
+    type TKeys = 'category' | 'name' | 'oldPrice' | 'price' | 'desc' | 'photo';
     let key = 'category' as string;
 
     for (key in cardData) {
       const uKey = cardData[key as TKeys];
-      setValue(key as TKeys, typeof uKey === 'object' ? uKey?.value : uKey);
+      setValue(key as TKeys, typeof uKey === 'object' ? uKey?.id : uKey);
     }
-  }, [cardData]);
+  }, []);
 
-  const onSubmit: SubmitHandler<IFormValues> = (data) => {
-    console.log(data);
+  const submitClb = () => {
+    updateList;
     reset();
+    onSuccessSubmit();
   };
 
-  const categories = [
-    { value: 'cake', name: 'Торты' },
-    { value: 'pie', name: 'Пироги' },
-    { value: 'dessert', name: 'Десерты' },
-  ];
+  const onSubmit: SubmitHandler<IFormValues> = (data) => {
+    cardData
+      ? updateCake({
+          variables: {
+            patchId: cardData.id,
+            input: {
+              categoryId: data.category,
+              name: data.name,
+              desc: data.desc,
+              price: data.price,
+              oldPrice: data.oldPrice,
+              photo: data.photo,
+            },
+          },
+        }).then(() => submitClb())
+      : createCake({
+          variables: {
+            input: {
+              categoryId: data.category,
+              name: data.name,
+              price: data.price,
+              // oldPrice: data.oldPrice,
+              desc: data.desc,
+              photo: data.photo,
+            },
+          },
+        }).then(() => submitClb());
+  };
 
   return (
     <FormStyled onSubmit={handleSubmit(onSubmit)}>
@@ -98,7 +140,8 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
           render={({ field: { value, ...other } }) => (
             <Select
               returnObject={false}
-              items={categories}
+              valueKey={'id'}
+              items={categoriesData}
               placeholder={t('form.category') as string}
               required
               value={value}
@@ -120,13 +163,13 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
 
       <FormItemStyled>
         <Controller
-          name="priceOld"
+          name="oldPrice"
           control={control}
           render={({ field: { value, ...other } }) => (
-            <Input placeholder={t('form.priceOld') as string} required {...other} value={value || ''} />
+            <Input placeholder={t('form.oldPrice') as string} required {...other} value={value || ''} />
           )}
         />
-        {errors.priceOld && <FormErrorStyled>{t(errors.priceOld?.message)}</FormErrorStyled>}
+        {errors.oldPrice && <FormErrorStyled>{t(errors.oldPrice?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
@@ -142,20 +185,20 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
 
       <FormItemStyled>
         <Controller
-          name="description"
+          name="desc"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.description') as string} required {...field} />}
+          render={({ field }) => <Input placeholder={t('form.desc') as string} required {...field} />}
         />
-        {errors.description && <FormErrorStyled>{t(errors.description?.message)}</FormErrorStyled>}
+        {errors.desc && <FormErrorStyled>{t(errors.desc?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <FormItemStyled>
         <Controller
-          name="imageUrl"
+          name="photo"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.imageUrl') as string} required {...field} />}
+          render={({ field }) => <Input placeholder={t('form.photo') as string} required {...field} />}
         />
-        {errors.imageUrl && <FormErrorStyled>{t(errors.imageUrl?.message)}</FormErrorStyled>}
+        {errors.photo && <FormErrorStyled>{t(errors.photo?.message)}</FormErrorStyled>}
       </FormItemStyled>
 
       <input className="button button--primary button--medium" type="submit" value={t('form.save') as string} />

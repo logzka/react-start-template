@@ -46,7 +46,7 @@ import { StoryId } from '@storybook/types';
  * */
 
 export type TCategory = {
-  id: StoryId;
+  id: string;
   name: string;
   photo?: string;
 };

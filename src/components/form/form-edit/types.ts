@@ -1,8 +1,9 @@
 export interface IFormValues {
-  category?: { value: string; name: string };
+  // category?: { id: string; value: string; name: string };
+  category?: string;
   name?: string;
   price?: number;
-  priceOld?: number;
-  description?: string;
-  imageUrl?: string;
+  oldPrice?: number;
+  desc?: string;
+  photo?: string;
 }

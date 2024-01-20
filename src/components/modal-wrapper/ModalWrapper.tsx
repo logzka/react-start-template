@@ -1,23 +1,21 @@
-import React, { useState, ReactNode, PropsWithChildren } from 'react';
+import React, { useState, ReactNode } from 'react';
 import { withTranslation } from 'react-i18next';
 import { createPortal } from 'react-dom';
 
-import { useSelector } from 'react-redux';
-
-import { profileSelectors } from 'src/redux/profileReducer';
 /** Components */
 import Modal from '../modal/Modal';
 
 interface IModalWrapperProps {
   // t?: (t: string) => ReactNode | string;
   actionNode: ReactNode;
+  children: ((api: { hide: () => void }) => React.ReactNode) | React.ReactNode;
 }
 
-const ModalWrapper = ({ actionNode, children }: PropsWithChildren<IModalWrapperProps>) => {
+const ModalWrapper = ({ actionNode, children }: IModalWrapperProps) => {
   const [showModal, setShowModal] = useState(false);
 
-  const showModalHandler = (): void => setShowModal(true);
-  const hideModalHandler = (): void => setShowModal(false);
+  const showModalHandler = () => setShowModal(true);
+  const hideModalHandler = () => setShowModal(false);
 
   return (
     <div className="modal-wrapper">
@@ -26,7 +24,7 @@ const ModalWrapper = ({ actionNode, children }: PropsWithChildren<IModalWrapperP
       </div>
       {createPortal(
         <Modal visible={showModal} hide={hideModalHandler}>
-          {children}
+          {typeof children === 'function' ? children({ hide: hideModalHandler }) : children}
         </Modal>,
         document.body
       )}

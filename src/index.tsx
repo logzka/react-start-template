@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/_reset.scss';
-import './styles/index.scss';
-import './styles/_variables.scss';
 import App from './App';
 import { store } from './store';
 import { Provider } from 'react-redux';
+import { ApolloProvider } from '@apollo/client';
+import { client } from './apollo';
 
-/** Initializer */
-import { Initializer } from './redux/initializer/Initializer';
+import './styles/_reset.scss';
+import './styles/index.scss';
+import './styles/_variables.scss';
 
 /** Contexts */
 import { LangContextProvider } from './contexts/lang.context';
@@ -42,17 +42,18 @@ i18next.init<TOptions>({
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <I18nextProvider i18n={i18next} defaultNS={'common'}>
-        <BrowserRouter basename={'/'}>
-          <Initializer />
-          <ThemeContextProvider>
-            <LangContextProvider>
-              <App />
-            </LangContextProvider>
-          </ThemeContextProvider>
-        </BrowserRouter>
-      </I18nextProvider>
-    </Provider>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <I18nextProvider i18n={i18next} defaultNS={'common'}>
+          <BrowserRouter basename={'/'}>
+            <ThemeContextProvider>
+              <LangContextProvider>
+                <App />
+              </LangContextProvider>
+            </ThemeContextProvider>
+          </BrowserRouter>
+        </I18nextProvider>
+      </Provider>
+    </ApolloProvider>
   </React.StrictMode>
 );

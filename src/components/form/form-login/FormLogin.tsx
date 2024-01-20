@@ -6,7 +6,7 @@ import { useTranslation, withTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 /** Components */
-import Input from '../../input/Input';
+import Input from 'src/components/input/Input';
 
 /** Styled Components */
 import { FormStyled, FormItemStyled, FormErrorStyled } from '../form-styled-components';
@@ -29,7 +29,7 @@ const schema: yup.ObjectSchema<Inputs> = yup
   })
   .required();
 
-const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler }) => {
+const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler, errorMessage }) => {
   const { t } = useTranslation();
   const {
     handleSubmit,
@@ -54,7 +54,7 @@ const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler }) => {
         <Controller
           name="email"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.email') as string} {...field} />}
+          render={({ field }) => <Input id="form-login--email" placeholder={t('form.email') as string} {...field} />}
         />
         {errors.email && <FormErrorStyled className="form--error">{t(errors.email?.message)}</FormErrorStyled>}
       </FormItemStyled>
@@ -63,12 +63,17 @@ const FormLoginTranslated: FC<IFormLogin> = ({ onSubmitHandler }) => {
         <Controller
           name="password"
           control={control}
-          render={({ field }) => <Input placeholder={t('form.password') as string} {...field} />}
+          render={({ field }) => (
+            <Input id="form-login--passwrd" type="password" placeholder={t('form.password') as string} {...field} />
+          )}
         />
         {errors.password && <FormErrorStyled className="form--error">{t(errors.password?.message)}</FormErrorStyled>}
+        {errorMessage && <FormErrorStyled className="form--error">{t(errorMessage)}</FormErrorStyled>}
       </FormItemStyled>
 
-      <input className="button button--primary button--medium" type="submit" value={t('form.login') as string} />
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <input className="button button--primary button--medium" type="submit" value={t('form.login') as string} />
+      </div>
     </FormStyled>
   );
 };
