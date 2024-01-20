@@ -54,7 +54,7 @@ interface IFormEdit {
   onSuccessSubmit?: () => void;
 }
 
-const FormEdit = ({ t, cardData, onSuccessSubmit }: IFormEdit) => {
+const FormEdit = ({ t, cardData, updateList, onSuccessSubmit }: IFormEdit) => {
   const {
     control,
     handleSubmit,
