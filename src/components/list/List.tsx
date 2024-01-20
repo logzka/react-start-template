@@ -34,7 +34,7 @@ const List = ({ t, profile }: TListProps) => {
     delay: 700,
   });
 
-  const [getCakesLazy, { data, fetchMore }] = useLazyQuery(GET_CAKES, {
+  const [getCakesLazy, { data, fetchMore, refetch }] = useLazyQuery(GET_CAKES, {
     variables: { pageSize: 3, pageNumber: 1 },
   });
 
@@ -61,7 +61,7 @@ const List = ({ t, profile }: TListProps) => {
     <div className="list">
       {role === 'admin' && (
         <ModalWrapper actionNode={<Button>{t('add-cake-modal')}</Button>} hide={hideModal}>
-          <FormEdit updateList={() => getCakesLazy()} hideModalHandler={() => setHideModal(true)} />
+          <FormEdit updateList={() => refetch()} hideModalHandler={() => setHideModal(true)} />
         </ModalWrapper>
       )}
       <div className="list--wrapper">
@@ -77,6 +77,7 @@ const List = ({ t, profile }: TListProps) => {
             desc={desc}
             photo={photo}
             addToCartHandler={addToCartHandler}
+            updateList={() => refetch()}
           />
         ))}
       </div>

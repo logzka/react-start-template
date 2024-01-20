@@ -8,6 +8,9 @@ export interface ICardProps {
   desc: string;
   photo: string;
   // t?: (v: string) => ReactNode | string,
+  updateList?: () => void;
+  addToCartHandler?: (id: string, count: number) => void;
+  count?: number;
 }
 
 export type TCategory = { value: string; name: string; id: string };
