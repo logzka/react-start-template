@@ -60,7 +60,7 @@ const List = ({ t, profile }: TListProps) => {
     <div className="list">
       {role === 'admin' && (
         <ModalWrapper actionNode={<Button>{t('add-cake-modal')}</Button>}>
-          <FormEdit />
+          {({ hide }) => <FormEdit onSuccessSubmit={hide} />}
         </ModalWrapper>
       )}
       <div className="list--wrapper">

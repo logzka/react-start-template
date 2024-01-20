@@ -50,14 +50,16 @@ const schema = yup
 interface IFormEdit {
   t: (v: string) => ReactNode | string;
   cardData?: ICardProps;
+  onSuccessSubmit?: () => void;
 }
 
-const FormEdit = ({ t, cardData }: IFormEdit) => {
+const FormEdit = ({ t, cardData, onSuccessSubmit }: IFormEdit) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm({
     defaultValues: {
       category: 'cake',
@@ -96,14 +98,22 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
   }, []);
 
   const onSubmit: SubmitHandler<IFormValues> = (data) => {
-    console.log(cardData);
-
+    function findCategoryId(name: string) {
+      switch (name) {
+        case 'cake':
+          return '659e79f1f524e46e2421c9bc';
+        case 'pie':
+          return '659e79f1f524e46e2421c9be';
+        case 'dessert':
+          return '659e79f1f524e46e2421c9c0';
+      }
+    }
     cardData
       ? updateCake({
           variables: {
             patchId: cardData.id,
             input: {
-              categoryId: data.category.id,
+              categoryId: findCategoryId(data.category),
               name: data.name,
               desc: data.desc,
               price: data.price,
@@ -111,7 +121,9 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
               photo: data.photo,
             },
           },
-        }).then((res) => console.log(res.data))
+        })
+          .then((res) => console.log(res.data))
+          .then(onSuccessSubmit)
       : createCake({
           variables: {
             input: {
@@ -122,7 +134,11 @@ const FormEdit = ({ t, cardData }: IFormEdit) => {
               photo: data.photo,
             },
           },
-        }).then((res) => console.log(res.data));
+        })
+          .then((res) => console.log(res.data))
+          .then(onSuccessSubmit);
+
+    reset();
   };
 
   return (

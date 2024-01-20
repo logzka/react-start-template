@@ -77,7 +77,7 @@ const Card = memo(
                       </Button>
                     }
                   >
-                    <FormEdit cardData={cardData} />
+                    {({ hide }) => <FormEdit cardData={cardData} onSuccessSubmit={hide} />}
                   </ModalWrapper>
                 )}
                 <CartButton setNewCount={handleSetNewCount} type="success" count={count}>
