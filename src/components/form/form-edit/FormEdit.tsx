@@ -51,10 +51,10 @@ interface IFormEdit {
   t: (v: string) => ReactNode | string;
   cardData?: ICardProps;
   updateList?: () => void;
-  hideModalHandler?: () => void;
+  onSuccessSubmit?: () => void;
 }
 
-const FormEdit = ({ t, cardData, updateList, hideModalHandler }: IFormEdit) => {
+const FormEdit = ({ t, cardData, updateList, onSuccessSubmit }: IFormEdit) => {
   const {
     control,
     handleSubmit,
@@ -99,7 +99,7 @@ const FormEdit = ({ t, cardData, updateList, hideModalHandler }: IFormEdit) => {
   const submitClb = () => {
     updateList;
     reset();
-    hideModalHandler();
+    onSuccessSubmit();
   };
 
   const onSubmit: SubmitHandler<IFormValues> = (data) => {

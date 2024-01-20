@@ -1,4 +1,4 @@
-import React, { memo, PropsWithChildren, useState } from 'react';
+import React, { memo, PropsWithChildren } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
@@ -31,8 +31,6 @@ const Card = memo(
     addToCartHandler,
     updateList,
   }: PropsWithChildren<ICardProps>) => {
-    const [hideModal, setHideModal] = useState(false);
-
     const { t } = useTranslation();
 
     const { role } = useSelector(profileSelectors.get);
@@ -87,9 +85,8 @@ const Card = memo(
                           <PencilSquareIcon />
                         </Button>
                       }
-                      hide={hideModal}
                     >
-                      <FormEdit cardData={cardData} hideModalHandler={() => setHideModal(true)} />
+                      {({ hide }) => <FormEdit cardData={cardData} onSuccessSubmit={hide} />}
                     </ModalWrapper>
                     <Button icon onClick={removeCakeHandler}>
                       <TrashIcon />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -23,7 +23,6 @@ import Button from '../button/Button';
 import { GET_CAKES } from '../../graphql/schemes/GET_CAKES';
 
 const List = ({ t, profile }: TListProps) => {
-  const [hideModal, setHideModal] = useState(false);
   const dispatch = useTypedDispatch();
   const { role } = profile;
 
@@ -60,8 +59,8 @@ const List = ({ t, profile }: TListProps) => {
   return (
     <div className="list">
       {role === 'admin' && (
-        <ModalWrapper actionNode={<Button>{t('add-cake-modal')}</Button>} hide={hideModal}>
-          <FormEdit updateList={() => refetch()} hideModalHandler={() => setHideModal(true)} />
+        <ModalWrapper actionNode={<Button>{t('add-cake-modal')}</Button>}>
+          {({ hide }) => <FormEdit updateList={() => refetch()} onSuccessSubmit={hide} />}
         </ModalWrapper>
       )}
       <div className="list--wrapper">
